@@ -1,4 +1,8 @@
 # TurboVision dialog designer
-Дизайнер диалогов,е основанный на портированной библиотеке 
+Дизайнер диалогов, основанный на портированной библиотеке 
 
+To compile with English resources, use the 
 
+#define ENG 
+
+definition when building the project.
