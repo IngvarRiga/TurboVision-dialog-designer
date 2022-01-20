@@ -33,14 +33,15 @@ void TComponentDialog::handleEvent(TEvent& event)
         {
 
             auto pt = ((TPoint*)event.message.infoPtr);
-            auto v = new TWrapStaticText(TRect(pt->x, pt->y-1, pt->x+10, pt->y), "StaticText");
+            auto v = new TWrapStaticText(TRect(pt->x, pt->y-1, pt->x+10, pt->y), "---------");
             //-- прикручиваем тень к объекту, чтобы он "парил"
             v->setState(sfShadow, true);
+            v->options |= ofPreProcess | ofPostProcess;
             v->drawView();
-           // v->dragMode = dmDragMove;
             v->setDragged();
             owner->insert(v);
             message(v, evMouseDown, -1, 0);
+            //message(v, evBroadcast, cm_cmp_BeginDragMode, 0);
             clearEvent(event);
         }
     }

@@ -55,7 +55,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/ttrialradiobuttons.o \
 	${OBJECTDIR}/ttrialstatictext.o \
 	${OBJECTDIR}/twinextmenu.o \
-	${OBJECTDIR}/twinsizeindicator.o
+	${OBJECTDIR}/twinsizeindicator.o \
+	${OBJECTDIR}/winputline.o
 
 
 # C Compiler Flags
@@ -186,6 +187,11 @@ ${OBJECTDIR}/twinsizeindicator.o: twinsizeindicator.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/twinsizeindicator.o twinsizeindicator.cpp
+
+${OBJECTDIR}/winputline.o: winputline.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/winputline.o winputline.cpp
 
 # Subprojects
 .build-subprojects:

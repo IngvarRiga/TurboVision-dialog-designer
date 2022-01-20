@@ -4,6 +4,7 @@
 //      class Wrapped StaticText
 //      Palette layout 1 = Text 
 #define Uses_TView
+#define Uses_TEvent
 #define Uses_TPalette
 #define Uses_TDrawBuffer
 #define Uses_opstream
@@ -24,7 +25,6 @@ class TWrapStaticText : public TView
 
     TWrapStaticText(const TRect& bounds, TStringView aText ) noexcept;
     TWrapStaticText(const TRect& bounds, TStringView aText, bool click) noexcept;
-//    TWrapStaticText(const TRect& bounds, TStringView aText,  ) noexcept;
     ~TWrapStaticText(){};
 
     virtual void draw();

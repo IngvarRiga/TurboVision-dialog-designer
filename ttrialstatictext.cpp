@@ -197,9 +197,8 @@ void TTrialStaticText::genCode(char *val)
         strncat(val, endGen, strlen(endGen));
         strncat(val, var_name, strlen(var_name));
         strncat(val, closeBr, strlen(closeBr));
-        
-    }
-    else
+
+    } else
     {
         //-- обходимся без переменных, сразу вставка
         auto t = "\n insert(new ";
@@ -249,7 +248,7 @@ void TTrialStaticText::write(opstream& os)
 {
 
     TWrapStaticText::write(os);
-    os.writeBytes((void *) usedVarName, sizeof (usedVarName));
+    os.writeBytes(&usedVarName, sizeof (usedVarName));
     os.writeBytes((void *) var_name, StringMaxLen);
     os.writeBytes((void *) class_name, StringMaxLen);
     os << eventMask << options << dragMode;
@@ -258,7 +257,7 @@ void TTrialStaticText::write(opstream& os)
 void *TTrialStaticText::read(ipstream& is)
 {
     TWrapStaticText::read(is);
-    is.readBytes((void *) usedVarName, sizeof (usedVarName));
+    is.readBytes(&usedVarName, sizeof (usedVarName));
     is.readBytes((void *) var_name, StringMaxLen);
     is.readBytes((void *) class_name, StringMaxLen);
     is >> eventMask >> options >> dragMode;

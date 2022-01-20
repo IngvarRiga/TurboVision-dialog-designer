@@ -2,7 +2,7 @@
 #include "multilang.h"
 
 TStaticTextProperties::TStaticTextProperties() :
-TCustomDialog(54, 11, txt_PropertyStaticTextCaption),
+TCustomDialog(54, 14, txt_PropertyStaticTextCaption),
 TWindowInit(&TDialog::initFrame)
 {
     sbv = new TScrollBar(TRect(51, 2, 52, 6));

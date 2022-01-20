@@ -79,23 +79,12 @@ TMenuBar *TPrg::initMenuBar(TRect r)
             (TMenuItem &) (
             * new TMenuItem(txt_mnu_NewDialogWindow, cmNewDialog, kbNoKey) +
             * new TMenuItem(txt_mnu_LoadFromResource, cmLoadDialog, kbNoKey) +
-            //            newLine()+
-            //            * new TMenuItem(txt_mnu_StaticText, cmUnreleased, kbNoKey) +
-            //            * new TMenuItem(txt_mnu_Button, cmUnreleased, kbNoKey) +
-            //            * new TMenuItem(txt_mnu_InputLine, cmUnreleased, kbNoKey) +
-            //            * new TMenuItem("Radio Buttons", cmUnreleased, kbNoKey) +
-            //            * new TMenuItem("Check Boxes", cmUnreleased, kbNoKey) +
-            //            * new TMenuItem("ListBox", cmUnreleased, kbNoKey) +
             newLine()+
-            * new TMenuItem("Test gadget win ;)", cm_test_ToolWin, kbNoKey)
-            //            * new TMenuItem("Тест сохранения окна", cmDialogSaveToRes, kbNoKey)
+            * new TMenuItem("Test Drag&Drop", cm_test_ToolWin, kbNoKey)
             ) +
             * new TSubMenu(txt_mnu_AlgoritmTest, kbNoKey) +
             (TMenuItem &) (
             * new TMenuItem(txt_mnu_ColorSelect, cmColorTest, kbNoKey)
-            //            +
-            //            * new TMenuItem("Меню", cmNewMenu, kbNoKey) +
-            //            * new TMenuItem("Палитра", cmNewPalette, kbNoKey)
             )
             );
 
@@ -119,7 +108,6 @@ TStatusLine *TPrg::initStatusLine(TRect r)
 
 TDialog* TPrg::AboutDialog()
 {
-    //    TView *control;
     TCustomDialog* dlg = new TCustomDialog(49, 10, winAboutCapt);
     if (!dlg) return 0;
     dlg->insert(new TStaticText(TRect(3, 2, 47, 3), winAboutText1));
@@ -127,8 +115,6 @@ TDialog* TPrg::AboutDialog()
     dlg->insert(new TStaticText(TRect(3, 4, 47, 5), "\003Turbo Vision by maglibot"));
     dlg->insert(new TStaticText(TRect(3, 5, 47, 6), "\003(C) Ingvar «Rex» Riga"));
     dlg->insert(new TButton(TRect(20, 7, 30, 9), txt_btnOk, cmOK, bfDefault));
-    //    control->options &= ~ofSelectable;
-    //    dlg->insert(control);
     dlg->selectNext(False);
     return dlg;
 }

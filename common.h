@@ -61,11 +61,18 @@ const int cm_ed_InsertCheckBoxes = 20004; //-- вставка TCheckBoxes
 const int cm_ed_InsertRadioButtons = 20005; //-- вставка TCheckBoxes
 const int cm_ed_InsertListBox = 20006; //-- вставка TListBox
 const int cm_ed_InsertMemo = 20007; //-- вставка TMemo
+//-- "бросание компонентов при переносе"
+const int cm_drp_DropStaticText = 20101; //-- вставка TStaticText
+const int cm_drp_DropInputLine = 20102; //-- вставка TInputLine
+const int cm_drp_DropButton = 20103; //-- вставка TButton
+const int cm_drp_DropCheckBoxes = 20104; //-- вставка TCheckBoxes
+const int cm_drp_DropRadioButtons = 20105; //-- вставка TCheckBoxes
+const int cm_drp_DropListBox = 20106; //-- вставка TListBox
+const int cm_drp_DropMemo = 20107; //-- вставка TMemo
 
 //-- Команды тулбару на создание комопнентов
+const int cm_cmp_BeginDragMode = 30000;
 const int cm_cmp_CreateStaticText = 30001;
-
-
 
 //-- служебные команды
 const int cm_ColorFieldClicked = 60001; //-- произошел клик по цветовому полю

@@ -205,6 +205,22 @@ void TTrialDialog::handleEvent(TEvent& event)
                 insert(new TTrialStaticText(TRect(size.x - 13, size.y - 3, size.x - 3, size.y - 2), "StaticText"));
                 break;
             }
+            case cm_drp_DropStaticText:
+            {
+                TPoint tmp;
+                tmp.x = ((TPoint*) event.message.infoPtr)->x;
+                tmp.y = ((TPoint*) event.message.infoPtr)->y;
+                auto lc = makeLocal(tmp);
+                auto b = getExtent();
+                //-- если Drop происходит ВНЕ границ окна - просто игнорируем событие и все
+                //-- чтобы не вставлять то, что не увидится
+                if ((lc.x >= 1) && (lc.y >= 1) && (lc.x < b.b.x-1)&& (lc.y < b.b.y-1))
+                {
+                    //-- добавление нового TStaticText
+                    insert(new TTrialStaticText(TRect(lc.x, lc.y, lc.x + 10, lc.y + 1), "StaticText"));
+                }
+                break;
+            }
             case cm_ed_InsertInputLine:
             {
                 //-- добавление нового TInputLine

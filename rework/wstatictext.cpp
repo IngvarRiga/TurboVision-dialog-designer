@@ -1,5 +1,5 @@
 #include "wstatictext.h"
-
+#include <iostream>
 #define cpStaticText "\x06"
 
 const char * const TWrapStaticText::name = "TWrapStaticText";
@@ -8,18 +8,22 @@ TWrapStaticText::TWrapStaticText(const TRect& bounds, TStringView aText) noexcep
 TView(bounds)
 {
     growMode |= gfFixed;
+    eventMask = 0xFF; //-- установлен флаг получения ВСЕХ сообщений от мыши
     memset(text, 0x0, StringMaxLen);
     strncpy(text, aText.data(), StringMaxLen);
     eventClick = false;
+    eventDragged = false;
 }
 
 TWrapStaticText::TWrapStaticText(const TRect& bounds, TStringView aText, bool click) noexcept :
 TView(bounds)
 {
     growMode |= gfFixed;
+    eventMask |= 0xFF; //-- установлен флаг получения ВСЕХ сообщений от мыши
     memset(text, 0x0, StringMaxLen);
     strncpy(text, aText.data(), StringMaxLen);
     eventClick = click;
+    eventDragged = false;
 }
 
 void TWrapStaticText::draw()
@@ -29,8 +33,10 @@ void TWrapStaticText::draw()
     int i, j, l, p, y;
     TDrawBuffer b;
     char s[256];
-
-    color = getColor(1);
+    if (eventDragged)
+        color = 0xdf;
+    else
+        color = getColor(1);
     getText(s);
     l = strlen(s);
     p = 0;
@@ -123,6 +129,7 @@ ushort TWrapStaticText::getWColor()
 
 void TWrapStaticText::handleEvent(TEvent& event)
 {
+    TEvent pe;
     if (eventClick)
     {
         if (event.what | evMouse)
@@ -142,25 +149,36 @@ void TWrapStaticText::handleEvent(TEvent& event)
     {
         if (event.what | evMouse)
         {
-            if (event.what == mbLeftButton)
+            if (event.what == evMouseDown)
             {
-                //event.mouse.buttons = mbLeftButton;
                 auto rec = getBounds();
                 event.mouse.where.x = rec.a.x;
-                event.mouse.where.y = rec.a.y+1;
+                event.mouse.where.y = rec.a.y + 1;
                 TPoint MinSz, MaxSz;
-                ushort d;
                 //-- устанавливаем минимальные границы размера в размер хозяина объекта
                 //-- так, чтобы изменение размеров и перемещение не выводило объект
                 //-- за границы предка (окна в общем случае)
                 auto lims = owner->getExtent();
                 lims.grow(-1, -1);
                 sizeLimits(MinSz, MaxSz);
+                //-- адский косяк в том, что из функции перемещения мы выходим только ПОСЛЕ того, как пользователь отпустил мышь
                 dragView(event, dragMode | dmDragMove, lims, MinSz, MaxSz);
                 clearEvent(event);
+                
+                TEvent evDrop;
+                evDrop.what = evBroadcast;
+                evDrop.message.command = cm_drp_DropStaticText;
+                TPoint *pt = new TPoint();
+                pt->x = event.mouse.where.x;
+                pt->y = event.mouse.where.y;
+                evDrop.message.infoPtr = pt;
+                putEvent(evDrop);
+                clearEvent(event);
+                auto parent = this->owner;
+                destroy(this);
+                parent->drawView();
             }
         }
-
     }
 }
 
