@@ -13,6 +13,7 @@ TView(bounds)
     strncpy(text, aText.data(), StringMaxLen);
     eventClick = false;
     eventDragged = false;
+    Selected = false;
 }
 
 TWrapStaticText::TWrapStaticText(const TRect& bounds, TStringView aText, bool click) noexcept :
@@ -24,6 +25,16 @@ TView(bounds)
     strncpy(text, aText.data(), StringMaxLen);
     eventClick = click;
     eventDragged = false;
+    Selected = false;
+}
+
+TAttrPair TWrapStaticText::getColor( ushort color )
+{
+    if (Selected)
+        return color_SelectedColor;
+    if (eventDragged)
+        return color_DraggedColor;
+    return TView::getColor(color);
 }
 
 void TWrapStaticText::draw()
@@ -33,9 +44,9 @@ void TWrapStaticText::draw()
     int i, j, l, p, y;
     TDrawBuffer b;
     char s[256];
-    if (eventDragged)
-        color = 0xdf;
-    else
+//    if (eventDragged)
+//        color = color_DraggedColor;
+//    else
         color = getColor(1);
     getText(s);
     l = strlen(s);
@@ -104,6 +115,19 @@ void TWrapStaticText::getText(char *s)
     }
 }
 
+bool TWrapStaticText::isSelected()
+{
+    return Selected;
+}
+
+void TWrapStaticText::setSelected(bool val)
+{
+    if (Selected != val)
+    {
+        Selected = val;
+        drawView();
+    }
+}
 void TWrapStaticText::setCaption(char *val)
 {
     memset(text, 0x0, StringMaxLen);
@@ -129,7 +153,6 @@ ushort TWrapStaticText::getWColor()
 
 void TWrapStaticText::handleEvent(TEvent& event)
 {
-    TEvent pe;
     if (eventClick)
     {
         if (event.what | evMouse)
@@ -173,7 +196,6 @@ void TWrapStaticText::handleEvent(TEvent& event)
                 pt->y = event.mouse.where.y;
                 evDrop.message.infoPtr = pt;
                 putEvent(evDrop);
-                clearEvent(event);
                 auto parent = this->owner;
                 destroy(this);
                 parent->drawView();

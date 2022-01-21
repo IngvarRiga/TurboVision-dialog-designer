@@ -26,6 +26,10 @@ class dataTSTP
     dataTSTP();
     
     char caption[StringMaxLen];
+    char var_name[StringMaxLen];
+    char class_name[StringMaxLen];
+    bool use_var_name;
+    
 };
 
 class TStaticTextProperties : public TCustomDialog

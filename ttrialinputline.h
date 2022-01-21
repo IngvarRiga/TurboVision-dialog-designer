@@ -10,8 +10,9 @@
 #define Uses_TRect
 #define Uses_TGroup
 #include <tvision/tv.h>
+#include "rework/winputline.h"
 
-class TTrialInputLine : public TInputLine
+class TTrialInputLine : public TWrapInputLine
 {
   public:
     static const char * const name;
@@ -23,7 +24,7 @@ class TTrialInputLine : public TInputLine
     }
 
     TTrialInputLine(StreamableInit) :
-    TInputLine(streamableInit)
+    TWrapInputLine(streamableInit)
     {
     }
 
@@ -35,7 +36,7 @@ class TTrialInputLine : public TInputLine
     }
 
     virtual void sizeLimits(TPoint& min, TPoint& max);
-    virtual void draw();
+    //virtual void draw();
     virtual void handleEvent(TEvent& event);
     bool isSelected();
     void setSelected(bool val);

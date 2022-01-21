@@ -91,6 +91,12 @@ void TTrialDialog::close()
 
 void TTrialDialog::handleEvent(TEvent& event)
 {
+    //-- Обрати внимание, что функция clearEvent(event); вызывается в каждом событии!!!!
+    //-- Казалось бы можно сократить код, но тогда при редактировании нескольких окон одновременно
+    //-- будут сложности! А так, Drag&Drop срабатывает на то окно, на котором или бросили компонент
+    //-- или на том, которое сверху и компонент вставляется правильно.
+
+    
     //-- двойной клик на неиспользуемом пространстве - вызов редактора
     //    if (event.mouse.eventFlags == meDoubleClick)
     if (event.what == evBroadcast)
@@ -125,6 +131,7 @@ void TTrialDialog::handleEvent(TEvent& event)
                 }
                 delete data;
                 destroy(win);
+                clearEvent(event);
                 break;
             }
             case cmOption_StaticText:
@@ -132,43 +139,56 @@ void TTrialDialog::handleEvent(TEvent& event)
                 //-- вызов настройки статического текста
                 auto data = new dataTSTP();
                 strncpy(data->caption, ((TTrialStaticText*) event.message.infoPtr)->getCaption(), StringMaxLen);
+                strncpy(data->class_name, ((TTrialStaticText*) event.message.infoPtr)->getClassName(), StringMaxLen);
+                strncpy(data->var_name, ((TTrialStaticText*) event.message.infoPtr)->getVarName(), StringMaxLen);
+                data->use_var_name = ((TTrialStaticText*) event.message.infoPtr)->getUsedVarName();
+
                 TStaticTextProperties *win = new TStaticTextProperties();
                 win->setData(data);
                 if (owner->execView(win) == cmOK)
                 {
                     win->getData(data);
                     ((TTrialStaticText*) event.message.infoPtr)->setCaption(data->caption);
+                    ((TTrialStaticText*) event.message.infoPtr)->setClassName(data->class_name);
+                    ((TTrialStaticText*) event.message.infoPtr)->setVarName(data->var_name);
+                    ((TTrialStaticText*) event.message.infoPtr)->setUsedVarName(data->use_var_name);
                     drawView();
                 }
                 delete data;
                 destroy(win);
+                clearEvent(event);
                 break;
 
             }
             case cmOption_Button:
             {
                 //-- вызов настройки статического кнопки
+                clearEvent(event);
                 break;
             }
             case cmOption_CheckBoxes:
             {
                 //-- вызов настройки 
 
+                clearEvent(event);
                 break;
             }
             case cmOption_InputLine:
             {
                 //-- вызов настройки 
+                clearEvent(event);
                 break;
             }
             case cmOption_ListBox:
             {
                 //-- вызов настройки
+                clearEvent(event);
                 break;
             }
             case cmOption_RadioButtons:
             {
                 //-- вызов настройки
+                clearEvent(event);
                 break;
             }
 
@@ -177,12 +197,14 @@ void TTrialDialog::handleEvent(TEvent& event)
                 ind->setPosInfo(!ind->getPosInfo());
                 drawView();
                 frame->drawView();
+                clearEvent(event);
                 break;
             }
             case cmDialogSizeOnOff:
             {
                 ind->setSizeInfo(!ind->getSizeInfo());
                 frame->drawView();
+                clearEvent(event);
                 break;
             }
             case cmDialogPosSizeOnOff:
@@ -197,12 +219,14 @@ void TTrialDialog::handleEvent(TEvent& event)
                     ind->setPosInfo(true);
                 }
                 frame->drawView();
+                clearEvent(event);
                 break;
             }
             case cm_ed_InsertStaticText:
             {
                 //-- добавление нового TStaticText
-                insert(new TTrialStaticText(TRect(size.x - 13, size.y - 3, size.x - 3, size.y - 2), "StaticText"));
+                insert(new TTrialStaticText(TRect(size.x - 13, size.y - 3, size.x - 3, size.y - 2), txt_btnStaticText));
+                clearEvent(event);
                 break;
             }
             case cm_drp_DropStaticText:
@@ -214,10 +238,11 @@ void TTrialDialog::handleEvent(TEvent& event)
                 auto b = getExtent();
                 //-- если Drop происходит ВНЕ границ окна - просто игнорируем событие и все
                 //-- чтобы не вставлять то, что не увидится
-                if ((lc.x >= 1) && (lc.y >= 1) && (lc.x < b.b.x-1)&& (lc.y < b.b.y-1))
+                if ((lc.x >= 1) && (lc.y >= 1) && (lc.x < b.b.x - 1)&& (lc.y < b.b.y - 1))
                 {
                     //-- добавление нового TStaticText
-                    insert(new TTrialStaticText(TRect(lc.x, lc.y, lc.x + 10, lc.y + 1), "StaticText"));
+                    insert(new TTrialStaticText(TRect(lc.x, lc.y, lc.x + 10, lc.y + 1), txt_btnStaticText));
+                clearEvent(event);
                 }
                 break;
             }
@@ -225,30 +250,52 @@ void TTrialDialog::handleEvent(TEvent& event)
             {
                 //-- добавление нового TInputLine
                 insert(new TTrialInputLine(TRect(size.x - 13, size.y - 3, size.x - 3, size.y - 2), 11));
+                clearEvent(event);
+                break;
+            }
+            case cm_drp_DropInputLine:
+            {
+                TPoint tmp;
+                tmp.x = ((TPoint*) event.message.infoPtr)->x;
+                tmp.y = ((TPoint*) event.message.infoPtr)->y;
+                auto lc = makeLocal(tmp);
+                auto b = getExtent();
+                //-- если Drop происходит ВНЕ границ окна - просто игнорируем событие и все
+                //-- чтобы не вставлять то, что не увидится
+                if ((lc.x >= 1) && (lc.y >= 1) && (lc.x < b.b.x - 1)&& (lc.y < b.b.y - 1))
+                {
+                    //-- добавление нового TStaticText
+                    insert(new TTrialInputLine(TRect(lc.x, lc.y, lc.x + 10, lc.y + 1), 255));
+                clearEvent(event);
+                }
                 break;
             }
             case cm_ed_InsertButton:
             {
                 //-- добавление нового TInputLine
                 insert(new TTrialButton(TRect(size.x - 13, size.y - 4, size.x - 2, size.y - 2), txt_btnButton));
+                clearEvent(event);
                 break;
             }
             case cm_ed_InsertCheckBoxes:
             {
                 //-- добавление нового TCheckBoxes
                 insert(new TTrialCheckBoxes(TRect(size.x - 15, size.y - 4, size.x - 2, size.y - 2), new TSItem(txt_btnCheck1, new TSItem(txt_btnCheck2, nullptr))));
+                clearEvent(event);
                 break;
             }
             case cm_ed_InsertRadioButtons:
             {
                 //-- добавление нового TCheckBoxes
                 insert(new TTrialRadioButtons(TRect(size.x - 15, size.y - 4, size.x - 2, size.y - 2), new TSItem(txt_btnCheck1, new TSItem(txt_btnCheck2, nullptr))));
+                clearEvent(event);
                 break;
             }
             case cm_ed_InsertListBox:
             {
                 //-- добавление нового TListBox
                 insert(new TTrialListBox(TRect(size.x - 15, size.y - 4, size.x - 2, size.y - 2), 1, 0));
+                clearEvent(event);
                 break;
             }
 
@@ -267,12 +314,13 @@ void TTrialDialog::handleEvent(TEvent& event)
                     os.close();
                 }
                 destroy(fd);
+                clearEvent(event);
 
                 break;
             }
             case cmDialogGenCode:
             {
-                TFileDialog *fd = new TFileDialog("*.cpp", txt_dlg_SaveAsCaption, txt_dlg_SaveAsName, fdOKButton, 100);
+                TFileDialog *fd = new TFileDialog("*.cpp", txt_dlg_SaveCodeAsCaption, txt_dlg_SaveAsName, fdOKButton, 100);
 
                 if (fd != 0 && owner->execView(fd) != cmCancel)
                 {
@@ -280,14 +328,20 @@ void TTrialDialog::handleEvent(TEvent& event)
                     fd->getFileName(fileName);
                     char res[8192];
                     memset(res, 0x0, 8192);
+                    //-- генерируем код
                     forEach(&generateCode, res);
+                    //-- записываем файл
+                    ofstream out;
+                    out.open(fileName);
+                    out << res;
+                    out.close();
                 }
                 destroy(fd);
+                clearEvent(event);
 
                 break;
             }
         }
-        clearEvent(event);
 
     }
     if (event.what == evKeyDown)

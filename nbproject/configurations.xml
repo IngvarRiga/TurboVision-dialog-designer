@@ -8,7 +8,12 @@
         <itemPath>tdialogdesigner.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f6" displayName="Rework" projectFiles="true">
-        <itemPath>winputline.cpp</itemPath>
+        <itemPath>rework/wbutton.cpp</itemPath>
+        <itemPath>rework/wcheckboxes.cpp</itemPath>
+        <itemPath>rework/winputline.cpp</itemPath>
+        <itemPath>rework/wlistbox.cpp</itemPath>
+        <itemPath>rework/wmemo.cpp</itemPath>
+        <itemPath>rework/wradiobuttons.cpp</itemPath>
         <itemPath>rework/wstatictext.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f1" displayName="Базовые классы" projectFiles="true">
@@ -23,6 +28,7 @@
         <itemPath>ttrialdialogbackground.cpp</itemPath>
         <itemPath>ttrialinputline.cpp</itemPath>
         <itemPath>ttriallistbox.cpp</itemPath>
+        <itemPath>ttrialmemo.cpp</itemPath>
         <itemPath>ttrialradiobuttons.cpp</itemPath>
         <itemPath>ttrialstatictext.cpp</itemPath>
       </logicalFolder>
@@ -36,7 +42,13 @@
       <logicalFolder name="f5"
                      displayName="Редакторы свойств объектов"
                      projectFiles="true">
+        <itemPath>tbuttonproperties.cpp</itemPath>
+        <itemPath>tcheckboxesproperties.cpp</itemPath>
         <itemPath>tdialogproperties.cpp</itemPath>
+        <itemPath>tinputlineproperties.cpp</itemPath>
+        <itemPath>tlistboxproperties.cpp</itemPath>
+        <itemPath>tmemoproperties.cpp</itemPath>
+        <itemPath>tradiobuttonproperties.cpp</itemPath>
         <itemPath>tstatictextproperties.cpp</itemPath>
       </logicalFolder>
       <itemPath>common.cpp</itemPath>
@@ -50,7 +62,12 @@
         <itemPath>tdialogdesigner.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f6" displayName="Rework" projectFiles="true">
-        <itemPath>winputline.h</itemPath>
+        <itemPath>rework/wbutton.h</itemPath>
+        <itemPath>rework/wcheckboxes.h</itemPath>
+        <itemPath>rework/winputline.h</itemPath>
+        <itemPath>rework/wlistbox.h</itemPath>
+        <itemPath>rework/wmemo.h</itemPath>
+        <itemPath>rework/wradiobuttons.h</itemPath>
         <itemPath>rework/wstatictext.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f1" displayName="Базовые классы" projectFiles="true">
@@ -65,6 +82,7 @@
         <itemPath>ttrialdialogbackground.h</itemPath>
         <itemPath>ttrialinputline.h</itemPath>
         <itemPath>ttriallistbox.h</itemPath>
+        <itemPath>ttrialmemo.h</itemPath>
         <itemPath>ttrialradiobuttons.h</itemPath>
         <itemPath>ttrialstatictext.h</itemPath>
       </logicalFolder>
@@ -78,7 +96,13 @@
       <logicalFolder name="f5"
                      displayName="Редакторы свойств объектов"
                      projectFiles="true">
+        <itemPath>tbuttonproperties.h</itemPath>
+        <itemPath>tcheckboxesproperties.h</itemPath>
         <itemPath>tdialogproperties.h</itemPath>
+        <itemPath>tinputlineproperties.h</itemPath>
+        <itemPath>tlistboxproperties.h</itemPath>
+        <itemPath>tmemoproperties.h</itemPath>
+        <itemPath>tradiobuttonproperties.h</itemPath>
         <itemPath>tstatictextproperties.h</itemPath>
       </logicalFolder>
       <itemPath>common.h</itemPath>
@@ -129,9 +153,41 @@
       </item>
       <item path="multilang.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="rework/wbutton.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="rework/wbutton.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="rework/wcheckboxes.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="rework/wcheckboxes.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="rework/winputline.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="rework/winputline.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="rework/wlistbox.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="rework/wlistbox.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="rework/wmemo.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="rework/wmemo.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="rework/wradiobuttons.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="rework/wradiobuttons.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="rework/wstatictext.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="rework/wstatictext.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tbuttonproperties.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tbuttonproperties.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tcheckboxesproperties.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tcheckboxesproperties.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="tcolorfield.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -153,9 +209,25 @@
       </item>
       <item path="tdialogproperties.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="tinputlineproperties.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tinputlineproperties.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tlistboxproperties.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tlistboxproperties.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tmemoproperties.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tmemoproperties.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="tprg.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tprg.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tradiobuttonproperties.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tradiobuttonproperties.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="trialdialog.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -189,6 +261,10 @@
       </item>
       <item path="ttriallistbox.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="ttrialmemo.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ttrialmemo.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="ttrialradiobuttons.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="ttrialradiobuttons.h" ex="false" tool="3" flavor2="0">
@@ -204,10 +280,6 @@
       <item path="twinsizeindicator.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="twinsizeindicator.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="winputline.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="winputline.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -238,9 +310,41 @@
       </item>
       <item path="multilang.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="rework/wbutton.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="rework/wbutton.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="rework/wcheckboxes.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="rework/wcheckboxes.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="rework/winputline.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="rework/winputline.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="rework/wlistbox.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="rework/wlistbox.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="rework/wmemo.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="rework/wmemo.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="rework/wradiobuttons.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="rework/wradiobuttons.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="rework/wstatictext.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="rework/wstatictext.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tbuttonproperties.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tbuttonproperties.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tcheckboxesproperties.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tcheckboxesproperties.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="tcolorfield.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -262,9 +366,25 @@
       </item>
       <item path="tdialogproperties.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="tinputlineproperties.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tinputlineproperties.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tlistboxproperties.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tlistboxproperties.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tmemoproperties.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tmemoproperties.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="tprg.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tprg.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tradiobuttonproperties.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tradiobuttonproperties.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="trialdialog.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -298,6 +418,10 @@
       </item>
       <item path="ttriallistbox.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="ttrialmemo.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ttrialmemo.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="ttrialradiobuttons.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="ttrialradiobuttons.h" ex="false" tool="3" flavor2="0">
@@ -313,10 +437,6 @@
       <item path="twinsizeindicator.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="twinsizeindicator.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="winputline.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="winputline.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

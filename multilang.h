@@ -20,6 +20,7 @@
 #define txt_mnu_Memo "Memo"
 #define txt_mnu_AlgoritmTest "Тест алгоритмов"
 #define txt_mnu_ColorSelect "Тестирование выбора цвета"
+#define txt_mnu_ComponentsPanel "Панель компонентов"
 
 //-- дополнительное меню свойств диалога
 #define txt_mnu_DlgPropShowPosition "Отображать начальную позицию окна вкл/выкл"
@@ -31,6 +32,7 @@
 #define txt_btnOk "O~K~"
 #define txt_btnCancel "Отмена"
 #define txt_btnButton "Кнопка"
+#define txt_btnStaticText "StaticText"
 
 #define txt_btnCheck1 "Выбор1"
 #define txt_btnCheck2 "Выбор2"
@@ -49,6 +51,7 @@
 #define txt_pd_Text "Текст"
 
 #define txt_dlg_SaveAsCaption "Сохранить диалог как..."
+#define txt_dlg_SaveCodeAsCaption "Сохранить исходный код диалога как..."
 #define txt_dlg_LoadAsCaption "Загрузить диалог из..."
 #define txt_dlg_SaveAsName "Название файла"
 #define txt_dlg_SaveCodeAsCaption "Сохранить исходный код диалога как..."
@@ -76,6 +79,7 @@
 #define txt_mnu_Memo "Memo"
 #define txt_mnu_AlgoritmTest "Algoritm test"
 #define txt_mnu_ColorSelect "(test) Color select"
+#define txt_mnu_ComponentsPanel "Component`s panel"
 
 //-- additionlal Dialog Designer menu (click '=' on left border ) 
 #define txt_mnu_DlgPropShowPosition "Show window position on/off"
@@ -88,6 +92,7 @@
 #define txt_btnOk "O~K~"
 #define txt_btnCancel "~C~ancel"
 #define txt_btnButton "Button"
+#define txt_btnStaticText "StaticText"
 
 #define txt_btnCheck1 "Check1"
 #define txt_btnCheck2 "Check2"
@@ -105,6 +110,7 @@
 #define txt_pd_Text "Text"
 
 #define txt_dlg_SaveAsCaption "Save dialog as..."
+#define txt_dlg_SaveCodeAsCaption "Save source code как..."
 #define txt_dlg_LoadAsCaption "Load dialog from..."
 #define txt_dlg_SaveAsName "~N~ame"
 #define txt_dlg_SaveCodeAsCaption "Save dialog SRC code as..."

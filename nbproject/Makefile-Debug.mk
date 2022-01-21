@@ -37,13 +37,25 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/common.o \
 	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/rework/wbutton.o \
+	${OBJECTDIR}/rework/wcheckboxes.o \
+	${OBJECTDIR}/rework/winputline.o \
+	${OBJECTDIR}/rework/wlistbox.o \
+	${OBJECTDIR}/rework/wmemo.o \
+	${OBJECTDIR}/rework/wradiobuttons.o \
 	${OBJECTDIR}/rework/wstatictext.o \
+	${OBJECTDIR}/tbuttonproperties.o \
+	${OBJECTDIR}/tcheckboxesproperties.o \
 	${OBJECTDIR}/tcolorfield.o \
 	${OBJECTDIR}/tcomponentdialog.o \
 	${OBJECTDIR}/tcustomdialog.o \
 	${OBJECTDIR}/tdialogdesigner.o \
 	${OBJECTDIR}/tdialogproperties.o \
+	${OBJECTDIR}/tinputlineproperties.o \
+	${OBJECTDIR}/tlistboxproperties.o \
+	${OBJECTDIR}/tmemoproperties.o \
 	${OBJECTDIR}/tprg.o \
+	${OBJECTDIR}/tradiobuttonproperties.o \
 	${OBJECTDIR}/trialdialog.o \
 	${OBJECTDIR}/tselectcolordialog.o \
 	${OBJECTDIR}/tstatictextproperties.o \
@@ -52,11 +64,11 @@ OBJECTFILES= \
 	${OBJECTDIR}/ttrialdialogbackground.o \
 	${OBJECTDIR}/ttrialinputline.o \
 	${OBJECTDIR}/ttriallistbox.o \
+	${OBJECTDIR}/ttrialmemo.o \
 	${OBJECTDIR}/ttrialradiobuttons.o \
 	${OBJECTDIR}/ttrialstatictext.o \
 	${OBJECTDIR}/twinextmenu.o \
-	${OBJECTDIR}/twinsizeindicator.o \
-	${OBJECTDIR}/winputline.o
+	${OBJECTDIR}/twinsizeindicator.o
 
 
 # C Compiler Flags
@@ -93,10 +105,50 @@ ${OBJECTDIR}/main.o: main.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -DRUS -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
 
+${OBJECTDIR}/rework/wbutton.o: rework/wbutton.cpp
+	${MKDIR} -p ${OBJECTDIR}/rework
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DRUS -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/rework/wbutton.o rework/wbutton.cpp
+
+${OBJECTDIR}/rework/wcheckboxes.o: rework/wcheckboxes.cpp
+	${MKDIR} -p ${OBJECTDIR}/rework
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DRUS -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/rework/wcheckboxes.o rework/wcheckboxes.cpp
+
+${OBJECTDIR}/rework/winputline.o: rework/winputline.cpp
+	${MKDIR} -p ${OBJECTDIR}/rework
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DRUS -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/rework/winputline.o rework/winputline.cpp
+
+${OBJECTDIR}/rework/wlistbox.o: rework/wlistbox.cpp
+	${MKDIR} -p ${OBJECTDIR}/rework
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DRUS -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/rework/wlistbox.o rework/wlistbox.cpp
+
+${OBJECTDIR}/rework/wmemo.o: rework/wmemo.cpp
+	${MKDIR} -p ${OBJECTDIR}/rework
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DRUS -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/rework/wmemo.o rework/wmemo.cpp
+
+${OBJECTDIR}/rework/wradiobuttons.o: rework/wradiobuttons.cpp
+	${MKDIR} -p ${OBJECTDIR}/rework
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DRUS -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/rework/wradiobuttons.o rework/wradiobuttons.cpp
+
 ${OBJECTDIR}/rework/wstatictext.o: rework/wstatictext.cpp
 	${MKDIR} -p ${OBJECTDIR}/rework
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -DRUS -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/rework/wstatictext.o rework/wstatictext.cpp
+
+${OBJECTDIR}/tbuttonproperties.o: tbuttonproperties.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DRUS -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/tbuttonproperties.o tbuttonproperties.cpp
+
+${OBJECTDIR}/tcheckboxesproperties.o: tcheckboxesproperties.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DRUS -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/tcheckboxesproperties.o tcheckboxesproperties.cpp
 
 ${OBJECTDIR}/tcolorfield.o: tcolorfield.cpp
 	${MKDIR} -p ${OBJECTDIR}
@@ -123,10 +175,30 @@ ${OBJECTDIR}/tdialogproperties.o: tdialogproperties.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -DRUS -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/tdialogproperties.o tdialogproperties.cpp
 
+${OBJECTDIR}/tinputlineproperties.o: tinputlineproperties.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DRUS -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/tinputlineproperties.o tinputlineproperties.cpp
+
+${OBJECTDIR}/tlistboxproperties.o: tlistboxproperties.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DRUS -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/tlistboxproperties.o tlistboxproperties.cpp
+
+${OBJECTDIR}/tmemoproperties.o: tmemoproperties.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DRUS -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/tmemoproperties.o tmemoproperties.cpp
+
 ${OBJECTDIR}/tprg.o: tprg.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -DRUS -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/tprg.o tprg.cpp
+
+${OBJECTDIR}/tradiobuttonproperties.o: tradiobuttonproperties.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DRUS -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/tradiobuttonproperties.o tradiobuttonproperties.cpp
 
 ${OBJECTDIR}/trialdialog.o: trialdialog.cpp
 	${MKDIR} -p ${OBJECTDIR}
@@ -168,6 +240,11 @@ ${OBJECTDIR}/ttriallistbox.o: ttriallistbox.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -DRUS -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ttriallistbox.o ttriallistbox.cpp
 
+${OBJECTDIR}/ttrialmemo.o: ttrialmemo.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DRUS -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ttrialmemo.o ttrialmemo.cpp
+
 ${OBJECTDIR}/ttrialradiobuttons.o: ttrialradiobuttons.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -187,11 +264,6 @@ ${OBJECTDIR}/twinsizeindicator.o: twinsizeindicator.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -DRUS -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/twinsizeindicator.o twinsizeindicator.cpp
-
-${OBJECTDIR}/winputline.o: winputline.cpp
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -DRUS -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/winputline.o winputline.cpp
 
 # Subprojects
 .build-subprojects:

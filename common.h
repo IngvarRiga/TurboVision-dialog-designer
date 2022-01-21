@@ -17,6 +17,11 @@
 #define txt_TRadioButtons "TRadioButtons"
 #define txt_TMemo "TMemo"
 
+
+#define color_DraggedColor 0xDF //-- цвет компонента при Drag&Drop белый шрифт на фиолетовом поле
+#define color_SelectedColor 0x4F //-- цвет компонента при Drag&Drop белый шрифт на красном поле
+
+
 //-- максимальная длина строки для поля ввода и вообще...
 const int StringMaxLen = 255;
 //-- максимальная длина строки при генерации кода
@@ -73,6 +78,12 @@ const int cm_drp_DropMemo = 20107; //-- вставка TMemo
 //-- Команды тулбару на создание комопнентов
 const int cm_cmp_BeginDragMode = 30000;
 const int cm_cmp_CreateStaticText = 30001;
+const int cm_cmp_CreateInputLine = 30002;
+const int cm_cmp_CreateButton = 30003;
+const int cm_cmp_CreateCheckBoxes = 30004;
+const int cm_cmp_CreateRadioButtons = 30005;
+const int cm_cmp_CreateListBox = 30006;
+const int cm_cmp_CreateMemo = 30007;
 
 //-- служебные команды
 const int cm_ColorFieldClicked = 60001; //-- произошел клик по цветовому полю

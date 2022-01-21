@@ -11,7 +11,6 @@ TWrapStaticText(bounds, aText)
     options |= ofPreProcess;
     //-- ограничиваем перемещение внутри окна его границами
     dragMode |= dmLimitAll;
-    Selected = false;
     //-- заданное имя переменной используется при генерации кода
     usedVarName = false; //-- по умолчанию -выключено!
     memset(var_name, 0x0, StringMaxLen);
@@ -20,72 +19,11 @@ TWrapStaticText(bounds, aText)
     strncpy(class_name, txt_TStaticText, strlen(txt_TStaticText));
 }
 
-void TTrialStaticText::draw()
-{
-    //-- полностью переопределяем процедуру отрисовки, поскольку в дизайнере нам нужны некоторые спецэффекты
-    //TStaticText::draw();
-
-    TColorAttr color;
-    Boolean center;
-    int i, j, l, p, y;
-    TDrawBuffer b;
-    char s[256];
-    memset(s, 0x0, 256);
-    auto f = state;
-    if (isSelected())
-        color = 0x4f;
-    else
-        color = getColor(1);
-    getText(s);
-    l = strlen(s);
-    p = 0;
-    y = 0;
-    center = False;
-    while (y < size.y)
-    {
-        b.moveChar(0, ' ', color, size.x);
-        if (p < l)
-        {
-            if (s[p] == 3)
-            {
-                center = True;
-                ++p;
-            }
-            i = p;
-            int last = i + TText::scroll(TStringView(&s[i], l - i), size.x, False);
-            do
-            {
-                j = p;
-                while ((p < l) && (s[p] == ' '))
-                    ++p;
-                while ((p < l) && (s[p] != ' ') && (s[p] != '\n'))
-                    p += TText::next(TStringView(&s[p], l - p));
-            } while ((p < l) && (p < last) && (s[p] != '\n'));
-            if (p > last)
-            {
-                if (j > i)
-                    p = j;
-                else
-                    p = last;
-            }
-            int width = strwidth(TStringView(&s[i], p - i));
-            if (center == True)
-                j = (size.x - width) / 2;
-            else
-                j = 0;
-            b.moveStr(j, TStringView(&s[i], l - i), color, (ushort) width);
-            while ((p < l) && (s[p] == ' '))
-                p++;
-            if ((p < l) && (s[p] == '\n'))
-            {
-                center = False;
-                p++;
-            }
-        }
-        writeLine(0, y++, size.x, 1, b);
-    }
-
-}
+//void TTrialStaticText::draw()
+//{
+//    //-- полностью переопределяем процедуру отрисовки, поскольку в дизайнере нам нужны некоторые спецэффекты
+//    TWrapStaticText::draw();
+//}
 
 void TTrialStaticText::setState(ushort aState, Boolean enable)
 {
@@ -129,18 +67,41 @@ void TTrialStaticText::sizeLimits(TPoint& min, TPoint& max)
     max.y -= 2;
 }
 
-bool TTrialStaticText::isSelected()
+
+char* TTrialStaticText::getVarName()
 {
-    return Selected;
+    return var_name;
 }
 
-void TTrialStaticText::setSelected(bool val)
+char* TTrialStaticText::getClassName()
 {
-    if (Selected != val)
-    {
-        Selected = val;
-        drawView();
-    }
+    return class_name;
+}
+
+bool TTrialStaticText::getUsedVarName()
+{
+    return usedVarName;
+}
+
+void TTrialStaticText::setVarName(char *val)
+{
+    memset(var_name, 0x0, StringMaxLen);
+    auto len = strlen(val);
+    if (len > 0)
+        memcpy(var_name, val, len > StringMaxLen ? StringMaxLen : len);
+}
+
+void TTrialStaticText::setClassName(char *val)
+{
+    memset(class_name, 0x0, StringMaxLen);
+    auto len = strlen(val);
+    if (len > 0)
+        memcpy(class_name, val, len > StringMaxLen ? StringMaxLen : len);
+}
+
+void TTrialStaticText::setUsedVarName(bool val)
+{
+    usedVarName = val;
 }
 
 void TTrialStaticText::genCode(char *val)

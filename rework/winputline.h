@@ -9,7 +9,6 @@
 /*        2 = Active                                                      */
 /*        3 = Selected                                                    */
 /*        4 = Arrows                                                      */
-
 /* ---------------------------------------------------------------------- */
 #define Uses_TGroup
 #define Uses_TKeys
@@ -20,14 +19,16 @@
 #define Uses_opstream
 #define Uses_ipstream
 #define Uses_TText
+#define Uses_TStreamable
+#define Uses_TStreamableClass
 #include <tvision/tv.h>
 
 
 class TWrapInputLine : public TView
 {
   public:
+    static const char * const name;
 
-    TWrapInputLine(const TRect& bounds, uint aMaxLen, TValidator *aValid = 0) noexcept;
     TWrapInputLine(const TRect& bounds, uint aMaxLen, TValidator *aValid = 0, bool click = false) noexcept;
     ~TWrapInputLine();
 
@@ -41,6 +42,21 @@ class TWrapInputLine : public TView
     virtual void setState(ushort aState, Boolean enable);
     virtual Boolean valid(ushort cmd);
     void setValidator(TValidator* aValid);
+
+
+    //-- переопределяем идиотский функционал получение аццкой палитры
+    virtual TAttrPair getColor( ushort color );
+    
+    bool isSelected();
+    void setSelected(bool val);
+    
+    void setEditValue(char* val);
+    char* GetEditValue();
+    
+    void setDragged()
+    {
+        eventDragged = true;
+    };
 
     char* data;
     uint maxLen;
@@ -70,11 +86,6 @@ class TWrapInputLine : public TView
         return name;
     }
 
-    void setDragged()
-    {
-        eventDragged = true;
-    };
-
     TValidator* validator;
 
     int anchor;
@@ -85,15 +96,15 @@ class TWrapInputLine : public TView
     int oldSelEnd;
 
   protected:
-    bool eventClick;
-    bool eventDragged; //-- компонент находится в режиме перемещения
+    bool Selected; //-- компонент выбран пользователем
+    bool eventClick; //-- специфическая реакция на клик по компоненту (только для дизайнера)
+    bool eventDragged; //-- компонент находится в режиме перемещения (только для дизайнера)
 
     TWrapInputLine(StreamableInit) noexcept;
     virtual void write(opstream&);
     virtual void *read(ipstream&);
 
   public:
-    static const char * const name;
     static TStreamable *build();
 
 };

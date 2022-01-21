@@ -4,7 +4,7 @@
 const char * const TTrialInputLine::name = "TTrialInputLine";
 
 TTrialInputLine::TTrialInputLine(const TRect& bounds, uint aMaxLen, TValidator *aValid) :
-TInputLine(bounds, aMaxLen, aValid)
+TWrapInputLine(bounds, aMaxLen, aValid)
 {
     eventMask |= 0xf; //-- установлен флаг получения ВСЕХ сообщений
     options |= ofPreProcess;
@@ -13,10 +13,10 @@ TInputLine(bounds, aMaxLen, aValid)
     Selected = false;
 }
 
-void TTrialInputLine::draw()
-{
-    TInputLine::draw();
-}
+//void TTrialInputLine::draw()
+//{
+//    TWrapInputLine::draw();
+//}
 
 void TTrialInputLine::handleEvent(TEvent& event)
 {
@@ -26,7 +26,7 @@ void TTrialInputLine::handleEvent(TEvent& event)
         //-- вызов окна редактирования свойств объекта
         if ((event.mouse.buttons == mbLeftButton) &&(event.mouse.eventFlags == meDoubleClick))
         {
-            message(owner, evBroadcast, cmOption_StaticText, nullptr);
+            message(owner, evBroadcast, cmOption_InputLine, nullptr);
             clearEvent(event);
         }
         if (event.what == evMouseDown)
@@ -39,12 +39,12 @@ void TTrialInputLine::handleEvent(TEvent& event)
         }
     }
 
-    TInputLine::handleEvent(event);
+    TWrapInputLine::handleEvent(event);
 }
 
 void TTrialInputLine::sizeLimits(TPoint& min, TPoint& max)
 {
-    TInputLine::sizeLimits(min, max);
+    TWrapInputLine::sizeLimits(min, max);
     min.x = 1;
     min.y = 1;
     max.x -= 2;
@@ -71,6 +71,7 @@ void TTrialInputLine::genCode(char *val)
     char tmp[StringMaxLen];
     memset(tmp, 0x0, StringMaxLen);
     auto t = "\n field = new TInputLine(TRect(";
+    auto endl ="), 11));\n insert(field);";
     strncat(val, t, strlen(t));
     auto r = getBounds();
     itoa(r.a.x, tmp, 10);
@@ -92,7 +93,7 @@ void TTrialInputLine::genCode(char *val)
     strncat(val, tmp, strlen(tmp));
     memset(tmp, 0x0, StringMaxLen);
 
-    strncat(val, "), 11));\n insert(field);", 4);
+    strncat(val, endl, strlen(endl));
     memset(tmp, 0x0, StringMaxLen);
 }
 
@@ -104,13 +105,13 @@ TStreamable *TTrialInputLine::build()
 void TTrialInputLine::write(opstream& os)
 {
 
-    TInputLine::write(os);
+    TWrapInputLine::write(os);
     os << eventMask << options << dragMode;
 }
 
 void *TTrialInputLine::read(ipstream& is)
 {
-    TInputLine::read(is);
+    TWrapInputLine::read(is);
     is >> eventMask >> options >> dragMode;
     return this;
 }
@@ -122,7 +123,7 @@ TStreamableClass RTrialInputLine(
         __DELTA(TTrialInputLine)
         );
 
-__link(RInputLine)
+__link(RWrapInputLine)
 __link(RTrialInputLine)
 
 

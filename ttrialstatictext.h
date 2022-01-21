@@ -31,27 +31,36 @@ class TTrialStaticText : public TWrapStaticText
 
     static TStreamable *build();
 
-    virtual const char *streamableName() const
-    {
-        return name;
-    }
-    virtual void draw();
+    //virtual void draw();
     virtual void setState(ushort aState, Boolean enable);
     virtual void handleEvent(TEvent& event);
     virtual void sizeLimits(TPoint& min, TPoint& max);
-    bool isSelected();
-    void setSelected(bool val);
+
+
     void genCode(char *val);
 
+    //-- получение значений
+    char* getVarName();
+    char* getClassName();
+    bool getUsedVarName();
+
+    //-- установка значений
+    void setVarName(char *val);
+    void setClassName(char *val);
+    void setUsedVarName(bool val);
+    
   protected:
+    bool usedVarName; //-- при генерации исходного кода использовать отдельную переменную для объекта
+    char class_name[StringMaxLen]; //-- имя переменной для создания текста
+    char var_name[StringMaxLen]; //-- имя переменной для создания текста
     virtual void write(opstream&);
     virtual void *read(ipstream&);
 
   private:
-    bool Selected;
-    bool usedVarName; //-- при генерации исходного кода использовать отдельную переменную для объекта
-    char class_name[StringMaxLen]; //-- имя переменной для создания текста
-    char var_name[StringMaxLen]; //-- имя переменной для создания текста
+    virtual const char *streamableName() const
+    {
+        return name;
+    }
 
 };
 

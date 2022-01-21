@@ -77,10 +77,10 @@ TMenuBar *TPrg::initMenuBar(TRect r)
             //-- перечень реализованных алгоритмов
             * new TSubMenu(txt_mnu_Designer, kbNoKey) +
             (TMenuItem &) (
-            * new TMenuItem(txt_mnu_NewDialogWindow, cmNewDialog, kbNoKey) +
-            * new TMenuItem(txt_mnu_LoadFromResource, cmLoadDialog, kbNoKey) +
+            * new TMenuItem(txt_mnu_NewDialogWindow, cmNewDialog, kbCtrlN, hcNoContext, "Ctrl-N") +
+            * new TMenuItem(txt_mnu_LoadFromResource, cmLoadDialog, kbCtrlR, hcNoContext, "Ctrl-R") +
             newLine()+
-            * new TMenuItem("Test Drag&Drop", cm_test_ToolWin, kbNoKey)
+            * new TMenuItem(txt_mnu_ComponentsPanel, cm_test_ToolWin, kbCtrlF12, hcNoContext, "Ctrl-F12")
             ) +
             * new TSubMenu(txt_mnu_AlgoritmTest, kbNoKey) +
             (TMenuItem &) (
@@ -126,6 +126,7 @@ TSelectColorDialog* TPrg::CreateColorTestDialog()
 
 TComponentDialog* TPrg::ConstructComponentPalette()
 {
+
     return new TComponentDialog();
 }
 

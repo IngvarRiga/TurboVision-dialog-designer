@@ -1,4 +1,5 @@
 #include "winputline.h"
+#include "../common.h"
 
 #define Uses_TGroup
 #define Uses_TKeys
@@ -29,25 +30,6 @@ const int CONTROL_Y = 25;
 
 #define cpInputLine "\x13\x13\x14\x15"
 
-TWrapInputLine::TWrapInputLine(const TRect& bounds, uint aMaxLen, TValidator *aValid) noexcept :
-TView(bounds),
-data(new char[aMaxLen]),
-maxLen(aMaxLen - 1),
-curPos(0),
-firstPos(0),
-selStart(0),
-selEnd(0),
-validator(aValid),
-oldData(new char[aMaxLen])
-{
-    eventMask = 0xFF; //-- установлен флаг получения ВСЕХ сообщений от мыши
-    state |= sfCursorVis;
-    options |= ofSelectable | ofFirstClick;
-    *data = EOS;
-    eventClick = false;
-    eventDragged = false;
-}
-
 TWrapInputLine::TWrapInputLine(const TRect& bounds, uint aMaxLen, TValidator *aValid, bool click) noexcept :
 TView(bounds),
 data(new char[aMaxLen]),
@@ -65,6 +47,7 @@ oldData(new char[aMaxLen])
     *data = EOS;
     eventClick = click;
     eventDragged = false;
+    Selected = false;
 }
 
 TWrapInputLine::~TWrapInputLine()
@@ -96,12 +79,39 @@ ushort TWrapInputLine::dataSize()
     return dSize;
 }
 
+TAttrPair TWrapInputLine::getColor(ushort color)
+{
+    if (Selected)
+        return color_SelectedColor;
+    if (eventDragged)
+        return color_DraggedColor;
+    return TView::getColor(color);
+}
+
+bool TWrapInputLine::isSelected()
+{
+    return Selected;
+}
+
+void TWrapInputLine::setSelected(bool val)
+{
+    if (Selected != val)
+    {
+        Selected = val;
+        drawView();
+    }
+}
+
 void TWrapInputLine::draw()
 {
     int l, r;
     TDrawBuffer b;
+    TColorAttr color;
 
-    TColorAttr color = getColor((state & sfFocused) ? 2 : 1);
+    if (eventDragged)
+        color = color_DraggedColor;
+    else
+        color = getColor((state & sfFocused) ? 2 : 1);
 
     b.moveChar(0, ' ', color, size.x);
     if (size.x > 1)
@@ -256,6 +266,75 @@ Boolean TWrapInputLine::checkValid(Boolean noAutoFill)
 
 void TWrapInputLine::handleEvent(TEvent& event)
 {
+    if (eventClick)
+    {
+        if (event.what | evMouse)
+        {
+            //-- Реакция на клик - сообщение о создании перетаскиваемого объекта
+            if ((event.mouse.buttons == mbLeftButton) &&(event.what == evMouseDown))
+            {
+                //-- берем координаты клика мышкой в глобальных координатах
+                auto pt = event.mouse.where;
+                //-- обязательно отсылаем ссылку на редактируемый компонент
+                message(owner, evBroadcast, cm_cmp_CreateInputLine, &pt);
+                clearEvent(event);
+            }
+        }
+    }
+    if (eventDragged)
+    {
+        if (event.what | evMouse)
+        {
+            if (event.what == evMouseDown)
+            {
+                auto rec = getBounds();
+                event.mouse.where.x = rec.a.x;
+                event.mouse.where.y = rec.a.y + 1;
+                TPoint MinSz, MaxSz;
+                //-- устанавливаем минимальные границы размера в размер хозяина объекта
+                //-- так, чтобы изменение размеров и перемещение не выводило объект
+                //-- за границы предка (окна в общем случае)
+                auto lims = owner->getExtent();
+                lims.grow(-1, -1);
+                sizeLimits(MinSz, MaxSz);
+                //-- адский косяк в том, что из функции перемещения мы выходим только ПОСЛЕ того, как пользователь отпустил мышь
+                dragView(event, dragMode | dmDragMove, lims, MinSz, MaxSz);
+                clearEvent(event);
+
+                TEvent evDrop;
+                evDrop.what = evBroadcast;
+                evDrop.message.command = cm_drp_DropInputLine;
+                TPoint *pt = new TPoint();
+                pt->x = event.mouse.where.x;
+                pt->y = event.mouse.where.y;
+                evDrop.message.infoPtr = pt;
+                putEvent(evDrop);
+                clearEvent(event);
+                auto parent = this->owner;
+                destroy(this);
+                parent->drawView();
+                return;
+            }
+        }
+    }
+    if (Selected)
+    {
+        //-- переопределяем действия клавиш в режиме разрабобтки
+        if (event.what == evKeyDown)
+        {
+            //-- обработка нажатий служебных клавиш
+            if (event.keyDown.keyCode == kbCtrlDel)
+            {
+                clearEvent(event);
+                //-- удаление выбранного элемента
+                destroy(this);
+            }
+        }
+    }
+
+
+
+    //--------------------------------------------------------------------------
     Boolean extendBlock;
     /* Home, Left Arrow, Right Arrow, End, Ctrl-Left Arrow, Ctrl-Right Arrow */
     static char padKeys[] = {0x47, 0x4b, 0x4d, 0x4f, 0x73, 0x74, 0};
@@ -425,6 +504,11 @@ void TWrapInputLine::setData(void *rec)
 void TWrapInputLine::setState(ushort aState, Boolean enable)
 {
     TView::setState(aState, enable);
+    if (aState == sfSelected)
+    {
+        setSelected(enable);
+    }
+
     if (aState == sfSelected ||
             (aState == sfActive && (state & sfSelected) != 0)
             )
@@ -438,6 +522,23 @@ void TWrapInputLine::setValidator(TValidator* aValid)
 
     validator = aValid;
 }
+
+Boolean TWrapInputLine::valid(ushort cmd)
+{
+    if (validator)
+    {
+        if (cmd == cmValid)
+            return Boolean(validator->status == vsOk);
+        else if (cmd != cmCancel)
+            if (!validator->validate(data))
+            {
+                select();
+                return False;
+            }
+    }
+    return True;
+}
+
 
 #if !defined(NO_STREAMABLE)
 
@@ -472,22 +573,12 @@ TWrapInputLine::TWrapInputLine(StreamableInit) noexcept : TView(streamableInit)
 {
 }
 
+TStreamableClass RWrapInputLine(
+        TWrapInputLine::name,
+        TWrapInputLine::build,
+        __DELTA(TWrapInputLine)
+        );
+
+__link(RView)
+__link(RWrapInputLine)
 #endif
-
-Boolean TWrapInputLine::valid(ushort cmd)
-{
-    if (validator)
-    {
-        if (cmd == cmValid)
-            return Boolean(validator->status == vsOk);
-        else if (cmd != cmCancel)
-            if (!validator->validate(data))
-            {
-                select();
-                return False;
-            }
-    }
-    return True;
-}
-
-

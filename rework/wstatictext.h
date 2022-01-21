@@ -15,6 +15,7 @@
 
 #include <tvision/tv.h>
 #include "../common.h"
+
 /* Переопределение */
 
 
@@ -22,10 +23,14 @@ class TWrapStaticText : public TView
 {
   public:
     static const char * const name;
+    static TStreamable *build();
 
-    TWrapStaticText(const TRect& bounds, TStringView aText ) noexcept;
+    TWrapStaticText(const TRect& bounds, TStringView aText) noexcept;
     TWrapStaticText(const TRect& bounds, TStringView aText, bool click) noexcept;
-    ~TWrapStaticText(){};
+
+    ~TWrapStaticText()
+    {
+    };
 
     virtual void draw();
     virtual TPalette& getPalette() const;
@@ -34,38 +39,38 @@ class TWrapStaticText : public TView
     virtual void setCaption(char *val);
     virtual char* getCaption();
     virtual void handleEvent(TEvent& event);
+    virtual TAttrPair getColor( ushort color );
 
-    
     //-- ... используемый при обычной отрисовке текст
     virtual void setWColor(ushort val);
     virtual ushort getWColor();
 
+    bool isSelected();
+    void setSelected(bool val);
+
     //-- ... данная функция оставлена для совместимости библиотек с TStaticText
     virtual void getText(char *);
-    
-    void setDragged() {eventDragged = true;};
+
+    void setDragged()
+    {
+        eventDragged = true;
+    };
   protected:
     char text[StringMaxLen];
-    bool eventClick;
-    bool eventDragged; //-- компонент находится в режиме перемещения
-    
+    bool Selected; //-- компонент выбран пользователем
+    bool eventClick; //-- специфическая реакция на клик по компоненту (только для дизайнера)
+    bool eventDragged; //-- компонент находится в режиме перемещения (только для дизайнера)
+
+    TWrapStaticText(StreamableInit) noexcept;
+    virtual void write(opstream&);
+    virtual void *read(ipstream&);
+
   private:
 
     virtual const char *streamableName() const
     {
         return name;
     }
-
-  protected:
-
-    TWrapStaticText(StreamableInit) noexcept;
-    virtual void write(opstream&);
-    virtual void *read(ipstream&);
-
-  public:
-
-    static TStreamable *build();
-
 };
 
 inline ipstream& operator>>(ipstream& is, TWrapStaticText& cl)

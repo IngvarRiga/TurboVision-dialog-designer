@@ -17,6 +17,7 @@
 
 #include "tcustomdialog.h"
 #include "rework/wstatictext.h"
+#include "rework/winputline.h"
 
 
 class TComponentDialog : public TCustomDialog
