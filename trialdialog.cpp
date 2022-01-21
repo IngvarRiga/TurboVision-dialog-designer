@@ -20,6 +20,7 @@
 #include "ttrialradiobuttons.h"
 #include "ttriallistbox.h"
 #include "tstatictextproperties.h"
+#include "tinputlineproperties.h"
 
 const char *_BaseName = "TCustomDialog";
 const char *_TypeName = "TNewDialog";
@@ -158,7 +159,6 @@ void TTrialDialog::handleEvent(TEvent& event)
                 destroy(win);
                 clearEvent(event);
                 break;
-
             }
             case cmOption_Button:
             {
@@ -175,7 +175,22 @@ void TTrialDialog::handleEvent(TEvent& event)
             }
             case cmOption_InputLine:
             {
-                //-- вызов настройки 
+                //-- вызов настройки статического текста
+                auto data = new dataTILP();
+                strncpy(data->var_name, ((TTrialInputLine*) event.message.infoPtr)->getVarName(), StringMaxLen);
+                data->var_len = ((TTrialInputLine*) event.message.infoPtr)->getVarLen();
+
+                TInputLineProperties *win = new TInputLineProperties();
+                win->setData(data);
+                if (owner->execView(win) == cmOK)
+                {
+                    win->getData(data);
+                    ((TTrialInputLine*) event.message.infoPtr)->setVarName(data->var_name);
+                    ((TTrialInputLine*) event.message.infoPtr)->setVarLen(data->var_len);
+                    drawView();
+                }
+                delete data;
+                destroy(win);
                 clearEvent(event);
                 break;
             }

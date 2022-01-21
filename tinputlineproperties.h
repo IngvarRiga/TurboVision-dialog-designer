@@ -1,27 +1,39 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   tinputlineproperties.h
- * Author: RIA
- *
- * Created on 21 января 2022 г., 16:32
- */
-
 #ifndef TINPUTLINEPROPERTIES_H
 #define TINPUTLINEPROPERTIES_H
 
-class tinputlineproperties
+#define Uses_TInputLine
+#define Uses_TCheckBoxes
+#define Uses_TSItem
+#define Uses_TButton
+#define Uses_TLabel
+#define Uses_TMemo
+#define Uses_TScrollBar
+#define Uses_TLabel
+
+#include <tvision/tv.h>
+#include "tcustomdialog.h"
+#include "common.h"
+
+class dataTILP
 {
   public:
-    tinputlineproperties();
-    tinputlineproperties(const tinputlineproperties& orig);
-    virtual ~tinputlineproperties();
-  private:
+    dataTILP();
+    char var_name[StringMaxLen];
+    uint var_len;    
+};
 
+class TInputLineProperties : public TCustomDialog
+{
+  public:
+    TInputLineProperties();
+
+    virtual ~TInputLineProperties();
+
+    virtual void setData(dataTILP *val);
+    virtual void getData(dataTILP *val);
+  private:
+    TInputLine * var_len;
+    TInputLine * var_name;
 };
 
 #endif /* TINPUTLINEPROPERTIES_H */

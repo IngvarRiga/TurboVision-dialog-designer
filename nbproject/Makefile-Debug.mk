@@ -89,11 +89,11 @@ LDLIBSOPTIONS=-ltvision
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/designer.exe
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/turbovision-dialog-designer.exe
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/designer.exe: ${OBJECTFILES}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/turbovision-dialog-designer.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/designer ${OBJECTFILES} ${LDLIBSOPTIONS}
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/turbovision-dialog-designer ${OBJECTFILES} ${LDLIBSOPTIONS}
 
 ${OBJECTDIR}/common.o: common.cpp
 	${MKDIR} -p ${OBJECTDIR}

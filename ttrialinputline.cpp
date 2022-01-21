@@ -11,6 +11,8 @@ TWrapInputLine(bounds, aMaxLen, aValid)
     //-- ограничиваем перемещение внутри окна его границами
     dragMode |= dmLimitAll;
     Selected = false;
+    memset(var_name, 0x0, StringMaxLen);
+    strncpy(var_name, txt_control, strlen(txt_control));
 }
 
 //void TTrialInputLine::draw()
@@ -26,7 +28,7 @@ void TTrialInputLine::handleEvent(TEvent& event)
         //-- вызов окна редактирования свойств объекта
         if ((event.mouse.buttons == mbLeftButton) &&(event.mouse.eventFlags == meDoubleClick))
         {
-            message(owner, evBroadcast, cmOption_InputLine, nullptr);
+            message(owner, evBroadcast, cmOption_InputLine, this);
             clearEvent(event);
         }
         if (event.what == evMouseDown)
@@ -65,6 +67,7 @@ void TTrialInputLine::setSelected(bool val)
         drawView();
     }
 }
+
 void TTrialInputLine::genCode(char *val)
 {
     //-- генерируем код компонента
@@ -102,17 +105,44 @@ TStreamable *TTrialInputLine::build()
     return new TTrialInputLine(streamableInit);
 }
 
+char* TTrialInputLine::getVarName()
+{
+    return var_name;
+}
+
+uint TTrialInputLine::getVarLen()
+{
+    return maxLen;
+}
+
+void TTrialInputLine::setVarName(char *val)
+{
+    memset(var_name, 0x0, StringMaxLen);
+    auto len = strlen(val);
+    if (len > 0)
+        memcpy(var_name, val, len > StringMaxLen ? StringMaxLen : len);
+}
+
+
+
+void TTrialInputLine::setVarLen(uint val)
+{
+   maxLen = val;
+}
+
 void TTrialInputLine::write(opstream& os)
 {
 
     TWrapInputLine::write(os);
     os << eventMask << options << dragMode;
+    os.writeBytes((void *) var_name, StringMaxLen);
 }
 
 void *TTrialInputLine::read(ipstream& is)
 {
     TWrapInputLine::read(is);
     is >> eventMask >> options >> dragMode;
+    is.readBytes((void *) var_name, StringMaxLen);
     return this;
 }
 

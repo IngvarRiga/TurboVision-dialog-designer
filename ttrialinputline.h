@@ -11,6 +11,7 @@
 #define Uses_TGroup
 #include <tvision/tv.h>
 #include "rework/winputline.h"
+#include "common.h"
 
 class TTrialInputLine : public TWrapInputLine
 {
@@ -42,6 +43,14 @@ class TTrialInputLine : public TWrapInputLine
     void setSelected(bool val);
     void genCode(char *val);
 
+    //-- получение значений
+    char* getVarName();
+    uint getVarLen();
+
+    //-- установка значений
+    void setVarName(char *val);
+    void setVarLen(uint val);
+
 
   protected:
 
@@ -50,7 +59,8 @@ class TTrialInputLine : public TWrapInputLine
 
   private:
     bool Selected;
-};
+    char var_name[StringMaxLen]; //-- имя переменной для создания строки ввода
+ };
 
 inline ipstream& operator>>(ipstream& is, TTrialInputLine& cl)
 {

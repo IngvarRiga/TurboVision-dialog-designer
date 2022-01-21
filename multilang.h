@@ -42,7 +42,7 @@
 #define txt_SaveDialogQuest "Сохранить созданный диалог?"
 #define txt_PropertyDialogCaption "Свойства диалога"
 #define txt_PropertyStaticTextCaption "Свойства TStaticText"
-        
+#define txt_PropertyInputLIne "Параметры строки ввода"        
         
 #define txt_pd_ClassName "Имя класса"
 #define txt_pd_VariableName "Имя переменной"
@@ -102,6 +102,7 @@
 #define txt_SaveDialogQuest "Save dialog?"
 #define txt_PropertyDialogCaption "Dialog propertties"
 #define txt_PropertyStaticTextCaption "TStaticText properties"
+#define txt_PropertyInputLIne "TInputLine properties"
 
 #define txt_pd_ClassName "Class name"
 #define txt_pd_VariableName "Variable name"

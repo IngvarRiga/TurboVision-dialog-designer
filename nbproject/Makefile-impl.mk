@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=designer
+PROJECTNAME=TurboVision-dialog-designer
 
 # Active Configuration
 DEFAULTCONF=Debug
