@@ -2,3 +2,7 @@ MinGW_TDM-Windows
 /dlg
 /build
 /dist
+*.ipch
+*.obj
+Debug
+Release

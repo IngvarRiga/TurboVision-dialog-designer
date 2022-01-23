@@ -1,0 +1,261 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Исходные файлы">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Файлы заголовков">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Исходные файлы\Базовые классы">
+      <UniqueIdentifier>{de061753-1483-41d1-8162-07785d90f4f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Классы дизайнера">
+      <UniqueIdentifier>{696d8223-c271-420d-ab38-ce9a3a720f1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Переопределенные компоненты">
+      <UniqueIdentifier>{ccce5d6f-4f0f-4213-bfc7-a84b0fc9464b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Редакторы свойств">
+      <UniqueIdentifier>{3209cc55-7106-49ee-b098-51a400954030}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\_мусор">
+      <UniqueIdentifier>{6f21f058-822c-4933-b264-d80d52631401}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Rework">
+      <UniqueIdentifier>{9d43cbb8-1133-4b9b-973e-da0281e75a27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Rework">
+      <UniqueIdentifier>{96a8195e-3630-4bb2-b8b5-8611b6654b62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\_мусор">
+      <UniqueIdentifier>{aa030219-5b5a-44a5-9b03-d4cb41fe997a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Редакторы свойств">
+      <UniqueIdentifier>{b352b4c6-833a-469f-92be-cced84eaea0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Переопределенные компоненты">
+      <UniqueIdentifier>{74113240-e125-443b-bce1-b290eb8bd136}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Классы дизайнера">
+      <UniqueIdentifier>{7efd5d3e-47c1-40f4-a5f2-3e438b339810}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Базовые классы">
+      <UniqueIdentifier>{04b62d60-d516-4e1b-bfa0-8f80d931b2e1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="common.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="tprg.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="tcustomdialog.cpp">
+      <Filter>Исходные файлы\Базовые классы</Filter>
+    </ClCompile>
+    <ClCompile Include="tcomponentdialog.cpp">
+      <Filter>Исходные файлы\Классы дизайнера</Filter>
+    </ClCompile>
+    <ClCompile Include="ttrialbutton.cpp">
+      <Filter>Исходные файлы\Классы дизайнера</Filter>
+    </ClCompile>
+    <ClCompile Include="ttrialcheckboxes.cpp">
+      <Filter>Исходные файлы\Классы дизайнера</Filter>
+    </ClCompile>
+    <ClCompile Include="ttrialdialogbackground.cpp">
+      <Filter>Исходные файлы\Классы дизайнера</Filter>
+    </ClCompile>
+    <ClCompile Include="ttrialinputline.cpp">
+      <Filter>Исходные файлы\Классы дизайнера</Filter>
+    </ClCompile>
+    <ClCompile Include="ttriallistbox.cpp">
+      <Filter>Исходные файлы\Классы дизайнера</Filter>
+    </ClCompile>
+    <ClCompile Include="ttrialmemo.cpp">
+      <Filter>Исходные файлы\Классы дизайнера</Filter>
+    </ClCompile>
+    <ClCompile Include="ttrialradiobuttons.cpp">
+      <Filter>Исходные файлы\Классы дизайнера</Filter>
+    </ClCompile>
+    <ClCompile Include="ttrialstatictext.cpp">
+      <Filter>Исходные файлы\Классы дизайнера</Filter>
+    </ClCompile>
+    <ClCompile Include="trialdialog.cpp">
+      <Filter>Исходные файлы\Классы дизайнера</Filter>
+    </ClCompile>
+    <ClCompile Include="tselectcolordialog.cpp">
+      <Filter>Исходные файлы\Классы дизайнера</Filter>
+    </ClCompile>
+    <ClCompile Include="tcolorfield.cpp">
+      <Filter>Исходные файлы\Переопределенные компоненты</Filter>
+    </ClCompile>
+    <ClCompile Include="twinextmenu.cpp">
+      <Filter>Исходные файлы\Переопределенные компоненты</Filter>
+    </ClCompile>
+    <ClCompile Include="twinsizeindicator.cpp">
+      <Filter>Исходные файлы\Переопределенные компоненты</Filter>
+    </ClCompile>
+    <ClCompile Include="tdialogproperties.cpp">
+      <Filter>Исходные файлы\Редакторы свойств</Filter>
+    </ClCompile>
+    <ClCompile Include="tinputlineproperties.cpp">
+      <Filter>Исходные файлы\Редакторы свойств</Filter>
+    </ClCompile>
+    <ClCompile Include="tlistboxproperties.cpp">
+      <Filter>Исходные файлы\Редакторы свойств</Filter>
+    </ClCompile>
+    <ClCompile Include="tmemoproperties.cpp">
+      <Filter>Исходные файлы\Редакторы свойств</Filter>
+    </ClCompile>
+    <ClCompile Include="tradiobuttonproperties.cpp">
+      <Filter>Исходные файлы\Редакторы свойств</Filter>
+    </ClCompile>
+    <ClCompile Include="tstatictextproperties.cpp">
+      <Filter>Исходные файлы\Редакторы свойств</Filter>
+    </ClCompile>
+    <ClCompile Include="tbuttonproperties.cpp">
+      <Filter>Исходные файлы\Редакторы свойств</Filter>
+    </ClCompile>
+    <ClCompile Include="tcheckboxesproperties.cpp">
+      <Filter>Исходные файлы\Редакторы свойств</Filter>
+    </ClCompile>
+    <ClCompile Include="tdialogdesigner.cpp">
+      <Filter>Исходные файлы\_мусор</Filter>
+    </ClCompile>
+    <ClCompile Include="wbutton.cpp">
+      <Filter>Исходные файлы\Rework</Filter>
+    </ClCompile>
+    <ClCompile Include="wcheckboxes.cpp">
+      <Filter>Исходные файлы\Rework</Filter>
+    </ClCompile>
+    <ClCompile Include="winputline.cpp">
+      <Filter>Исходные файлы\Rework</Filter>
+    </ClCompile>
+    <ClCompile Include="wlistbox.cpp">
+      <Filter>Исходные файлы\Rework</Filter>
+    </ClCompile>
+    <ClCompile Include="wmemo.cpp">
+      <Filter>Исходные файлы\Rework</Filter>
+    </ClCompile>
+    <ClCompile Include="wradiobuttons.cpp">
+      <Filter>Исходные файлы\Rework</Filter>
+    </ClCompile>
+    <ClCompile Include="wstatictext.cpp">
+      <Filter>Исходные файлы\Rework</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="common.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="multilang.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="tprg.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="wbutton.h">
+      <Filter>Файлы заголовков\Rework</Filter>
+    </ClInclude>
+    <ClInclude Include="wcheckboxes.h">
+      <Filter>Файлы заголовков\Rework</Filter>
+    </ClInclude>
+    <ClInclude Include="winputline.h">
+      <Filter>Файлы заголовков\Rework</Filter>
+    </ClInclude>
+    <ClInclude Include="wlistbox.h">
+      <Filter>Файлы заголовков\Rework</Filter>
+    </ClInclude>
+    <ClInclude Include="wmemo.h">
+      <Filter>Файлы заголовков\Rework</Filter>
+    </ClInclude>
+    <ClInclude Include="wradiobuttons.h">
+      <Filter>Файлы заголовков\Rework</Filter>
+    </ClInclude>
+    <ClInclude Include="wstatictext.h">
+      <Filter>Файлы заголовков\Rework</Filter>
+    </ClInclude>
+    <ClInclude Include="tdialogdesigner.h">
+      <Filter>Файлы заголовков\_мусор</Filter>
+    </ClInclude>
+    <ClInclude Include="tbuttonproperties.h">
+      <Filter>Файлы заголовков\Редакторы свойств</Filter>
+    </ClInclude>
+    <ClInclude Include="tcheckboxesproperties.h">
+      <Filter>Файлы заголовков\Редакторы свойств</Filter>
+    </ClInclude>
+    <ClInclude Include="tdialogproperties.h">
+      <Filter>Файлы заголовков\Редакторы свойств</Filter>
+    </ClInclude>
+    <ClInclude Include="tinputlineproperties.h">
+      <Filter>Файлы заголовков\Редакторы свойств</Filter>
+    </ClInclude>
+    <ClInclude Include="tlistboxproperties.h">
+      <Filter>Файлы заголовков\Редакторы свойств</Filter>
+    </ClInclude>
+    <ClInclude Include="tmemoproperties.h">
+      <Filter>Файлы заголовков\Редакторы свойств</Filter>
+    </ClInclude>
+    <ClInclude Include="tradiobuttonproperties.h">
+      <Filter>Файлы заголовков\Редакторы свойств</Filter>
+    </ClInclude>
+    <ClInclude Include="tstatictextproperties.h">
+      <Filter>Файлы заголовков\Редакторы свойств</Filter>
+    </ClInclude>
+    <ClInclude Include="tcolorfield.h">
+      <Filter>Файлы заголовков\Переопределенные компоненты</Filter>
+    </ClInclude>
+    <ClInclude Include="twinextmenu.h">
+      <Filter>Файлы заголовков\Переопределенные компоненты</Filter>
+    </ClInclude>
+    <ClInclude Include="twinsizeindicator.h">
+      <Filter>Файлы заголовков\Переопределенные компоненты</Filter>
+    </ClInclude>
+    <ClInclude Include="tcomponentdialog.h">
+      <Filter>Файлы заголовков\Классы дизайнера</Filter>
+    </ClInclude>
+    <ClInclude Include="trialdialog.h">
+      <Filter>Файлы заголовков\Классы дизайнера</Filter>
+    </ClInclude>
+    <ClInclude Include="ttrialstatictext.h">
+      <Filter>Файлы заголовков\Классы дизайнера</Filter>
+    </ClInclude>
+    <ClInclude Include="ttrialradiobuttons.h">
+      <Filter>Файлы заголовков\Классы дизайнера</Filter>
+    </ClInclude>
+    <ClInclude Include="ttrialmemo.h">
+      <Filter>Файлы заголовков\Классы дизайнера</Filter>
+    </ClInclude>
+    <ClInclude Include="ttriallistbox.h">
+      <Filter>Файлы заголовков\Классы дизайнера</Filter>
+    </ClInclude>
+    <ClInclude Include="ttrialinputline.h">
+      <Filter>Файлы заголовков\Классы дизайнера</Filter>
+    </ClInclude>
+    <ClInclude Include="ttrialdialogbackground.h">
+      <Filter>Файлы заголовков\Классы дизайнера</Filter>
+    </ClInclude>
+    <ClInclude Include="ttrialbutton.h">
+      <Filter>Файлы заголовков\Классы дизайнера</Filter>
+    </ClInclude>
+    <ClInclude Include="ttrialcheckboxes.h">
+      <Filter>Файлы заголовков\Классы дизайнера</Filter>
+    </ClInclude>
+    <ClInclude Include="tselectcolordialog.h">
+      <Filter>Файлы заголовков\Классы дизайнера</Filter>
+    </ClInclude>
+    <ClInclude Include="tcustomdialog.h">
+      <Filter>Файлы заголовков\Базовые классы</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
