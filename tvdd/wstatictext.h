@@ -25,8 +25,7 @@ class TWrapStaticText : public TView
     static const char * const name;
     static TStreamable *build();
 
-    TWrapStaticText(const TRect& bounds, TStringView aText) noexcept;
-    TWrapStaticText(const TRect& bounds, TStringView aText, bool click) noexcept;
+    TWrapStaticText(const TRect& bounds, TStringView aText, bool click = false) noexcept;
 
     ~TWrapStaticText()
     {
@@ -41,9 +40,6 @@ class TWrapStaticText : public TView
     virtual void handleEvent(TEvent& event);
     virtual TAttrPair getColor( ushort color );
 
-    //-- ... используемый при обычной отрисовке текст
-    virtual void setWColor(ushort val);
-    virtual ushort getWColor();
 
     bool isSelected();
     void setSelected(bool val);

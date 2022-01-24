@@ -21,21 +21,17 @@ public:
 	TTrialStaticText(const TRect& bounds, TStringView aText);
 
 	virtual ~TTrialStaticText()
-	{
-	}
+	{}
 
 	TTrialStaticText(StreamableInit) :
 		TWrapStaticText(streamableInit)
-	{
-	}
+	{}
 
 	static TStreamable* build();
 
-	//virtual void draw();
 	virtual void setState(ushort aState, Boolean enable);
 	virtual void handleEvent(TEvent& event);
 	virtual void sizeLimits(TPoint& min, TPoint& max);
-
 	void genCode(char* val);
 
 	//-- получение значений

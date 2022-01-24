@@ -43,7 +43,7 @@ void TWinExtMenu::handleEvent(TEvent& event)
 {
     if (event.what | evMouse)
     {
-        if (event.what | evMouseUp)
+        if (event.what == evMouseUp)
         {
             clearEvent(event);
             auto r = getBounds();

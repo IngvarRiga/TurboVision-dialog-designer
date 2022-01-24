@@ -27,7 +27,7 @@ class TInputLineProperties : public TCustomDialog
   public:
     TInputLineProperties();
 
-    virtual ~TInputLineProperties();
+    virtual ~TInputLineProperties() {};
 
     virtual void setData(dataTILP *val);
     virtual void getData(dataTILP *val);

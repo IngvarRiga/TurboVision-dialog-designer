@@ -42,8 +42,9 @@
 #define txt_SaveDialogQuest "Сохранить созданный диалог?"
 #define txt_PropertyDialogCaption "Свойства диалога"
 #define txt_PropertyStaticTextCaption "Свойства TStaticText"
-#define txt_PropertyInputLIne "Параметры строки ввода"        
-        
+#define txt_PropertyInputLIne "Свойства строки ввода"        
+#define txt_PropertyButton "Свойства кнопки"        
+
 #define txt_pd_ClassName "Имя класса"
 #define txt_pd_VariableName "Имя переменной"
 #define txt_pd_BaseClassName "Имя базового класса"
@@ -62,14 +63,14 @@
 #endif
 
 #ifdef ENG
-#define winAboutText1 "\003Dialof forms designer for TurboVision 2.0 C++"
+#define winAboutText1 "\003Dialog forms designer for TurboVision 2.0 C++"
 #define winAboutCapt "About..."
 
 #define txt_mnu_Designer "Designer"
 #define txt_mnu_NewDialogWindow "Create new Dialog window"
 #define txt_mnu_LoadFromResource "Load from resource file..."
 #define txt_mnu_SaveToRes "Save to resource file..."
-#define txt_mnu_GenCode "Generate souurce code..."
+#define txt_mnu_GenCode "Generate source code..."
 #define txt_mnu_StaticText "Static text"
 #define txt_mnu_Button "Button"
 #define txt_mnu_InputLine "Input line"
@@ -77,11 +78,11 @@
 #define txt_mnu_RadioButtons "Radio Buttons"
 #define txt_mnu_ListBox "ListBox"
 #define txt_mnu_Memo "Memo"
-#define txt_mnu_AlgoritmTest "Algoritm test"
+#define txt_mnu_AlgoritmTest "Algorithm test"
 #define txt_mnu_ColorSelect "(test) Color select"
 #define txt_mnu_ComponentsPanel "Component`s panel"
 
-//-- additionlal Dialog Designer menu (click '=' on left border ) 
+//-- additional Dialog Designer menu (click '=' on left border ) 
 #define txt_mnu_DlgPropShowPosition "Show window position on/off"
 #define txt_mnu_DlgPropShowSize "Show window size on/off"
 #define txt_mnu_DlgPropShowSizePos "Show all window geometric params on/off"
@@ -97,12 +98,13 @@
 #define txt_btnCheck1 "Check1"
 #define txt_btnCheck2 "Check2"
 
-#define txt_DefaultNewDialogCaption "New dailog window"
+#define txt_DefaultNewDialogCaption "New dialog window"
 #define txt_DlgInsertSubMenu "Insert gadget"
 #define txt_SaveDialogQuest "Save dialog?"
-#define txt_PropertyDialogCaption "Dialog propertties"
+#define txt_PropertyDialogCaption "Dialog properties"
 #define txt_PropertyStaticTextCaption "TStaticText properties"
 #define txt_PropertyInputLIne "TInputLine properties"
+#define txt_PropertyButton "TButton properties"      
 
 #define txt_pd_ClassName "Class name"
 #define txt_pd_VariableName "Variable name"

@@ -31,15 +31,6 @@ void TTrialDialogBackground::handleEvent(TEvent& event)
 {
     //-- вызываем унаследованный метод обработки сообщений
     TView::handleEvent(event);
-    /*
-        if ((event.what & evMouseDown) && (event.mouse.eventFlags == meDoubleClick))
-        {
-            Patterned != Patterned;
-            draw();
-            //DialSaved = false;
-            clearEvent(event);
-        }
-     */
 }
 
 Boolean TTrialDialogBackground::valid(ushort command)
@@ -54,13 +45,13 @@ Boolean TTrialDialogBackground::valid(ushort command)
 void TTrialDialogBackground::write(opstream& os)
 {
     TView::write(os);
-    //os.writeBytes(&Patterned, sizeof(Patterned));
+    os.writeBytes(&Patterned, sizeof(Patterned));
 }
 
 void *TTrialDialogBackground::read(ipstream& is)
 {
     TView::read(is);
-    //is.readBytes(&Patterned, sizeof (Patterned));
+    is.readBytes(&Patterned, sizeof (Patterned));
     return this;
 }
 
@@ -75,4 +66,5 @@ TStreamableClass RTrialDialogBackground(
         __DELTA(TTrialDialogBackground)
         );
 
+__link(RView)
 __link(RTrialDialogBackground)

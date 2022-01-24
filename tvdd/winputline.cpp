@@ -18,16 +18,6 @@ const char TWrapInputLine::leftArrow = '\x11';
 
 const int CONTROL_Y = 25;
 
-//char hotKey(const char *s) noexcept
-//{
-//    char *p;
-//
-//    if ((p = strchr((char *) s, '~')) != 0)
-//        return toupper(p[1]);
-//    else
-//        return 0;
-//}
-
 #define cpInputLine "\x13\x13\x14\x15"
 
 TWrapInputLine::TWrapInputLine(const TRect& bounds, uint aMaxLen, TValidator *aValid, bool click) noexcept :
@@ -108,10 +98,7 @@ void TWrapInputLine::draw()
     TDrawBuffer b;
     TColorAttr color;
 
-    if (eventDragged)
-        color = color_DraggedColor;
-    else
-        color = getColor((state & sfFocused) ? 2 : 1);
+    color = getColor((state & sfFocused) ? 2 : 1);
 
     b.moveChar(0, ' ', color, size.x);
     if (size.x > 1)
@@ -319,15 +306,13 @@ void TWrapInputLine::handleEvent(TEvent& event)
     }
     if (Selected)
     {
-        //-- переопределяем действия клавиш в режиме разрабобтки
+        //-- переопределяем действия клавиш в режиме разработки
         if (event.what == evKeyDown)
         {
             //-- обработка нажатий служебных клавиш
             if (event.keyDown.keyCode == kbCtrlDel)
             {
-                clearEvent(event);
-                //-- удаление выбранного элемента
-                destroy(this);
+                return;
             }
         }
     }
@@ -504,11 +489,6 @@ void TWrapInputLine::setData(void *rec)
 void TWrapInputLine::setState(ushort aState, Boolean enable)
 {
     TView::setState(aState, enable);
-    if (aState == sfSelected)
-    {
-        setSelected(enable);
-    }
-
     if (aState == sfSelected ||
             (aState == sfActive && (state & sfSelected) != 0)
             )

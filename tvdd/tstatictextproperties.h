@@ -37,7 +37,7 @@ class TStaticTextProperties : public TCustomDialog
   public:
     TStaticTextProperties();
 
-    virtual ~TStaticTextProperties();
+    virtual ~TStaticTextProperties() {}
 
     virtual void setData(dataTSTP *val);
     virtual void getData(dataTSTP *val);

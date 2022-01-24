@@ -35,9 +35,9 @@ class TTrialInputLine : public TWrapInputLine
     {
         return name;
     }
+    virtual void setState(ushort aState, Boolean enable);
 
     virtual void sizeLimits(TPoint& min, TPoint& max);
-    //virtual void draw();
     virtual void handleEvent(TEvent& event);
     bool isSelected();
     void setSelected(bool val);
@@ -45,21 +45,23 @@ class TTrialInputLine : public TWrapInputLine
 
     //-- получение значений
     char* getVarName();
+    char* getClassName();
     uint getVarLen();
 
     //-- установка значений
     void setVarName(char *val);
+    void setClassName(char* val);
     void setVarLen(uint val);
 
 
   protected:
-
     virtual void write(opstream&);
     virtual void *read(ipstream&);
 
   private:
-    bool Selected;
     char var_name[StringMaxLen]; //-- имя переменной для создания строки ввода
+    char class_name[StringMaxLen]; //-- имя переменной для создания текста
+
  };
 
 inline ipstream& operator>>(ipstream& is, TTrialInputLine& cl)

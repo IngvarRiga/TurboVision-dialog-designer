@@ -50,9 +50,7 @@ class TWrapInputLine : public TView
     bool isSelected();
     void setSelected(bool val);
     
-    void setEditValue(char* val);
-    char* GetEditValue();
-    
+
     void setDragged()
     {
         eventDragged = true;

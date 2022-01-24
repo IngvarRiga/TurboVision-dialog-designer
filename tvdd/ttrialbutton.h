@@ -11,67 +11,74 @@
 #define Uses_TGroup
 
 #include <tvision/tv.h>
+#include "wbutton.h"
 
-class TTrialButton : public TButton
+class TTrialButton : public TWrapButton
 {
-  public:
-    static const char * const name;
+public:
+	static const char* const name;
 
-    TTrialButton(const TRect& bounds,
-                 TStringView aTitle,
-                 ushort aCommand = 0,
-                 ushort aFlags = 0);
+	TTrialButton(const TRect& bounds,
+				 TStringView aTitle,
+				 ushort aCommand = 0,
+				 ushort aFlags = 0);
 
-    virtual ~TTrialButton()
-    {
-    }
+	virtual ~TTrialButton()
+	{}
 
-    TTrialButton(StreamableInit) :
-    TButton(streamableInit)
-    {
-    }
+	TTrialButton(StreamableInit) :
+		TWrapButton(streamableInit)
+	{}
 
-    static TStreamable *build();
+	static TStreamable* build();
 
-    virtual const char *streamableName() const
-    {
-        return name;
-    }
+	virtual const char* streamableName() const
+	{
+		return name;
+	}
 
-    virtual void draw();
-    virtual void handleEvent(TEvent& event);
-    virtual void sizeLimits(TPoint& min, TPoint& max);
-    bool isSelected();
-    void setSelected(bool val);
-    void genCode(char *val);
+	virtual void setState(ushort aState, Boolean enable);
+	virtual void handleEvent(TEvent& event);
+	virtual void sizeLimits(TPoint& min, TPoint& max);
+	void genCode(char* val);
 
-  protected:
+	//-- получение значений
+	char* getVarName();
+	char* getClassName();
+	bool getUsedVarName();
 
-    virtual void write(opstream&);
-    virtual void *read(ipstream&);
+	//-- установка значений
+	void setVarName(char* val);
+	void setClassName(char* val);
+	void setUsedVarName(bool val);
 
-  private:
-    bool Selected;
+protected:
+	bool usedVarName; //-- при генерации исходного кода использовать отдельную переменную для объекта
+	char class_name[StringMaxLen]; //-- имя переменной для создания текста
+	char var_name[StringMaxLen]; //-- имя переменной для создания текста
+	virtual void write(opstream&);
+	virtual void* read(ipstream&);
+
 };
 
 inline ipstream& operator>>(ipstream& is, TTrialButton& cl)
 {
-    return is >> (TStreamable&) cl;
+	return is >> (TStreamable&)cl;
 }
 
 inline ipstream& operator>>(ipstream& is, TTrialButton*& cl)
 {
-    return is >> (void *&) cl;
+	return is >> (void*&)cl;
 }
 
 inline opstream& operator<<(opstream& os, TTrialButton& cl)
 {
-    return os << (TStreamable&) cl;
+	return os << (TStreamable&)cl;
 }
 
 inline opstream& operator<<(opstream& os, TTrialButton* cl)
 {
-    return os << (TStreamable *) cl;
+	return os << (TStreamable*)cl;
 }
 
 #endif /* TTRIALBUTTON_H */

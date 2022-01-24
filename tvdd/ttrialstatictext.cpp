@@ -7,7 +7,7 @@ const char * const TTrialStaticText::name = "TTrialStaticText";
 TTrialStaticText::TTrialStaticText(const TRect& bounds, TStringView aText) :
 TWrapStaticText(bounds, aText)
 {
-    eventMask |= 0xf; //-- установлен флаг получения ВСЕХ сообщений
+    eventMask |= 0xFF; //-- установлен флаг получения ВСЕХ сообщений
     options |= ofPreProcess;
     //-- ограничиваем перемещение внутри окна его границами
     dragMode |= dmLimitAll;
@@ -18,12 +18,6 @@ TWrapStaticText(bounds, aText)
     strncpy(var_name, txt_control, strlen(txt_control));
     strncpy(class_name, txt_TStaticText, strlen(txt_TStaticText));
 }
-
-//void TTrialStaticText::draw()
-//{
-//    //-- полностью переопределяем процедуру отрисовки, поскольку в дизайнере нам нужны некоторые спецэффекты
-//    TWrapStaticText::draw();
-//}
 
 void TTrialStaticText::setState(ushort aState, Boolean enable)
 {
@@ -66,7 +60,6 @@ void TTrialStaticText::sizeLimits(TPoint& min, TPoint& max)
     max.x -= 2;
     max.y -= 2;
 }
-
 
 char* TTrialStaticText::getVarName()
 {

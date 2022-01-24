@@ -1,27 +1,46 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   tbuttonproperties.h
- * Author: RIA
- *
- * Created on 21 января 2022 г., 16:32
- */
-
 #ifndef TBUTTONPROPERTIES_H
 #define TBUTTONPROPERTIES_H
 
-class tbuttonproperties
-{
-  public:
-    tbuttonproperties();
-    tbuttonproperties(const tbuttonproperties& orig);
-    virtual ~tbuttonproperties();
-  private:
+#define Uses_TInputLine
+#define Uses_TCheckBoxes
+#define Uses_TSItem
+#define Uses_TButton
+#define Uses_TLabel
+#define Uses_TMemo
+#define Uses_TScrollBar
+#define Uses_TLabel
 
+#include <tvision/tv.h>
+#include "tcustomdialog.h"
+#include "common.h"
+
+
+class dataTBTNP
+{
+public:
+	dataTBTNP();
+
+	char caption[StringMaxLen];
+	char var_name[StringMaxLen];
+	//char class_name[StringMaxLen];
+	bool use_var_name;
+
+};
+
+class TButtonProperties : public TCustomDialog
+{
+public:
+	TButtonProperties();
+
+	virtual ~TButtonProperties() {}
+
+	virtual void setData(dataTBTNP* val);
+	virtual void getData(dataTBTNP* val);
+private:
+	TInputLine* capt;
+	TInputLine* var_name;
+	//TInputLine* class_name;
+	TCheckBoxes* var_name_use;
 };
 
 #endif /* TBUTTONPROPERTIES_H */

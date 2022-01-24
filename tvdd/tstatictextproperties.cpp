@@ -34,10 +34,6 @@ TWindowInit(&TDialog::initFrame)
 
 }
 
-TStaticTextProperties::~TStaticTextProperties()
-{
-    //-- очищаем мусор 
-}
 
 void TStaticTextProperties::setData(dataTSTP *val)
 {

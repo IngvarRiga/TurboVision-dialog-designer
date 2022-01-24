@@ -12,12 +12,13 @@
 #define Uses_TScrollBar
 #define Uses_TSItem
 #define Uses_TSortedListBox
-
+#define Uses_TMemo
 #include <tvision/tv.h>
 
 #include "tcustomdialog.h"
 #include "wstatictext.h"
 #include "winputline.h"
+#include "wbutton.h"
 
 
 class TComponentDialog : public TCustomDialog
