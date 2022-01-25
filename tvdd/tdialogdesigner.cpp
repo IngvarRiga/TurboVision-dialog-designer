@@ -50,7 +50,7 @@ TCustomDialog* TDialogDesigner::ConstructDialog()
     //dlg->insert(lst);
     dlg->selectNext(False);
     // dlg->setState(sfDragging, false);
-    dlg->setState(sfModal, false); //-- окно становится немодальным
+    dlg->setState(sfModal, false); //-- окно становится не модальным
     dlg->flags = 0x0; //-- запрещаем перемещать окно и изменять его размеры
     return dlg;
 }

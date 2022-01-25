@@ -42,8 +42,7 @@ void TTrialStaticText::handleEvent(TEvent& event)
         if (event.what == evMouseDown)
         {
             owner->forEach(&unselected, 0);
-            setState(sfSelected, true);
-            select();
+            setSelected(true);
             DragObject(this, event);
             clearEvent(event);
         }

@@ -8,16 +8,13 @@
 #define Uses_TEvent
 #define Uses_TCluster
 #define Uses_TStringCollection
-
 #include <tvision/tv.h>
+#include "wradiobuttons.h"
 
-class TTrialRadioButtons : public TRadioButtons
+class TTrialRadioButtons : public TWrapRadioButtons
 {
   public:
     static const char * const name;
-
-    bool isSelected();
-    void setSelected(bool val);
 
     TTrialRadioButtons(const TRect& bounds, TSItem *aStrings);
 
@@ -26,7 +23,7 @@ class TTrialRadioButtons : public TRadioButtons
     }
 
     TTrialRadioButtons(StreamableInit) :
-    TRadioButtons(streamableInit)
+    TWrapRadioButtons(streamableInit)
     {
     }
     static TStreamable *build();
@@ -36,9 +33,9 @@ class TTrialRadioButtons : public TRadioButtons
         return name;
     }
     virtual void sizeLimits(TPoint& min, TPoint& max);
-    virtual void draw();
-    virtual void setState(ushort aState, Boolean enable);
     virtual void handleEvent(TEvent& event);
+
+    virtual void setState(ushort aState, Boolean enable);
     void genCode(char *val);
 
   protected:

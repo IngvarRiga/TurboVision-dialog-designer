@@ -10,6 +10,8 @@ TProgInit(&TPrg::initStatusLine,
 &TPrg::initDeskTop
 )
 {
+    //-- панель компонентов выводим сразу
+    deskTop->insert(ConstructComponentPalette());
 }
 
 void TPrg::handleEvent(TEvent& event)
@@ -24,7 +26,7 @@ void TPrg::handleEvent(TEvent& event)
                 clearEvent(event);
                 break;
             case cm_test_ToolWin:
-                //-- Insert - делает окно немодальным :)
+                //-- Insert - делает окно не модальным :)
                 deskTop->insert(ConstructComponentPalette());
                 clearEvent(event);
                 break;
@@ -78,9 +80,9 @@ TMenuBar *TPrg::initMenuBar(TRect r)
             * new TSubMenu(txt_mnu_Designer, kbNoKey) +
             (TMenuItem &) (
             * new TMenuItem(txt_mnu_NewDialogWindow, cmNewDialog, kbCtrlN, hcNoContext, "Ctrl-N") +
-            * new TMenuItem(txt_mnu_LoadFromResource, cmLoadDialog, kbCtrlR, hcNoContext, "Ctrl-R") +
-            newLine()+
-            * new TMenuItem(txt_mnu_ComponentsPanel, cm_test_ToolWin, kbCtrlF12, hcNoContext, "Ctrl-F12")
+            * new TMenuItem(txt_mnu_LoadFromResource, cmLoadDialog, kbCtrlR, hcNoContext, "Ctrl-R") 
+           // +newLine()+
+            //* new TMenuItem(txt_mnu_ComponentsPanel, cm_test_ToolWin, kbCtrlF12, hcNoContext, "Ctrl-F12")
             ) +
             * new TSubMenu(txt_mnu_AlgoritmTest, kbNoKey) +
             (TMenuItem &) (

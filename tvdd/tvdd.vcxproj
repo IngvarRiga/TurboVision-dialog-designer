@@ -177,6 +177,7 @@
     <ClCompile Include="twinsizeindicator.cpp" />
     <ClCompile Include="wbutton.cpp" />
     <ClCompile Include="wcheckboxes.cpp" />
+    <ClCompile Include="wcluster.cpp" />
     <ClCompile Include="winputline.cpp" />
     <ClCompile Include="wlistbox.cpp" />
     <ClCompile Include="wmemo.cpp" />
@@ -213,6 +214,7 @@
     <ClInclude Include="twinsizeindicator.h" />
     <ClInclude Include="wbutton.h" />
     <ClInclude Include="wcheckboxes.h" />
+    <ClInclude Include="wcluster.h" />
     <ClInclude Include="winputline.h" />
     <ClInclude Include="wlistbox.h" />
     <ClInclude Include="wmemo.h" />

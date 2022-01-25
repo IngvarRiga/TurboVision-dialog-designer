@@ -19,6 +19,10 @@
 #include "wstatictext.h"
 #include "winputline.h"
 #include "wbutton.h"
+#include "wcheckboxes.h"
+#include "wradiobuttons.h"
+#include "wlistbox.h"
+#include "wmemo.h"
 
 
 class TComponentDialog : public TCustomDialog

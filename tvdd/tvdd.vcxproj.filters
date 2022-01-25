@@ -153,6 +153,9 @@
     <ClCompile Include="wstatictext.cpp">
       <Filter>Исходные файлы\Rework</Filter>
     </ClCompile>
+    <ClCompile Include="wcluster.cpp">
+      <Filter>Исходные файлы\Rework</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -256,6 +259,9 @@
     </ClInclude>
     <ClInclude Include="tcustomdialog.h">
       <Filter>Файлы заголовков\Базовые классы</Filter>
+    </ClInclude>
+    <ClInclude Include="wcluster.h">
+      <Filter>Файлы заголовков\Rework</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -8,8 +8,9 @@
 #define Uses_TStreamableClass
 #define Uses_TEvent
 #include <tvision/tv.h>
+#include "wcheckboxes.h"
 
-class TTrialCheckBoxes : public TCheckBoxes
+class TTrialCheckBoxes : public TWrapCheckBoxes
 {
   public:
     static const char * const name;
@@ -21,7 +22,7 @@ class TTrialCheckBoxes : public TCheckBoxes
     }
 
     TTrialCheckBoxes(StreamableInit) :
-    TCheckBoxes(streamableInit)
+    TWrapCheckBoxes(streamableInit)
     {
     }
     static TStreamable *build();
@@ -31,10 +32,9 @@ class TTrialCheckBoxes : public TCheckBoxes
         return name;
     }
     virtual void sizeLimits(TPoint& min, TPoint& max);
-    virtual void draw();
     virtual void handleEvent(TEvent& event);
-    bool isSelected();
-    void setSelected(bool val);
+
+    virtual void setState(ushort aState, Boolean enable);
     void genCode(char *val);
 
   protected:
@@ -43,7 +43,6 @@ class TTrialCheckBoxes : public TCheckBoxes
     virtual void *read(ipstream&);
 
   private:
-    bool Selected;
 };
 
 inline ipstream& operator>>(ipstream& is, TTrialCheckBoxes& cl)

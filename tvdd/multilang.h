@@ -57,7 +57,10 @@
 #define txt_dlg_SaveAsName "Название файла"
 #define txt_dlg_SaveCodeAsCaption "Сохранить исходный код диалога как..."
 
-#define txt_dlg_GadgetsPanel "Компоненты"
+#define txt_dlg_GadgetsPanel "D&D"
+#define txt_dlg_StaticText "Text"
+#define txt_dlg_InputLine "ABC"
+#define txt_dlg_Buton "~O~K"
 
 
 #endif
@@ -118,7 +121,10 @@
 #define txt_dlg_SaveAsName "~N~ame"
 #define txt_dlg_SaveCodeAsCaption "Save dialog SRC code as..."
 
-#define txt_dlg_GadgetsPanel "Components"
+#define txt_dlg_GadgetsPanel "D&D"
+#define txt_dlg_StaticText "Text"
+#define txt_dlg_InputLine "ABC"
+#define txt_dlg_Buton "~O~K"
 
 #endif
 

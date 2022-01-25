@@ -4,18 +4,21 @@
 const char * const TTrialCheckBoxes::name = "TTrialCheckBoxes";
 
 TTrialCheckBoxes::TTrialCheckBoxes(const TRect& bounds, TSItem *aStrings) :
-TCheckBoxes(bounds, aStrings)
+TWrapCheckBoxes(bounds, aStrings)
 {
     eventMask |= 0xf; //-- установлен флаг получения ВСЕХ сообщений
     options |= ofPreProcess;
     //-- ограничиваем перемещение внутри окна его границами
     dragMode |= dmLimitAll;
-    Selected = false;
 }
 
-void TTrialCheckBoxes::draw()
+void TTrialCheckBoxes::setState(ushort aState, Boolean enable)
 {
-    TCheckBoxes::draw();
+    TWrapCheckBoxes::setState(aState, enable);
+    if (aState == sfSelected)
+    {
+        setSelected(enable);
+    }
 }
 
 void TTrialCheckBoxes::handleEvent(TEvent& event)
@@ -25,44 +28,30 @@ void TTrialCheckBoxes::handleEvent(TEvent& event)
         //-- вызов окна редактирования свойств объекта
         if ((event.mouse.buttons == mbLeftButton) &&(event.mouse.eventFlags == meDoubleClick))
         {
-            message(owner, evBroadcast, cmOption_CheckBoxes, nullptr);
+            message(owner, evBroadcast, cmOption_CheckBoxes, this);
             clearEvent(event);
         }
         if (event.what == evMouseDown)
         {
             owner->forEach(&unselected, 0);
-            setState(sfSelected, true);
-            select();
+            setSelected(true);
             DragObject(this, event);
             clearEvent(event);
         }
     }
 
-    TCheckBoxes::handleEvent(event);
+    TWrapCheckBoxes::handleEvent(event);
 }
 
 void TTrialCheckBoxes::sizeLimits(TPoint& min, TPoint& max)
 {
-    TCheckBoxes::sizeLimits(min, max);
+    TWrapCheckBoxes::sizeLimits(min, max);
     min.x = 5;
     min.y = 1;
     max.x -= 2;
     max.y -= 2;
 }
 
-bool TTrialCheckBoxes::isSelected()
-{
-    return Selected;
-}
-
-void TTrialCheckBoxes::setSelected(bool val)
-{
-    if (Selected != val)
-    {
-        Selected = val;
-        drawView();
-    }
-}
 void TTrialCheckBoxes::genCode(char *val)
 {
     //-- генерируем код компонента
@@ -79,13 +68,13 @@ TStreamable *TTrialCheckBoxes::build()
 void TTrialCheckBoxes::write(opstream& os)
 {
 
-    TCheckBoxes::write(os);
+    TWrapCheckBoxes::write(os);
     os << eventMask << options << dragMode;
 }
 
 void *TTrialCheckBoxes::read(ipstream& is)
 {
-    TCheckBoxes::read(is);
+    TWrapCheckBoxes::read(is);
     is >> eventMask >> options >> dragMode;
     return this;
 }
@@ -97,5 +86,5 @@ TStreamableClass RTrialCheckBoxes(
         __DELTA(TTrialCheckBoxes)
         );
 
-__link(RCheckBoxes)
+__link(RWrapCheckBoxes)
 __link(RTrialCheckBoxes)

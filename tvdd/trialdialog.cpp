@@ -355,11 +355,51 @@ void TTrialDialog::handleEvent(TEvent& event)
 					clearEvent(event);
 					break;
 				}
+			case cm_drp_DropCheckBoxes:
+				{
+					TPoint tmp;
+					tmp.x = ((TPoint*)event.message.infoPtr)->x;
+					tmp.y = ((TPoint*)event.message.infoPtr)->y;
+					auto lc = makeLocal(tmp);
+					auto b = getExtent();
+					//-- если Drop происходит ВНЕ границ окна - просто игнорируем событие и все
+					//-- чтобы не вставлять то, что не увидится
+					if ((lc.x >= 1) && (lc.y >= 1) && (lc.x < b.b.x - 1) && (lc.y < b.b.y - 1))
+					{
+						//-- добавление нового TStaticText
+						auto v = new TTrialCheckBoxes(TRect(lc.x, lc.y, lc.x + 12, lc.y + 2), new TSItem(txt_btnCheck1, new TSItem(txt_btnCheck2, nullptr)));
+						forEach(&unselected, 0);
+						v->setSelected(true);
+						insert(v);
+						clearEvent(event);
+					}
+					break;
+				}
 			case cm_ed_InsertRadioButtons:
 				{
 					//-- добавление нового TCheckBoxes
 					insert(new TTrialRadioButtons(TRect(size.x - 15, size.y - 4, size.x - 2, size.y - 2), new TSItem(txt_btnCheck1, new TSItem(txt_btnCheck2, nullptr))));
 					clearEvent(event);
+					break;
+				}
+			case cm_drp_DropRadioButtons:
+				{
+					TPoint tmp;
+					tmp.x = ((TPoint*)event.message.infoPtr)->x;
+					tmp.y = ((TPoint*)event.message.infoPtr)->y;
+					auto lc = makeLocal(tmp);
+					auto b = getExtent();
+					//-- если Drop происходит ВНЕ границ окна - просто игнорируем событие и все
+					//-- чтобы не вставлять то, что не увидится
+					if ((lc.x >= 1) && (lc.y >= 1) && (lc.x < b.b.x - 1) && (lc.y < b.b.y - 1))
+					{
+						//-- добавление нового TStaticText
+						auto v = new TTrialRadioButtons(TRect(lc.x, lc.y, lc.x + 12, lc.y + 2), new TSItem(txt_btnCheck1, new TSItem(txt_btnCheck2, nullptr)));
+						forEach(&unselected, 0);
+						v->setSelected(true);
+						insert(v);
+						clearEvent(event);
+					}
 					break;
 				}
 			case cm_ed_InsertListBox:
