@@ -1,4 +1,5 @@
 # TurboVision dialog designer
+
 Дизайнер диалогов, основанный на портированной библиотеке https://github.com/magiblot/tvision
 
 To compile with English resources, use the 
@@ -16,6 +17,10 @@ definition when building the project.
 
 Прошу не ругаться, если нужно - берите и используйте в свое удовольствие и переделывайте/доделывайте под свои персональные нужды.
 
+Не реализовано, или реализовано не до конца:
+- генерация исходного кода
+- свойства всех компонентов на форме
+- Drag&Drop TMemo
 
  
 

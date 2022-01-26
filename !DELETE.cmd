@@ -7,7 +7,10 @@ del /S *.bak
 del /S *.pdb
 del /S *.tmp
 del /S *.obj
-rd /S /Q .vs\tvddplgService\obj
+del /S *.ilk
+
+rd /S /Q .vs\tvdd
+rd /S /Q tvdd\x64
 ECHO ================================================================================
 ECHO -- Finish garbage. Press Any key :) ...
 ECHO ================================================================================

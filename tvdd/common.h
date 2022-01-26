@@ -15,6 +15,7 @@
 #define txt_TButton "TButton"
 #define txt_TCheckBoxes "TCheckBoxes"
 #define txt_TRadioButtons "TRadioButtons"
+#define txt_TSortedListBox "TSortedListBox"
 #define txt_TMemo "TMemo"
 
 
@@ -24,8 +25,10 @@
 
 //-- максимальная длина строки для поля ввода и вообще...
 const int StringMaxLen = 255;
-//-- максимальная длина строки при генерации кода
-const int CodeMaxLen = 1024;
+//-- максимальная длина генерируемого исходного кода
+const int TextMaxLen = 65535;
+//-- максимальная длина строки при генерации кода в одной функции
+const int CodeMaxLen = 4096;
 
 //-- все команды приложения вынесены в одну точку, чтобы не путаться 
 
@@ -42,7 +45,7 @@ const int cmColorTest = 10097;
 
 const int cm_test_ToolWin = 10999; //-- тестирование окна с компонентами
 
-const int cmDialogSizeOnOff = 10101; //-- Включение / выключение отображения отображения размеров диалога
+const int cmDialogSizeOnOff = 10101; //-- Включение / выключение отображения размеров диалога
 const int cmDialogPosOnOff = 10102; //-- Включение / выключение отображения начальной позиции окна
 const int cmDialogPosSizeOnOff = 10103; //-- Включение / выключение отображения всех параметров окна
 const int cmDialogSaveToRes = 10104; //-- Сохранить диалог в ресурсах
@@ -58,7 +61,7 @@ const int cmOption_RadioButtons = 10206; //-- Вызов окна свойств
 const int cmOption_ListBox = 10207; //-- Вызов окна свойств списка ListBox
 
 //-- вставка новых объектов
-//-- Стандартные объекты TurboVision 2.x / Standart objects
+//-- Стандартные объекты TurboVision 2.x / Standard objects
 const int cm_ed_InsertStaticText = 20001; //-- вставка TStaticText
 const int cm_ed_InsertInputLine = 20002; //-- вставка TInputLine
 const int cm_ed_InsertButton = 20003; //-- вставка TButton
@@ -75,7 +78,7 @@ const int cm_drp_DropRadioButtons = 20105; //-- вставка TCheckBoxes
 const int cm_drp_DropListBox = 20106; //-- вставка TListBox
 const int cm_drp_DropMemo = 20107; //-- вставка TMemo
 
-//-- Команды тулбару на создание комопнентов
+//-- Команды "тулбару" на создание компонентов
 const int cm_cmp_BeginDragMode = 30000;
 const int cm_cmp_CreateStaticText = 30001;
 const int cm_cmp_CreateInputLine = 30002;
@@ -88,15 +91,15 @@ const int cm_cmp_CreateMemo = 30007;
 //-- служебные команды
 const int cm_ColorFieldClicked = 60001; //-- произошел клик по цветовому полю
 
-//-- Функция реализующаяя просчет перемещения или изменения размеров отображаемых объектов
+//-- Функция реализующая просчет перемещения или изменения размеров отображаемых объектов
 //-- наследников от TView
 void DragObject(TView *obj, TEvent event);
 //-- Снять признак выбранности со всех компонентов
 void unselected(TView *obj, void *);
 //-- Генерировать исходный код для всех компонентов
 void generateCode(TView *obj, void *val);
-//-- Удалить выбранный элемент
-void deleteSelected(TView *obj, void *val);
+//-- Удалить выбранный элемент 
+//void deleteSelected(TView *obj, void *val);
 
 #endif /* COMMON_H */
 

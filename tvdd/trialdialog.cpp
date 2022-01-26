@@ -22,9 +22,10 @@
 #include "tstatictextproperties.h"
 #include "tinputlineproperties.h"
 #include "tbuttonproperties.h"
+#include "tcheckboxesproperties.h"
 
-const char* _BaseName = "TCustomDialog";
-const char* _TypeName = "TNewDialog";
+const char* _class_name = "TNewDialog";
+const char* _base_class_name = "TDialog";
 
 const char* const TTrialDialog::name = "TTrialDialog";
 
@@ -49,10 +50,10 @@ TTrialDialog::TTrialDialog(const int width, const int height, TStringView aTitle
 	//-- окно можно перемещать за границы зоны видимости для запрета - раскомментарить строку ниже
 	//dragMode = dmLimitAll;
 	flags |= wfGrow; // это позволяет изменять размеры диалога, хотя по умолчанию опция включена в предке
-	memset(BaseName, 0x0, StringMaxLen);
-	memset(TypeName, 0x0, StringMaxLen);
-	memcpy(BaseName, _BaseName, strlen(_BaseName) + 1);
-	memcpy(TypeName, _TypeName, strlen(_TypeName) + 1);
+	memset(class_name, 0x0, StringMaxLen);
+	memset(base_class_name, 0x0, StringMaxLen);
+	memcpy(class_name, _class_name, strlen(_class_name) + 1);
+	memcpy(base_class_name, _base_class_name, strlen(_base_class_name) + 1);
 
 	//-- Дополнительное меню в заголовке
 	emnu = new TWinExtMenu(TRect(10, size.y - 1, 20, size.y));
@@ -65,8 +66,8 @@ TTrialDialog::TTrialDialog(const int width, const int height, TStringView aTitle
 TTrialDialog::~TTrialDialog()
 {
 	//-- перед удалением обнуляем все буферы
-	memset(BaseName, 0x0, StringMaxLen);
-	memset(TypeName, 0x0, StringMaxLen);
+	memset(class_name, 0x0, StringMaxLen);
+	memset(base_class_name, 0x0, StringMaxLen);
 }
 
 void TTrialDialog::setState(ushort aState, bool enable)
@@ -75,15 +76,45 @@ void TTrialDialog::setState(ushort aState, bool enable)
 	TCustomDialog::setState(aState, enable);
 }
 
+void TTrialDialog::editDialogProperties()
+{
+	auto data = new dataTDP();
+	memcpy(data->dlgClassName, class_name, strlen(class_name));
+	memcpy(data->dlgBaseClass, base_class_name, strlen(base_class_name));
+	memcpy(data->dlgCaption, title, strlen(title));
+	TDialogProperties* win = new TDialogProperties();
+	win->setData(data);
+	if (owner->execView(win) == cmOK)
+	{
+		win->getData(data);
+		memset(class_name, 0x0, StringMaxLen);
+		memset(base_class_name, 0x0, StringMaxLen);
+		memcpy(class_name, data->dlgClassName, strlen(data->dlgClassName));
+		memcpy(base_class_name, data->dlgBaseClass, strlen(data->dlgBaseClass));
+		//-- с заголовком окна немного позамороченнее --------------
+		delete title;
+		auto lenCapt = strlen(data->dlgCaption) + 1;
+		title = new char[lenCapt];
+		memset((void*)title, 0x0, lenCapt);
+		memcpy((void*)title, data->dlgCaption, lenCapt - 1);
+		//----------------------------------------------------------
+		drawView();
+		frame->drawView();
+		DialSaved = false;
+	}
+	delete data;
+	destroy(win);
+}
+
 void TTrialDialog::close()
 {
 	ushort res;
-	if (!DialSaved)
+	if (DialSaved)
 	{
 		res = messageBox(txt_SaveDialogQuest, mfConfirmation | mfYesNoCancel);
 		if (res == cmYes)
 		{
-			//-- сохранение диалога
+			editDialogProperties();
 		}
 	}
 	if (res != cmCancel)
@@ -108,31 +139,7 @@ void TTrialDialog::handleEvent(TEvent& event)
 			case cmOption_Dialog:
 				{
 					//-- вызов редактора свойств диалога
-					auto data = new dataTDP();
-					memcpy(data->dlgBaseClass, BaseName, strlen(BaseName));
-					memcpy(data->dlgClassName, TypeName, strlen(TypeName));
-					memcpy(data->dlgCaption, title, strlen(title));
-					TDialogProperties* win = new TDialogProperties();
-					win->setData(data);
-					if (owner->execView(win) == cmOK)
-					{
-						win->getData(data);
-						memset(BaseName, 0x0, StringMaxLen);
-						memset(TypeName, 0x0, StringMaxLen);
-						memcpy(BaseName, data->dlgBaseClass, strlen(data->dlgBaseClass));
-						memcpy(TypeName, data->dlgClassName, strlen(data->dlgClassName));
-						//-- с заголовком окна немного позамороченнее --------------
-						delete title;
-						auto lenCapt = strlen(data->dlgCaption) + 1;
-						title = new char[lenCapt];
-						memset((void*)title, 0x0, lenCapt);
-						memcpy((void*)title, data->dlgCaption, lenCapt - 1);
-						//----------------------------------------------------------
-						drawView();
-						frame->drawView();
-					}
-					delete data;
-					destroy(win);
+					editDialogProperties();
 					clearEvent(event);
 					break;
 				}
@@ -155,6 +162,7 @@ void TTrialDialog::handleEvent(TEvent& event)
 						((TTrialStaticText*)event.message.infoPtr)->setVarName(data->var_name);
 						((TTrialStaticText*)event.message.infoPtr)->setUsedVarName(data->use_var_name);
 						drawView();
+						DialSaved = false;
 					}
 					delete data;
 					destroy(win);
@@ -180,6 +188,8 @@ void TTrialDialog::handleEvent(TEvent& event)
 						((TTrialButton*)event.message.infoPtr)->setVarName(data->var_name);
 						((TTrialButton*)event.message.infoPtr)->setUsedVarName(data->use_var_name);
 						drawView();
+						DialSaved = false;
+
 					}
 					delete data;
 					destroy(win);
@@ -188,8 +198,23 @@ void TTrialDialog::handleEvent(TEvent& event)
 				}
 			case cmOption_CheckBoxes:
 				{
-					//-- вызов настройки 
-
+					//-- вызов настройки TButton
+					auto data = new dataTCBP();
+					strncpy(data->class_name, ((TTrialCheckBoxes*)event.message.infoPtr)->getClassName(), StringMaxLen);
+					strncpy(data->var_name, ((TTrialCheckBoxes*)event.message.infoPtr)->getVarName(), StringMaxLen);
+					auto itm = ((TTrialCheckBoxes*)event.message.infoPtr)->getItems();
+					TCheckBoxesProperties* win = new TCheckBoxesProperties();
+					win->setData(data);
+					if (owner->execView(win) == cmOK)
+					{
+						win->getData(data);
+						((TTrialCheckBoxes*)event.message.infoPtr)->setClassName(data->class_name);
+						((TTrialCheckBoxes*)event.message.infoPtr)->setVarName(data->var_name);
+						drawView();
+						DialSaved = false;
+					}
+					delete data;
+					destroy(win);
 					clearEvent(event);
 					break;
 				}
@@ -208,6 +233,7 @@ void TTrialDialog::handleEvent(TEvent& event)
 						((TTrialInputLine*)event.message.infoPtr)->setVarName(data->var_name);
 						((TTrialInputLine*)event.message.infoPtr)->setVarLen(data->var_len);
 						drawView();
+						DialSaved = false;
 					}
 					delete data;
 					destroy(win);
@@ -265,6 +291,7 @@ void TTrialDialog::handleEvent(TEvent& event)
 					forEach(&unselected, 0);
 					v->setSelected(true);
 					insert(v);
+					DialSaved = false;
 					clearEvent(event);
 					break;
 				}
@@ -273,6 +300,7 @@ void TTrialDialog::handleEvent(TEvent& event)
 					TPoint tmp;
 					tmp.x = ((TPoint*)event.message.infoPtr)->x;
 					tmp.y = ((TPoint*)event.message.infoPtr)->y;
+					clearEvent(event);
 					auto lc = makeLocal(tmp);
 					auto b = getExtent();
 					//-- если Drop происходит ВНЕ границ окна - просто игнорируем событие и все
@@ -284,17 +312,18 @@ void TTrialDialog::handleEvent(TEvent& event)
 						forEach(&unselected, 0);
 						v->setSelected(true);
 						insert(v);
-						clearEvent(event);
+						DialSaved = false;
 					}
 					break;
 				}
 			case cm_ed_InsertInputLine:
 				{
 					//-- добавление нового TInputLine
-					auto v =new TTrialInputLine(TRect(size.x - 13, size.y - 3, size.x - 3, size.y - 2), 11);
+					auto v = new TTrialInputLine(TRect(size.x - 13, size.y - 3, size.x - 3, size.y - 2), 11);
 					forEach(&unselected, 0);
 					v->setSelected(true);
 					insert(v);
+					DialSaved = false;
 					clearEvent(event);
 					break;
 				}
@@ -303,6 +332,7 @@ void TTrialDialog::handleEvent(TEvent& event)
 					TPoint tmp;
 					tmp.x = ((TPoint*)event.message.infoPtr)->x;
 					tmp.y = ((TPoint*)event.message.infoPtr)->y;
+					clearEvent(event);
 					auto lc = makeLocal(tmp);
 					auto b = getExtent();
 					//-- если Drop происходит ВНЕ границ окна - просто игнорируем событие и все
@@ -314,7 +344,7 @@ void TTrialDialog::handleEvent(TEvent& event)
 						forEach(&unselected, 0);
 						v->setSelected(true);
 						insert(v);
-						clearEvent(event);
+						DialSaved = false;
 					}
 					break;
 				}
@@ -333,6 +363,8 @@ void TTrialDialog::handleEvent(TEvent& event)
 					TPoint tmp;
 					tmp.x = ((TPoint*)event.message.infoPtr)->x;
 					tmp.y = ((TPoint*)event.message.infoPtr)->y;
+					clearEvent(event);
+
 					auto lc = makeLocal(tmp);
 					auto b = getExtent();
 					//-- если Drop происходит ВНЕ границ окна - просто игнорируем событие и все
@@ -340,11 +372,11 @@ void TTrialDialog::handleEvent(TEvent& event)
 					if ((lc.x >= 1) && (lc.y >= 1) && (lc.x < b.b.x - 1) && (lc.y < b.b.y - 1))
 					{
 						//-- добавление нового TStaticText
-						auto v =new TTrialButton(TRect(lc.x, lc.y, lc.x + 10, lc.y + 2), txt_btnButton, -1);
+						auto v = new TTrialButton(TRect(lc.x, lc.y, lc.x + 10, lc.y + 2), txt_btnButton, -1);
 						forEach(&unselected, 0);
 						v->setSelected(true);
 						insert(v);
-						clearEvent(event);
+						DialSaved = false;
 					}
 					break;
 				}
@@ -360,6 +392,8 @@ void TTrialDialog::handleEvent(TEvent& event)
 					TPoint tmp;
 					tmp.x = ((TPoint*)event.message.infoPtr)->x;
 					tmp.y = ((TPoint*)event.message.infoPtr)->y;
+					clearEvent(event);
+
 					auto lc = makeLocal(tmp);
 					auto b = getExtent();
 					//-- если Drop происходит ВНЕ границ окна - просто игнорируем событие и все
@@ -371,7 +405,7 @@ void TTrialDialog::handleEvent(TEvent& event)
 						forEach(&unselected, 0);
 						v->setSelected(true);
 						insert(v);
-						clearEvent(event);
+						DialSaved = false;
 					}
 					break;
 				}
@@ -387,6 +421,8 @@ void TTrialDialog::handleEvent(TEvent& event)
 					TPoint tmp;
 					tmp.x = ((TPoint*)event.message.infoPtr)->x;
 					tmp.y = ((TPoint*)event.message.infoPtr)->y;
+					clearEvent(event);
+
 					auto lc = makeLocal(tmp);
 					auto b = getExtent();
 					//-- если Drop происходит ВНЕ границ окна - просто игнорируем событие и все
@@ -398,11 +434,18 @@ void TTrialDialog::handleEvent(TEvent& event)
 						forEach(&unselected, 0);
 						v->setSelected(true);
 						insert(v);
-						clearEvent(event);
+						DialSaved = false;
 					}
 					break;
 				}
 			case cm_ed_InsertListBox:
+				{
+					//-- добавление нового TListBox
+					insert(new TTrialListBox(TRect(size.x - 15, size.y - 4, size.x - 2, size.y - 2), 1, 0));
+					clearEvent(event);
+					break;
+				}
+			case cm_drp_DropListBox:
 				{
 					//-- добавление нового TListBox
 					insert(new TTrialListBox(TRect(size.x - 15, size.y - 4, size.x - 2, size.y - 2), 1, 0));
@@ -416,52 +459,66 @@ void TTrialDialog::handleEvent(TEvent& event)
 					clearEvent(event);
 					break;
 				}
+			case cm_drp_DropMemo:
+				{
+					//-- добавление нового TListBox
+					//insert(new TTrialMemo(TRect(size.x - 15, size.y - 4, size.x - 2, size.y - 2), 1, 0));
+					clearEvent(event);
+					break;
+				}
 
 			case cmDialogSaveToRes:
 				{
-					TFileDialog* fd = new TFileDialog("*.dlg", txt_dlg_SaveAsCaption, txt_dlg_SaveAsName, fdOKButton, 100);
-
-					if (fd != 0 && owner->execView(fd) != cmCancel)
-					{
-						char fileName[MAXPATH];
-						fd->getFileName(fileName);
-						//fd->helpCtx = hcFOFileOpenDBox;
-						ofpstream os;
-						os.open(fileName);
-						os << this;
-						os.close();
-					}
-					destroy(fd);
 					clearEvent(event);
-
+					saveDialogToRes();
 					break;
 				}
 			case cmDialogGenCode:
 				{
-					TFileDialog* fd = new TFileDialog("*.cpp", txt_dlg_SaveCodeAsCaption, txt_dlg_SaveAsName, fdOKButton, 100);
-
-					if (fd != 0 && owner->execView(fd) != cmCancel)
-					{
-						char fileName[MAXPATH];
-						fd->getFileName(fileName);
-						char res[8192];
-						memset(res, 0x0, 8192);
-						//-- генерируем код
-						forEach(&generateCode, res);
-						//-- записываем файл
-						ofstream out;
-						out.open(fileName);
-						out << res;
-						out.close();
-					}
-					destroy(fd);
 					clearEvent(event);
-
+					saveDialogToSrc();
 					break;
 				}
 		}
-
 	}
+	//if (event.what | evMouse)
+	//{
+	//	//-- вызов окна редактирования свойств объекта
+	//	if ((event.mouse.buttons == mbLeftButton) && (event.mouse.eventFlags == meDoubleClick))
+	//	{
+	//		editDialogProperties();
+	//		clearEvent(event);
+	//	}
+	//}
+	//-- переопределяем действия клавиш в режиме разработки
+	if (event.what == evKeyDown)
+	{
+		//-- обработка нажатий служебных клавиш
+		if (event.keyDown.keyCode == kbCtrlEnter)
+		{
+			clearEvent(event);
+			editDialogProperties();
+			return;
+		}
+		if (event.keyDown.keyCode == kbCtrlS)
+		{
+			clearEvent(event);
+			saveDialogToRes();
+			return;
+		}
+		if (event.keyDown.keyCode == kbCtrlC)
+		{
+			clearEvent(event);
+			saveDialogToSrc();
+			return;
+		}
+	}
+
+	/*
+
+	//-- Реализованный алгоритм удаления - приводит к непонятным ошибкам, когда попытка удаления одного компонента
+	//-- приводит к удалению нескольких сразу. В чем косяк пока не разобрался и времени на это нет
+	//-- обработку клавиш повесил непосредственно на сами компоненты
 	if (event.what == evKeyDown)
 	{
 		//-- обработка нажатий служебных клавиш
@@ -470,9 +527,44 @@ void TTrialDialog::handleEvent(TEvent& event)
 			//-- удаление выбранного элемента
 			forEach(&deleteSelected, 0);
 		}
-	}
+	}*/
 	TCustomDialog::handleEvent(event);
 }
+
+void TTrialDialog::saveDialogToRes()
+{
+	TFileDialog* fd = new TFileDialog("*.dlg", txt_dlg_SaveAsCaption, txt_dlg_SaveAsName, fdOKButton, 100);
+
+	if (fd != 0 && owner->execView(fd) != cmCancel)
+	{
+		char fileName[MAXPATH];
+		fd->getFileName(fileName);
+		ofpstream os;
+		os.open(fileName);
+		os << this;
+		os.close();
+		DialSaved = true;
+	}
+	destroy(fd);
+}
+
+void TTrialDialog::saveDialogToSrc()
+{
+	TFileDialog* fd = new TFileDialog("*.cpp", txt_dlg_SaveCodeAsCaption, txt_dlg_SaveAsName, fdOKButton, 100);
+
+	if (fd != 0 && owner->execView(fd) != cmCancel)
+	{
+		char fileName[MAXPATH];
+		fd->getFileName(fileName);
+		ofstream out;
+		out.open(fileName);
+		GenCode(&out);
+		out.close();
+	}
+	destroy(fd);
+}
+
+
 
 bool TTrialDialog::valid(ushort command)
 {
@@ -483,18 +575,41 @@ bool TTrialDialog::valid(ushort command)
 	return rslt;
 }
 
+void TTrialDialog::GenCode(ofstream *res)
+{
+	char tmp[StringMaxLen];
+	memset(tmp, 0x0, StringMaxLen);
+	//-- формируем начальный код самого диалога
+
+	/*TDialog::TDialog() :
+		TDialog(TRect(7, 2, 61, 16), "Caption"),
+		TWindowInit(TDialog::initFrame)
+		{
+
+		*/
+	auto r = getBounds();
+	*res << class_name << "::" << class_name << "() :\n ";
+	*res << base_class_name << "(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), \"" << title << "\"),\n";
+	*res << " TWindowInit(&" << base_class_name << "::initFrame)\n{";
+	//-- генерируем код
+	forEach(&generateCode, res);
+	//-- формируем заканчивающий код диалога
+	*res << "\n selectNext(false);\n}\n";
+}
+
+
 void TTrialDialog::write(opstream& os)
 {
 	TCustomDialog::write(os);
-	os.writeBytes((void*)BaseName, StringMaxLen);
-	os.writeBytes((void*)TypeName, StringMaxLen);
+	os.writeBytes((void*)class_name, StringMaxLen);
+	os.writeBytes((void*)base_class_name, StringMaxLen);
 }
 
 void* TTrialDialog::read(ipstream& is)
 {
 	TCustomDialog::read(is);
-	is.readBytes((void*)BaseName, StringMaxLen);
-	is.readBytes((void*)TypeName, StringMaxLen);
+	is.readBytes((void*)class_name, StringMaxLen);
+	is.readBytes((void*)base_class_name, StringMaxLen);
 
 	//    //-- небольшой момент, при чтении из потока указатель создаётся не нужной нам размерности
 	//    //-- а четко по размеру прочитанной строки, что вызывает ошибки при удалении экземпляра

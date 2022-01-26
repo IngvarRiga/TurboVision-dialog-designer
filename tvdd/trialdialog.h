@@ -37,10 +37,14 @@ class TTrialDialog : public TCustomDialog
         return name;
     }
 
+    void editDialogProperties();
+    void saveDialogToRes();
+    void saveDialogToSrc();
+
   private:
     bool DialSaved; //-- признак сохраненности диалога
-    char BaseName[StringMaxLen]; //-- название класса диалога
-    char TypeName[StringMaxLen]; //-- название базового класса диалога
+    char class_name[StringMaxLen]; //-- название класса диалога
+    char base_class_name[StringMaxLen]; //-- название базового класса диалога
     TTrialDialogBackground *Background; //-- хрень отвечающая за отрисовку подложки диалога в режиме конструктора
     bool Centered; //-- диалог должен быть отцентрирован
     //bool GenDefaults;
@@ -48,9 +52,7 @@ class TTrialDialog : public TCustomDialog
     TWinExtMenu * emnu; //-- дополнительное управляющее меню
     //    
 
-    virtual void GenCode()
-    {
-    }
+    virtual void GenCode(ofstream *res); //-- генерация кода диалога
 
   protected:
 

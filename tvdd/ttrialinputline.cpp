@@ -14,7 +14,7 @@ TTrialInputLine::TTrialInputLine(const TRect& bounds, uint aMaxLen, TValidator* 
 	memset(var_name, 0x0, StringMaxLen);
 	memset(class_name, 0x0, StringMaxLen);
 	strncpy(var_name, txt_control, strlen(txt_control));
-	strncpy(class_name, txt_TButton, strlen(txt_TButton));
+	strncpy(class_name, txt_TInputLine, strlen(txt_TInputLine));
 
 }
 
@@ -47,7 +47,7 @@ void TTrialInputLine::setState(ushort aState, Boolean enable)
 	if (aState == sfSelected)
 	{
 		if (!enable)
-		setSelected(enable);
+			setSelected(enable);
 	}
 }
 
@@ -75,36 +75,15 @@ void TTrialInputLine::setSelected(bool val)
 	}
 }
 
-void TTrialInputLine::genCode(char* val)
+void TTrialInputLine::genCode(void* val)
 {
-	//-- генерируем код компонента
-	char tmp[StringMaxLen];
-	memset(tmp, 0x0, StringMaxLen);
-	auto t = "\n field = new TInputLine(TRect(";
-	auto endl = "), 11));\n insert(field);";
-	strncat(val, t, strlen(t));
+	ofstream* res = (ofstream*)val;
 	auto r = getBounds();
-	_itoa(r.a.x, tmp, 10);
-	strncat(val, tmp, strlen(tmp));
-	strncat(val, ",", 1);
-	memset(tmp, 0x0, StringMaxLen);
 
-	_itoa(r.a.y, tmp, 10);
-	strncat(val, tmp, strlen(tmp));
-	strncat(val, ",", 1);
-	memset(tmp, 0x0, StringMaxLen);
-
-	_itoa(r.b.x, tmp, 10);
-	strncat(val, tmp, strlen(tmp));
-	strncat(val, ",", 1);
-	memset(tmp, 0x0, StringMaxLen);
-
-	_itoa(r.b.y, tmp, 10);
-	strncat(val, tmp, strlen(tmp));
-	memset(tmp, 0x0, StringMaxLen);
-
-	strncat(val, endl, strlen(endl));
-	memset(tmp, 0x0, StringMaxLen);
+	//-- генерируем код компонента
+	*res << "\n auto " << var_name << " = new " << class_name << "(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), " << maxLen << ");";
+	*res << "\n insert(" << var_name << ");\n";
+	
 }
 
 TStreamable* TTrialInputLine::build()

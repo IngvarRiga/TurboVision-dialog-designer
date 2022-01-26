@@ -32,7 +32,7 @@ public:
 	virtual void setState(ushort aState, Boolean enable);
 	virtual void handleEvent(TEvent& event);
 	virtual void sizeLimits(TPoint& min, TPoint& max);
-	void genCode(char* val);
+	void genCode(void* val);
 
 	//-- получение значений
 	char* getVarName();

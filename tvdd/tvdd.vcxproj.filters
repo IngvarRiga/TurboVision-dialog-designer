@@ -129,9 +129,6 @@
     <ClCompile Include="tcheckboxesproperties.cpp">
       <Filter>Исходные файлы\Редакторы свойств</Filter>
     </ClCompile>
-    <ClCompile Include="tdialogdesigner.cpp">
-      <Filter>Исходные файлы\_мусор</Filter>
-    </ClCompile>
     <ClCompile Include="wbutton.cpp">
       <Filter>Исходные файлы\Rework</Filter>
     </ClCompile>
@@ -187,9 +184,6 @@
     </ClInclude>
     <ClInclude Include="wstatictext.h">
       <Filter>Файлы заголовков\Rework</Filter>
-    </ClInclude>
-    <ClInclude Include="tdialogdesigner.h">
-      <Filter>Файлы заголовков\_мусор</Filter>
     </ClInclude>
     <ClInclude Include="tbuttonproperties.h">
       <Filter>Файлы заголовков\Редакторы свойств</Filter>

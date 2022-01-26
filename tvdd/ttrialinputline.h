@@ -41,7 +41,7 @@ class TTrialInputLine : public TWrapInputLine
     virtual void handleEvent(TEvent& event);
     bool isSelected();
     void setSelected(bool val);
-    void genCode(char *val);
+    void genCode(void *val);
 
     //-- получение значений
     char* getVarName();

@@ -52,7 +52,7 @@ void TWinExtMenu::handleEvent(TEvent& event)
             r.b.y = r.a.y + 20;
             TMenuBox *contextMenu = new TMenuBox(TRect(0, 0, 0, 0),
                     new TMenu(
-                    * new TMenuItem(txt_PropertyDialogCaption, cmOption_Dialog, kbAlt1, hcNoContext, "Alt+1") +
+                    * new TMenuItem(txt_PropertyDialogCaption, cmOption_Dialog, kbAlt1, hcNoContext, "Ctrl+Enter") +
                     (TMenuItem &) (
                     * new TSubMenu(txt_DlgInsertSubMenu, kbNoKey)+
                     * new TMenuItem(txt_mnu_StaticText, cm_ed_InsertStaticText, kbNoKey) +
@@ -69,8 +69,8 @@ void TWinExtMenu::handleEvent(TEvent& event)
                     newLine()+
                     * new TMenuItem(txt_mnu_DlgPropShowSizePos, cmDialogPosSizeOnOff, kbAlt4, hcNoContext, "Alt+4") +
                     newLine()+
-                    * new TMenuItem(txt_mnu_SaveToRes, cmDialogSaveToRes, kbAlt5, hcNoContext, "Alt+5")+
-                    * new TMenuItem(txt_mnu_GenCode, cmDialogGenCode, kbAlt6, hcNoContext, "Alt+6")
+                    * new TMenuItem(txt_mnu_SaveToRes, cmDialogSaveToRes, kbAlt5, hcNoContext, "Ctrl+S")+
+                    * new TMenuItem(txt_mnu_GenCode, cmDialogGenCode, kbAlt6, hcNoContext, "Ctrl+C")
                     ), nullptr);
             contextMenu->options |= ofCentered;
             auto res = owner->owner->execView(contextMenu);

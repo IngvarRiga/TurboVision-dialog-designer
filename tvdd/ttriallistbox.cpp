@@ -6,7 +6,7 @@ const char * const TTrialListBox::name = "TTrialListBox";
 TTrialListBox::TTrialListBox(const TRect& bounds, ushort aNumCols, TScrollBar *aScrollBar):
 TListBox( bounds, aNumCols, aScrollBar)
 {
-        eventMask |= 0xf; //-- установлен флаг получения ВСЕХ сообщений
+    eventMask |= 0xf; //-- установлен флаг получения ВСЕХ сообщений
     options |= ofPreProcess;
     //-- ограничиваем перемещение внутри окна его границами
     dragMode |= dmLimitAll;

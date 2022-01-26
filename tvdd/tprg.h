@@ -20,7 +20,6 @@
 #define Uses_TFileDialog
 
 #include <tvision/tv.h>
-#include "tdialogdesigner.h"
 #include "trialdialog.h"
 #include "tcustomdialog.h"
 #include "tselectcolordialog.h"

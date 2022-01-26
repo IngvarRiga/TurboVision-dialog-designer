@@ -100,38 +100,21 @@ void TTrialButton::setUsedVarName(bool val)
 	usedVarName = val;
 }
 
-void TTrialButton::genCode(char* val)
+void TTrialButton::genCode(void* val)
 {
+	ofstream* res = (ofstream*)val;
+
 	//-- генерируем код компонента
-	char tmp[StringMaxLen];
-	memset(tmp, 0x0, StringMaxLen);
-	auto t = "\n insert(new TButton(TRect(";
-	strncat(val, t, strlen(t));
 	auto r = getBounds();
-	_itoa(r.a.x, tmp, 10);
-	strncat(val, tmp, strlen(tmp));
-	strncat(val, ",", 1);
-	memset(tmp, 0x0, StringMaxLen);
-
-	_itoa(r.a.y, tmp, 10);
-	strncat(val, tmp, strlen(tmp));
-	strncat(val, ",", 1);
-	memset(tmp, 0x0, StringMaxLen);
-
-	_itoa(r.b.x, tmp, 10);
-	strncat(val, tmp, strlen(tmp));
-	strncat(val, ",", 1);
-	memset(tmp, 0x0, StringMaxLen);
-
-	_itoa(r.b.y, tmp, 10);
-	strncat(val, tmp, strlen(tmp));
-	memset(tmp, 0x0, StringMaxLen);
-
-	strncat(val, "), \"", 4);
-	strncat(val, title, strlen(title));
-	memset(tmp, 0x0, StringMaxLen);
-	strncat(val, "\", -1, -1));", 11);
-
+	if (usedVarName)
+	{
+		*res << "\n auto " << var_name << " = new TButton(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), \"" << getCaption() << "\", -1, bfDefault)";
+		*res << "\n insert(" << var_name << ");\n";
+	}
+	else
+	{
+		*res << "\n insert(new TButton(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), \"" << getCaption() << "\", -1, bfDefault));\n";
+	}
 }
 
 TStreamable* TTrialButton::build()

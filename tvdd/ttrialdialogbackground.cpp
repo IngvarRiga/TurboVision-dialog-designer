@@ -1,4 +1,6 @@
 #include "ttrialdialogbackground.h"
+#include "common.h"
+
 #include <math.h>
 
 const char * const TTrialDialogBackground::name = "TTrialDialogBackground";
@@ -6,6 +8,7 @@ const char * const TTrialDialogBackground::name = "TTrialDialogBackground";
 TTrialDialogBackground::TTrialDialogBackground(TRect& Bounds) :
 TView(Bounds)
 {
+    
     growMode = gfGrowHiX + gfGrowHiY;
     Patterned = true;
 }
@@ -29,6 +32,16 @@ void TTrialDialogBackground::draw()
 
 void TTrialDialogBackground::handleEvent(TEvent& event)
 {
+    if (event.what | evMouse)
+    {
+        //-- вызов окна редактирования свойств объекта
+        if ((event.mouse.buttons == mbLeftButton) && (event.mouse.eventFlags == meDoubleClick))
+        {
+            message(owner, evBroadcast, cmOption_Dialog, nullptr);
+            clearEvent(event);
+        }
+    }
+
     //-- вызываем унаследованный метод обработки сообщений
     TView::handleEvent(event);
 }

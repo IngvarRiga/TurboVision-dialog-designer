@@ -2,21 +2,20 @@
 #include "multilang.h"
 
 TStaticTextProperties::TStaticTextProperties() :
-TCustomDialog(54, 14, txt_PropertyStaticTextCaption),
+TCustomDialog(54, 14, txt_PropertyStaticText),
 TWindowInit(&TDialog::initFrame)
 {
+    insert(new TLabel(TRect(1, 1, 7, 2), txt_pd_Text, text));
+    insert(new TStaticText(TRect(8, 8, 23, 9), txt_pd_ClassName));
+
     sbv = new TScrollBar(TRect(51, 2, 52, 6));
     insert(sbv);
-
     sbh = new TScrollBar(TRect(2, 6, 51, 7));
     insert(sbh);
 
     text = new TMemo(TRect(2, 2, 51, 6), (TScrollBar*) sbh, (TScrollBar*) sbv, 0, 255);
     insert(text);
 
-    insert(new TLabel(TRect(1, 1, 7, 2), txt_pd_Text, text));
-    //insert(new TStaticText(TRect(8, 9, 23, 10), txt_pd_VariableName));
-    insert(new TStaticText(TRect(8, 8, 23, 9), txt_pd_ClassName));
 
     var_name = new TInputLine(TRect(24, 9, 52, 10), 27);
     insert(var_name);
@@ -31,7 +30,6 @@ TWindowInit(&TDialog::initFrame)
     insert(new TButton(TRect(32, 11, 42, 13), txt_btnCancel, cmCancel, bfDefault));
 
     selectNext(False);
-
 }
 
 

@@ -37,7 +37,17 @@ class TTrialCheckBoxes : public TWrapCheckBoxes
     virtual void setState(ushort aState, Boolean enable);
     void genCode(char *val);
 
+    //-- получение значений
+    char* getVarName();
+    char* getClassName();
+
+    //-- установка значений
+    void setVarName(char* val);
+    void setClassName(char* val);
+
   protected:
+    char var_name[StringMaxLen]; //-- имя переменной для создания строки ввода
+    char class_name[StringMaxLen]; //-- имя переменной для создания текста
 
     virtual void write(opstream&);
     virtual void *read(ipstream&);

@@ -1,4 +1,5 @@
 #include "wstatictext.h"
+#include <tvision/tkeys.h>
 #include <iostream>
 #define cpStaticText "\x06"
 
@@ -127,7 +128,6 @@ char* TWrapStaticText::getCaption()
 	return text;
 }
 
-
 void TWrapStaticText::handleEvent(TEvent& event)
 {
 	if (eventClick)
@@ -179,8 +179,22 @@ void TWrapStaticText::handleEvent(TEvent& event)
 			}
 		}
 	}
-}
+	if (Selected)
+	{
+		//-- переопределяем действия клавиш в режиме разработки
+		if (event.what == evKeyDown)
+		{
+			//-- обработка нажатий служебных клавиш
+			if (event.keyDown.keyCode == kbCtrlDel)
+			{
+				clearEvent(event);
+				destroy(this);
+				return;
+			}
+		}
+	}
 
+}
 
 #if !defined(NO_STREAMABLE)
 

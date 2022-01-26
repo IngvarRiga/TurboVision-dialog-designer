@@ -80,7 +80,7 @@ TMenuBar *TPrg::initMenuBar(TRect r)
             * new TSubMenu(txt_mnu_Designer, kbNoKey) +
             (TMenuItem &) (
             * new TMenuItem(txt_mnu_NewDialogWindow, cmNewDialog, kbCtrlN, hcNoContext, "Ctrl-N") +
-            * new TMenuItem(txt_mnu_LoadFromResource, cmLoadDialog, kbCtrlR, hcNoContext, "Ctrl-R") 
+            * new TMenuItem(txt_mnu_LoadFromResource, cmLoadDialog, kbF3, hcNoContext, "F3") 
            // +newLine()+
             //* new TMenuItem(txt_mnu_ComponentsPanel, cm_test_ToolWin, kbCtrlF12, hcNoContext, "Ctrl-F12")
             ) +

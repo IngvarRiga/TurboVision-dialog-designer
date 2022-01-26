@@ -10,6 +10,11 @@ TWrapCheckBoxes(bounds, aStrings)
     options |= ofPreProcess;
     //-- ограничиваем перемещение внутри окна его границами
     dragMode |= dmLimitAll;
+    memset(var_name, 0x0, StringMaxLen);
+    memset(class_name, 0x0, StringMaxLen);
+    strncpy(var_name, txt_control, strlen(txt_control));
+    strncpy(class_name, txt_TCheckBoxes, strlen(txt_TCheckBoxes));
+
 }
 
 void TTrialCheckBoxes::setState(ushort aState, Boolean enable)
@@ -59,6 +64,34 @@ void TTrialCheckBoxes::genCode(char *val)
     //        strcat(s,t,strlen(t));
     //        auto r = to->getBounds();
 }
+
+char* TTrialCheckBoxes::getVarName()
+{
+    return var_name;
+}
+
+
+void TTrialCheckBoxes::setClassName(char* val)
+{
+    memset(class_name, 0x0, StringMaxLen);
+    auto len = strlen(val);
+    if (len > 0)
+        memcpy(class_name, val, len > StringMaxLen ? StringMaxLen : len);
+}
+
+char* TTrialCheckBoxes::getClassName()
+{
+    return class_name;
+}
+
+void TTrialCheckBoxes::setVarName(char* val)
+{
+    memset(var_name, 0x0, StringMaxLen);
+    auto len = strlen(val);
+    if (len > 0)
+        memcpy(var_name, val, len > StringMaxLen ? StringMaxLen : len);
+}
+
 
 TStreamable *TTrialCheckBoxes::build()
 {

@@ -40,7 +40,7 @@ public:
 	virtual void setState(ushort aState, Boolean enable);
 	virtual void handleEvent(TEvent& event);
 	virtual void sizeLimits(TPoint& min, TPoint& max);
-	void genCode(char* val);
+	void genCode(void* val);
 
 	//-- получение значений
 	char* getVarName();
@@ -54,7 +54,7 @@ public:
 
 protected:
 	bool usedVarName; //-- при генерации исходного кода использовать отдельную переменную для объекта
-	char class_name[StringMaxLen]; //-- имя переменной для создания текста
+	char class_name[StringMaxLen]; //-- имя базового класса
 	char var_name[StringMaxLen]; //-- имя переменной для создания текста
 	virtual void write(opstream&);
 	virtual void* read(ipstream&);

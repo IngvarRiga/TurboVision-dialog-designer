@@ -96,99 +96,20 @@ void TTrialStaticText::setUsedVarName(bool val)
     usedVarName = val;
 }
 
-void TTrialStaticText::genCode(char *val)
+void TTrialStaticText::genCode(void *val)
 {
+    ofstream *res = (ofstream*)val;
+
     //-- генерируем код компонента
-    char tmp[StringMaxLen];
-    memset(tmp, 0x0, StringMaxLen);
+    auto r = getBounds();
     if (usedVarName)
     {
-        //-- пользователь захотел отдельный объект
-        auto nl = "\n auto ";
-        auto t = " = new ";
-        auto rect = "(TRect(";
-        auto zap = ",";
-        auto endRect = "), \"";
-        auto endcode = "\");";
-        auto endGen = "\n insert(";
-        auto closeBr = ");";
-
-        strncat(val, nl, strlen(nl));
-        strncat(val, var_name, strlen(var_name));
-        strncat(val, t, strlen(t));
-        strncat(val, class_name, strlen(class_name));
-        strncat(val, rect, strlen(rect));
-
-
-        strncat(val, t, strlen(t));
-        auto r = getBounds();
-        _itoa(r.a.x, tmp, 10);
-        strncat(val, tmp, strlen(tmp));
-        strncat(val, zap, strlen(zap));
-        memset(tmp, 0x0, StringMaxLen);
-
-        _itoa(r.a.y, tmp, 10);
-        strncat(val, tmp, strlen(tmp));
-        strncat(val, zap, strlen(zap));
-        memset(tmp, 0x0, StringMaxLen);
-
-        _itoa(r.b.x, tmp, 10);
-        strncat(val, tmp, strlen(tmp));
-        strncat(val, zap, strlen(zap));
-        memset(tmp, 0x0, StringMaxLen);
-
-        _itoa(r.b.y, tmp, 10);
-        strncat(val, tmp, strlen(tmp));
-        memset(tmp, 0x0, StringMaxLen);
-
-        strncat(val, endRect, strlen(endRect));
-        getText(tmp);
-        strncat(val, tmp, strlen(tmp));
-        memset(tmp, 0x0, StringMaxLen);
-        strncat(val, endcode, strlen(endcode));
-
-        strncat(val, endGen, strlen(endGen));
-        strncat(val, var_name, strlen(var_name));
-        strncat(val, closeBr, strlen(closeBr));
-
-    } else
+        *res << "\n auto " << var_name << " = new " << class_name << "(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), \"" << text << "\");";
+        *res << "\n insert(" << var_name << ");\n";
+    }
+    else
     {
-        //-- обходимся без переменных, сразу вставка
-        auto t = "\n insert(new ";
-        auto rect = "(TRect(";
-        auto zap = ",";
-        auto endRect = "), \"";
-        auto endcode = "\"));";
-
-        strncat(val, t, strlen(t));
-        strncat(val, class_name, strlen(class_name));
-        strncat(val, rect, strlen(rect));
-
-        auto r = getBounds();
-        _itoa(r.a.x, tmp, 10);
-        strncat(val, tmp, strlen(tmp));
-        strncat(val, zap, strlen(zap));
-        memset(tmp, 0x0, StringMaxLen);
-
-        _itoa(r.a.y, tmp, 10);
-        strncat(val, tmp, strlen(tmp));
-        strncat(val, zap, strlen(zap));
-        memset(tmp, 0x0, StringMaxLen);
-
-        _itoa(r.b.x, tmp, 10);
-        strncat(val, tmp, strlen(tmp));
-        strncat(val, zap, strlen(zap));
-        memset(tmp, 0x0, StringMaxLen);
-
-        _itoa(r.b.y, tmp, 10);
-        strncat(val, tmp, strlen(tmp));
-        memset(tmp, 0x0, StringMaxLen);
-
-        strncat(val, endRect, strlen(endRect));
-        getText(tmp);
-        strncat(val, tmp, strlen(tmp));
-        memset(tmp, 0x0, StringMaxLen);
-        strncat(val, endcode, strlen(endcode));
+        *res << "\n insert(new " << class_name << "(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), \"" << text << "\"));\n";
     }
 }
 

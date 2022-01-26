@@ -51,6 +51,7 @@ public:
         eventDragged = true;
     };
 
+    TStringCollection* getItems() { return strings; }
 protected:
 
     uint32_t value;

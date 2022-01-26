@@ -238,6 +238,8 @@ void TWrapButton::handleEvent(TEvent& event)
 			//-- обработка нажатий служебных клавиш
 			if (event.keyDown.keyCode == kbCtrlDel)
 			{
+				clearEvent(event);
+				destroy(this);
 				return;
 			}
 		}
