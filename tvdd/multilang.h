@@ -29,7 +29,7 @@
 #define txt_cmExit "Выход"
 #define txt_cmStatusExit "~Alt+X~ Выход"
 
-#define txt_btnOk "O~K~"
+#define txt_btnOk "OK"
 #define txt_btnCancel "Отмена"
 #define txt_btnButton "Кнопка"
 #define txt_btnStaticText "StaticText"
@@ -65,7 +65,7 @@
 #define txt_dlg_GadgetsPanel "D&D"
 #define txt_dlg_StaticText "Text"
 #define txt_dlg_InputLine "ABC"
-#define txt_dlg_Buton "~O~K"
+#define txt_dlg_Buton "OK"
 
 
 #endif
