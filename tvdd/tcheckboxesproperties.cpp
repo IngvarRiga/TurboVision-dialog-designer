@@ -111,12 +111,15 @@ void TCheckBoxesProperties::getData(dataTCBP* val)
 		v7->getData(val->v7);
 		v8->getData(val->v8);
 		v9->getData(val->v9);
-		v0->getData(val->v0);
+		v10->getData(val->v10);
 		v11->getData(val->v11);
 		v12->getData(val->v12);
 		v13->getData(val->v13);
 		v14->getData(val->v14);
 		v15->getData(val->v15);
+		//-- совсем без элементов - не допустимо, так что если пользователь не задал 0 элемент
+		//-- принудительно устанавливаем его за него
+		if (strlen(val->v0) == 0) strncpy(val->v0, txt_btnCheck1, strlen(txt_btnCheck1));
 	}
 }
 

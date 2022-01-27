@@ -57,12 +57,27 @@ void TTrialCheckBoxes::sizeLimits(TPoint& min, TPoint& max)
     max.y -= 2;
 }
 
-void TTrialCheckBoxes::genCode(char *val)
+void TTrialCheckBoxes::genCode(void *val)
 {
+    ofstream* res = (ofstream*)val;
+
     //-- генерируем код компонента
-    //        auto t="\n insert(new TStaticText(TRect(";
-    //        strcat(s,t,strlen(t));
-    //        auto r = to->getBounds();
+    auto r = getBounds();
+    *res << "\n auto " << var_name << " = new TCheckBoxes(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), \n";
+    auto itm = getItems();
+    auto cnt = itm->getCount();
+    for (int i = 0; i < (cnt-1); i++)
+    {
+        *res << "   new TSItem(\"" << (char*)itm->at(i) << "\",\n";
+    }
+    *res << "   new TSItem(\"" << (char*)itm->at(cnt-1) << "\", 0)";
+
+    for (int i = 0; i < (cnt - 1); i++)
+    {
+        *res << ")";
+    }
+    *res << ");\n";
+    *res << "\n insert(" << var_name << ");\n";
 }
 
 char* TTrialCheckBoxes::getVarName()
@@ -102,12 +117,16 @@ void TTrialCheckBoxes::write(opstream& os)
 {
 
     TWrapCheckBoxes::write(os);
+    os.writeBytes((void*)var_name, StringMaxLen);
+    os.writeBytes((void*)class_name, StringMaxLen);
     os << eventMask << options << dragMode;
 }
 
 void *TTrialCheckBoxes::read(ipstream& is)
 {
     TWrapCheckBoxes::read(is);
+    is.readBytes((void*)var_name, StringMaxLen);
+    is.readBytes((void*)class_name, StringMaxLen);
     is >> eventMask >> options >> dragMode;
     return this;
 }

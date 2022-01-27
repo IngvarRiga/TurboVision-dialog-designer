@@ -4,7 +4,7 @@ ECHO -- CLEARING PROJECT --
 ECHO ================================================================================
 ECHO -- Deleting trash ...
 del /S *.bak
-del /S *.pdb
+rem del /S *.pdb
 del /S *.tmp
 del /S *.obj
 del /S *.ilk

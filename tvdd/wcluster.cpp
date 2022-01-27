@@ -11,6 +11,9 @@ TWrapCluster::TWrapCluster(const TRect& bounds, TSItem* aStrings, bool click) no
 	sel(0)
 {
 	options |= ofSelectable | ofFirstClick | ofPreProcess | ofPostProcess;
+
+	recreateItems(aStrings);
+	/*
 	short i = 0;
 	TSItem* p;
 	for (p = aStrings; p != 0; p = p->next)
@@ -25,17 +28,40 @@ TWrapCluster::TWrapCluster(const TRect& bounds, TSItem* aStrings, bool click) no
 		aStrings = aStrings->next;
 		delete p;
 	}
-
+	*/
 	setCursor(2, 0);
 	showCursor();
 	enableMask = 0xFFFFFFFFL;
 
 	eventMask |= 0xFF; //-- установлен флаг получения ВСЕХ сообщений от мыши
+
 	eventClick = click;
 	eventDragged = false;
 	Selected = false;
 
 }
+
+void TWrapCluster::recreateItems(TSItem* aStrings)
+{
+	if (strings != nullptr)
+		destroy(strings);
+
+	short i = 0;
+	TSItem* p;
+	for (p = aStrings; p != 0; p = p->next)
+		i++;
+
+	strings = new TStringCollection(i, 0);
+
+	while (aStrings != 0)
+	{
+		p = aStrings;
+		strings->atInsert(strings->getCount(), newStr(aStrings->value));
+		aStrings = aStrings->next;
+		delete p;
+	}
+}
+
 
 TWrapCluster::~TWrapCluster()
 {

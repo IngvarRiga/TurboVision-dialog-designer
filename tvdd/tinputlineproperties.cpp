@@ -5,8 +5,8 @@ TInputLineProperties::TInputLineProperties() :
 TCustomDialog(37, 8, txt_PropertyInputLIne),
 TWindowInit(&TDialog::initFrame)
 {
-    insert(new TStaticText(TRect(2, 2, 14, 3), "Длина строки"));
-    insert(new TStaticText(TRect(2, 3, 16, 4), "Имя переменной"));
+    insert(new TStaticText(TRect(2, 2, 16, 3), txt_pd_StringLen));
+    insert(new TStaticText(TRect(2, 3, 16, 4), txt_pd_VariableName));
     var_len = new TInputLine(TRect(17, 2, 35, 3), 5);
     insert(var_len);
     var_name = new TInputLine(TRect(17, 3, 35, 4), 256);

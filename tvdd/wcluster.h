@@ -35,6 +35,7 @@ public:
     virtual void handleEvent(TEvent& event);
     virtual Boolean mark(int item);
     virtual uchar multiMark(int item);
+    void recreateItems(TSItem* aStrings);
 
     virtual void press(int item);
     virtual void movedTo(int item);

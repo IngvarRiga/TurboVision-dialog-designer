@@ -47,7 +47,7 @@ TTrialDialog::TTrialDialog(const int width, const int height, TStringView aTitle
 	//----- ШТРИХОВКА ----------------------------------------------------------
 	setState(sfModal, false); //-- окно НЕ модально, поскольку в режиме разработки
 	DialSaved = false;
-	//-- окно можно перемещать за границы зоны видимости для запрета - раскомментарить строку ниже
+	//-- окно можно перемещать за границы зоны видимости. для запрета - раскомментарить строку ниже
 	//dragMode = dmLimitAll;
 	flags |= wfGrow; // это позволяет изменять размеры диалога, хотя по умолчанию опция включена в предке
 	memset(class_name, 0x0, StringMaxLen);
@@ -109,7 +109,7 @@ void TTrialDialog::editDialogProperties()
 void TTrialDialog::close()
 {
 	ushort res;
-	if (DialSaved)
+	if (!DialSaved)
 	{
 		res = messageBox(txt_SaveDialogQuest, mfConfirmation | mfYesNoCancel);
 		if (res == cmYes)
@@ -189,7 +189,6 @@ void TTrialDialog::handleEvent(TEvent& event)
 						((TTrialButton*)event.message.infoPtr)->setUsedVarName(data->use_var_name);
 						drawView();
 						DialSaved = false;
-
 					}
 					delete data;
 					destroy(win);
@@ -198,19 +197,73 @@ void TTrialDialog::handleEvent(TEvent& event)
 				}
 			case cmOption_CheckBoxes:
 				{
-					//-- вызов настройки TButton
+					//-- вызов настройки TCheckBoxes
 					auto data = new dataTCBP();
-					strncpy(data->class_name, ((TTrialCheckBoxes*)event.message.infoPtr)->getClassName(), StringMaxLen);
-					strncpy(data->var_name, ((TTrialCheckBoxes*)event.message.infoPtr)->getVarName(), StringMaxLen);
-					auto itm = ((TTrialCheckBoxes*)event.message.infoPtr)->getItems();
+					TTrialCheckBoxes* cb = ((TTrialCheckBoxes*)event.message.infoPtr);
+					strncpy(data->class_name, cb->getClassName(), StringMaxLen);
+					strncpy(data->var_name, cb->getVarName(), StringMaxLen);
+					auto itm = cb->getItems();
+					auto cnt = itm->getCount();
+					int rep = 1;
+					strncpy(data->v0, (char*)itm->at(0), strlen((char*)itm->at(0))); rep++;
+					if (rep <= cnt) { strncpy(data->v1, (char*)itm->at(1), strlen((char*)itm->at(1))); rep++; }
+					if (rep <= cnt) { strncpy(data->v2, (char*)itm->at(2), strlen((char*)itm->at(2))); rep++; }
+					if (rep <= cnt) { strncpy(data->v3, (char*)itm->at(3), strlen((char*)itm->at(3))); rep++; }
+					if (rep <= cnt) { strncpy(data->v4, (char*)itm->at(4), strlen((char*)itm->at(4))); rep++; }
+					if (rep <= cnt) { strncpy(data->v5, (char*)itm->at(5), strlen((char*)itm->at(5))); rep++; }
+					if (rep <= cnt) { strncpy(data->v6, (char*)itm->at(6), strlen((char*)itm->at(6))); rep++; }
+					if (rep <= cnt) { strncpy(data->v7, (char*)itm->at(7), strlen((char*)itm->at(7))); rep++; }
+					if (rep <= cnt) { strncpy(data->v8, (char*)itm->at(8), strlen((char*)itm->at(8))); rep++; }
+					if (rep <= cnt) { strncpy(data->v9, (char*)itm->at(9), strlen((char*)itm->at(9))); rep++; }
+					if (rep <= cnt) { strncpy(data->v10, (char*)itm->at(10), strlen((char*)itm->at(10))); rep++; }
+					if (rep <= cnt) { strncpy(data->v11, (char*)itm->at(11), strlen((char*)itm->at(11))); rep++; }
+					if (rep <= cnt) { strncpy(data->v12, (char*)itm->at(12), strlen((char*)itm->at(12))); rep++; }
+					if (rep <= cnt) { strncpy(data->v13, (char*)itm->at(13), strlen((char*)itm->at(13))); rep++; }
+					if (rep <= cnt) { strncpy(data->v14, (char*)itm->at(14), strlen((char*)itm->at(14))); rep++; }
+					if (rep <= cnt) { strncpy(data->v15, (char*)itm->at(15), strlen((char*)itm->at(15))); rep++; }
 					TCheckBoxesProperties* win = new TCheckBoxesProperties();
 					win->setData(data);
 					if (owner->execView(win) == cmOK)
 					{
 						win->getData(data);
-						((TTrialCheckBoxes*)event.message.infoPtr)->setClassName(data->class_name);
-						((TTrialCheckBoxes*)event.message.infoPtr)->setVarName(data->var_name);
-						drawView();
+						bool br = false;
+						auto its = new TSItem(TStringView(data->v0), nullptr);
+						auto itsn = its;
+						if (strlen(data->v1) > 0) { itsn->next = new TSItem(TStringView(data->v1), nullptr); itsn = itsn->next; }
+						else { br = true; }
+						if ((strlen(data->v2) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v2), nullptr); itsn = itsn->next; }
+						else { br = true; }
+						if ((strlen(data->v3) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v3), nullptr); itsn = itsn->next; }
+						else { br = true; }
+						if ((strlen(data->v4) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v4), nullptr); itsn = itsn->next; }
+						else { br = true; }
+						if ((strlen(data->v5) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v5), nullptr); itsn = itsn->next; }
+						else { br = true; }
+						if ((strlen(data->v6) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v6), nullptr); itsn = itsn->next; }
+						else { br = true; }
+						if ((strlen(data->v7) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v7), nullptr); itsn = itsn->next; }
+						else { br = true; }
+						if ((strlen(data->v8) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v8), nullptr); itsn = itsn->next; }
+						else { br = true; }
+						if ((strlen(data->v9) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v9), nullptr); itsn = itsn->next; }
+						else { br = true; }
+						if ((strlen(data->v10) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v0), nullptr); itsn = itsn->next; }
+						else { br = true; }
+						if ((strlen(data->v11) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v11), nullptr); itsn = itsn->next; }
+						else { br = true; }
+						if ((strlen(data->v12) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v12), nullptr); itsn = itsn->next; }
+						else { br = true; }
+						if ((strlen(data->v13) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v13), nullptr); itsn = itsn->next; }
+						else { br = true; }
+						if ((strlen(data->v14) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v14), nullptr); itsn = itsn->next; }
+						else { br = true; }
+						if ((strlen(data->v15) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v15), nullptr); }
+
+						cb->recreateItems(its);
+
+						cb->setClassName(data->class_name);
+						cb->setVarName(data->var_name);
+						cb->drawView();
 						DialSaved = false;
 					}
 					delete data;
@@ -248,7 +301,77 @@ void TTrialDialog::handleEvent(TEvent& event)
 				}
 			case cmOption_RadioButtons:
 				{
-					//-- вызов настройки
+					//-- вызов настройки TRadioButtons
+					auto data = new dataTCBP();
+					TTrialRadioButtons* cb = ((TTrialRadioButtons*)event.message.infoPtr);
+					strncpy(data->class_name, cb->getClassName(), StringMaxLen);
+					strncpy(data->var_name, cb->getVarName(), StringMaxLen);
+					auto itm = cb->getItems();
+					auto cnt = itm->getCount();
+					int rep = 1;
+					strncpy(data->v0, (char*)itm->at(0), strlen((char*)itm->at(0))); rep++;
+					if (rep <= cnt) { strncpy(data->v1, (char*)itm->at(1), strlen((char*)itm->at(1))); rep++; }
+					if (rep <= cnt) { strncpy(data->v2, (char*)itm->at(2), strlen((char*)itm->at(2))); rep++; }
+					if (rep <= cnt) { strncpy(data->v3, (char*)itm->at(3), strlen((char*)itm->at(3))); rep++; }
+					if (rep <= cnt) { strncpy(data->v4, (char*)itm->at(4), strlen((char*)itm->at(4))); rep++; }
+					if (rep <= cnt) { strncpy(data->v5, (char*)itm->at(5), strlen((char*)itm->at(5))); rep++; }
+					if (rep <= cnt) { strncpy(data->v6, (char*)itm->at(6), strlen((char*)itm->at(6))); rep++; }
+					if (rep <= cnt) { strncpy(data->v7, (char*)itm->at(7), strlen((char*)itm->at(7))); rep++; }
+					if (rep <= cnt) { strncpy(data->v8, (char*)itm->at(8), strlen((char*)itm->at(8))); rep++; }
+					if (rep <= cnt) { strncpy(data->v9, (char*)itm->at(9), strlen((char*)itm->at(9))); rep++; }
+					if (rep <= cnt) { strncpy(data->v10, (char*)itm->at(10), strlen((char*)itm->at(10))); rep++; }
+					if (rep <= cnt) { strncpy(data->v11, (char*)itm->at(11), strlen((char*)itm->at(11))); rep++; }
+					if (rep <= cnt) { strncpy(data->v12, (char*)itm->at(12), strlen((char*)itm->at(12))); rep++; }
+					if (rep <= cnt) { strncpy(data->v13, (char*)itm->at(13), strlen((char*)itm->at(13))); rep++; }
+					if (rep <= cnt) { strncpy(data->v14, (char*)itm->at(14), strlen((char*)itm->at(14))); rep++; }
+					if (rep <= cnt) { strncpy(data->v15, (char*)itm->at(15), strlen((char*)itm->at(15))); rep++; }
+					TCheckBoxesProperties* win = new TCheckBoxesProperties();
+					win->setData(data);
+					if (owner->execView(win) == cmOK)
+					{
+						win->getData(data);
+						bool br = false;
+						auto its = new TSItem(TStringView(data->v0), nullptr);
+						auto itsn = its;
+						if (strlen(data->v1) > 0) { itsn->next = new TSItem(TStringView(data->v1), nullptr); itsn = itsn->next; }
+						else { br = true; }
+						if ((strlen(data->v2) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v2), nullptr); itsn = itsn->next; }
+						else { br = true; }
+						if ((strlen(data->v3) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v3), nullptr); itsn = itsn->next; }
+						else { br = true; }
+						if ((strlen(data->v4) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v4), nullptr); itsn = itsn->next; }
+						else { br = true; }
+						if ((strlen(data->v5) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v5), nullptr); itsn = itsn->next; }
+						else { br = true; }
+						if ((strlen(data->v6) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v6), nullptr); itsn = itsn->next; }
+						else { br = true; }
+						if ((strlen(data->v7) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v7), nullptr); itsn = itsn->next; }
+						else { br = true; }
+						if ((strlen(data->v8) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v8), nullptr); itsn = itsn->next; }
+						else { br = true; }
+						if ((strlen(data->v9) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v9), nullptr); itsn = itsn->next; }
+						else { br = true; }
+						if ((strlen(data->v10) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v0), nullptr); itsn = itsn->next; }
+						else { br = true; }
+						if ((strlen(data->v11) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v11), nullptr); itsn = itsn->next; }
+						else { br = true; }
+						if ((strlen(data->v12) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v12), nullptr); itsn = itsn->next; }
+						else { br = true; }
+						if ((strlen(data->v13) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v13), nullptr); itsn = itsn->next; }
+						else { br = true; }
+						if ((strlen(data->v14) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v14), nullptr); itsn = itsn->next; }
+						else { br = true; }
+						if ((strlen(data->v15) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v15), nullptr); }
+
+						cb->recreateItems(its);
+
+						cb->setClassName(data->class_name);
+						cb->setVarName(data->var_name);
+						cb->drawView();
+						DialSaved = false;
+					}
+					delete data;
+					destroy(win);
 					clearEvent(event);
 					break;
 				}
@@ -355,6 +478,7 @@ void TTrialDialog::handleEvent(TEvent& event)
 					forEach(&unselected, 0);
 					v->setSelected(true);
 					insert(v);
+					DialSaved = false;
 					clearEvent(event);
 					break;
 				}
@@ -384,6 +508,7 @@ void TTrialDialog::handleEvent(TEvent& event)
 				{
 					//-- добавление нового TCheckBoxes
 					insert(new TTrialCheckBoxes(TRect(size.x - 15, size.y - 4, size.x - 2, size.y - 2), new TSItem(txt_btnCheck1, new TSItem(txt_btnCheck2, nullptr))));
+					DialSaved = false;
 					clearEvent(event);
 					break;
 				}
@@ -413,6 +538,7 @@ void TTrialDialog::handleEvent(TEvent& event)
 				{
 					//-- добавление нового TCheckBoxes
 					insert(new TTrialRadioButtons(TRect(size.x - 15, size.y - 4, size.x - 2, size.y - 2), new TSItem(txt_btnCheck1, new TSItem(txt_btnCheck2, nullptr))));
+					DialSaved = false;
 					clearEvent(event);
 					break;
 				}
@@ -442,6 +568,7 @@ void TTrialDialog::handleEvent(TEvent& event)
 				{
 					//-- добавление нового TListBox
 					insert(new TTrialListBox(TRect(size.x - 15, size.y - 4, size.x - 2, size.y - 2), 1, 0));
+					DialSaved = false;
 					clearEvent(event);
 					break;
 				}
@@ -449,13 +576,18 @@ void TTrialDialog::handleEvent(TEvent& event)
 				{
 					//-- добавление нового TListBox
 					insert(new TTrialListBox(TRect(size.x - 15, size.y - 4, size.x - 2, size.y - 2), 1, 0));
+					DialSaved = false;
 					clearEvent(event);
 					break;
 				}
 			case cm_ed_InsertMemo:
 				{
-					//-- добавление нового TListBox
-					//insert(new TTrialMemo(TRect(size.x - 15, size.y - 4, size.x - 2, size.y - 2), 1, 0));
+					//-- добавление нового TInputLine
+					auto v = new TMemo(TRect(size.x - 15, size.y - 4, size.x - 2, size.y - 2), nullptr, nullptr, nullptr, 15);
+					forEach(&unselected, 0);
+					//v->setSelected(true);
+					insert(v);
+					DialSaved = false;
 					clearEvent(event);
 					break;
 				}
@@ -575,7 +707,7 @@ bool TTrialDialog::valid(ushort command)
 	return rslt;
 }
 
-void TTrialDialog::GenCode(ofstream *res)
+void TTrialDialog::GenCode(ofstream* res)
 {
 	char tmp[StringMaxLen];
 	memset(tmp, 0x0, StringMaxLen);

@@ -6,7 +6,12 @@
 #define Uses_TCheckBoxes
 #define Uses_TStreamable
 #define Uses_TStreamableClass
+#define Uses_ipstream
+#define Uses_opstream
+#define Uses_ofpstream
 #define Uses_TEvent
+#define Uses_TCluster
+#define Uses_TStringCollection
 #include <tvision/tv.h>
 #include "wcheckboxes.h"
 
@@ -35,7 +40,7 @@ class TTrialCheckBoxes : public TWrapCheckBoxes
     virtual void handleEvent(TEvent& event);
 
     virtual void setState(ushort aState, Boolean enable);
-    void genCode(char *val);
+    void genCode(void *val);
 
     //-- получение значений
     char* getVarName();

@@ -6,7 +6,7 @@ TCustomDialog(54, 14, txt_PropertyStaticText),
 TWindowInit(&TDialog::initFrame)
 {
     insert(new TLabel(TRect(1, 1, 7, 2), txt_pd_Text, text));
-    insert(new TStaticText(TRect(8, 8, 23, 9), txt_pd_ClassName));
+    insert(new TStaticText(TRect(2, 8, 23, 9), txt_pd_ClassName));
 
     sbv = new TScrollBar(TRect(51, 2, 52, 6));
     insert(sbv);

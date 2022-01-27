@@ -39,49 +39,41 @@ void unselected(TView *obj, void *)
 
 void generateCode(TView *obj, void *res)
 {
-    //char s[CodeMaxLen];
-   //memset(s, 0x0, CodeMaxLen);
     auto nam = obj->name;
     if (dynamic_cast<TTrialStaticText*> (obj))
     {
         TTrialStaticText *to = dynamic_cast<TTrialStaticText*> (obj);
         to->genCode(res);
-        //strncat((char *) res, s, strlen(s));
         return;
     }
     if (dynamic_cast<TTrialButton*> (obj))
     {
         TTrialButton *to = dynamic_cast<TTrialButton*> (obj);
         to->genCode(res);
-       // strncat((char *) res, s, strlen(s));
         return;
     }
     if (dynamic_cast<TTrialInputLine*> (obj))
     {
         TTrialInputLine *to = dynamic_cast<TTrialInputLine*> (obj);
         to->genCode(res);
-        //strncat((char *) res, s, strlen(s));
         return;
     }
     if (dynamic_cast<TTrialCheckBoxes*> (obj))
     {
         TTrialCheckBoxes *to = dynamic_cast<TTrialCheckBoxes*> (obj);
-        //to->genCode(s);
-       // strncat((char *) res, s, strlen(s));
+        to->genCode(res);
         return;
     }
     if (dynamic_cast<TTrialListBox*> (obj))
     {
         TTrialListBox *to = dynamic_cast<TTrialListBox*> (obj);
         //to->genCode(s);
-        //strncat((char *) res, s, strlen(s));
         return;
     }
     if (dynamic_cast<TTrialRadioButtons*> (obj))
     {
         TTrialRadioButtons *to = dynamic_cast<TTrialRadioButtons*> (obj);
-        //to->genCode(s);
-        //strncat((char *) res, s, strlen(s));
+        to->genCode(res);
         return;
     }
     //if (dynamic_cast<TTrialMemo*> (obj))

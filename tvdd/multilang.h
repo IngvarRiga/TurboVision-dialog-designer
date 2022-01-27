@@ -37,6 +37,7 @@
 #define txt_btnCheck1 "Выбор1"
 #define txt_btnCheck2 "Выбор2"
 
+#define txt_ColorTestDlgCaption "Тест цвета"
 #define txt_DefaultNewDialogCaption "Новое диалоговое окно"
 #define txt_DlgInsertSubMenu "Вставить элемент"
 #define txt_SaveDialogQuest "Сохранить созданный диалог?"
@@ -48,8 +49,10 @@
 
 #define txt_pd_ClassName "Имя класса"
 #define txt_pd_VariableName "Имя переменной"
+#define txt_pd_StringLen "Длина строки"
 #define txt_pd_BaseClassName "Имя базового класса"
 #define txt_pd_DialogCaption "Заголовок окна"
+#define txt_pd_CaptionText "Текст надписи"
 #define txt_pd_Text "Текст"
 #define txt_pd_ValuesList "Список значений"
 
@@ -103,6 +106,7 @@
 #define txt_btnCheck1 "Check1"
 #define txt_btnCheck2 "Check2"
 
+#define txt_ColorTestDlgCaption "Color test"
 #define txt_DefaultNewDialogCaption "New dialog window"
 #define txt_DlgInsertSubMenu "Insert gadget"
 #define txt_SaveDialogQuest "Save dialog?"
@@ -114,8 +118,10 @@
 
 #define txt_pd_ClassName "Class name"
 #define txt_pd_VariableName "Variable name"
+#define txt_pd_StringLen "String length"
 #define txt_pd_BaseClassName "Base class name"
 #define txt_pd_DialogCaption "Caption"
+#define txt_pd_CaptionText "Caption"
 #define txt_pd_Text "Text"
 #define txt_pd_ValuesList "Values list"
 
