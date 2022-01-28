@@ -53,7 +53,7 @@ void TWinExtMenu::handleEvent(TEvent& event)
             TMenuBox *contextMenu = new TMenuBox(TRect(0, 0, 0, 0),
                     new TMenu(
                     * new TMenuItem(txt_PropertyDialogCaption, cmOption_Dialog, kbAlt1, hcNoContext, "Ctrl+Enter") +
-                    (TMenuItem &) (
+                    /*(TMenuItem &) (
                     * new TSubMenu(txt_DlgInsertSubMenu, kbNoKey)+
                     * new TMenuItem(txt_mnu_StaticText, cm_ed_InsertStaticText, kbNoKey) +
                     * new TMenuItem(txt_mnu_Button, cm_ed_InsertButton, kbNoKey) +
@@ -62,7 +62,7 @@ void TWinExtMenu::handleEvent(TEvent& event)
                     * new TMenuItem(txt_mnu_CheckBoxes, cm_ed_InsertCheckBoxes, kbNoKey) +
                     * new TMenuItem(txt_mnu_ListBox, cm_ed_InsertListBox, kbNoKey) +
                     * new TMenuItem(txt_mnu_Memo, cm_ed_InsertMemo, kbNoKey)
-                    ) +
+                    ) +*/
                     newLine()+
                     * new TMenuItem(txt_mnu_DlgPropShowPosition, cmDialogPosOnOff, kbAlt2, hcNoContext, "Alt+2") +
                     * new TMenuItem(txt_mnu_DlgPropShowSize, cmDialogSizeOnOff, kbAlt3, hcNoContext, "Alt+3") +

@@ -19,6 +19,7 @@
 #include "ttrialcheckboxes.h"
 #include "ttrialradiobuttons.h"
 #include "ttriallistbox.h"
+#include "ttrialmemo.h"
 #include "tstatictextproperties.h"
 #include "tinputlineproperties.h"
 #include "tbuttonproperties.h"
@@ -108,7 +109,7 @@ void TTrialDialog::editDialogProperties()
 
 void TTrialDialog::close()
 {
-	ushort res;
+	ushort res = cmCancel;
 	if (!DialSaved)
 	{
 		res = messageBox(txt_SaveDialogQuest, mfConfirmation | mfYesNoCancel);
@@ -136,6 +137,32 @@ void TTrialDialog::handleEvent(TEvent& event)
 	{
 		switch (event.message.command)
 		{
+			case cmPopupMenu_Dialog:
+				{
+					TPoint tmp;
+					tmp.x = ((TPoint*)event.message.infoPtr)->x;
+					tmp.y = ((TPoint*)event.message.infoPtr)->y;
+					clearEvent(event);
+
+					auto contextMenu = dialogMenu();
+					//-- смещаем левую верхнюю точку меню в точку клика мышкой на экране
+					auto b = contextMenu->getBounds();
+					auto dx = b.b.x - b.a.x;
+					auto dy = b.b.y - b.a.y;
+					b.a.x = tmp.x;
+					b.a.y = tmp.y - 1;
+					b.b.x = b.a.x + dx;
+					b.b.y = b.a.y + dy;
+					contextMenu->setBounds(b);
+					//---------------------------------------------------------------------
+					auto res = this->owner->execView(contextMenu);
+					destroy(contextMenu);
+					//-- рассылаем команды
+					if (res != 0)
+						//-- в качестве параметра передаем точку клика мышки, так можно будет указывать точное место вставки компонента
+						message(owner, evBroadcast, res, &tmp);
+					break;
+				}
 			case cmOption_Dialog:
 				{
 					//-- вызов редактора свойств диалога
@@ -299,6 +326,12 @@ void TTrialDialog::handleEvent(TEvent& event)
 					clearEvent(event);
 					break;
 				}
+			case cmOption_Memo:
+				{
+					//-- вызов настройки
+					clearEvent(event);
+					break;
+				}
 			case cmOption_RadioButtons:
 				{
 					//-- вызов настройки TRadioButtons
@@ -409,13 +442,17 @@ void TTrialDialog::handleEvent(TEvent& event)
 				}
 			case cm_ed_InsertStaticText:
 				{
+					TPoint tmp;
+					tmp.x = ((TPoint*)event.message.infoPtr)->x;
+					tmp.y = ((TPoint*)event.message.infoPtr)->y;
+					clearEvent(event);
+					auto lc = makeLocal(tmp);
 					//-- добавление нового TStaticText
-					auto v = new TTrialStaticText(TRect(size.x - 13, size.y - 3, size.x - 3, size.y - 2), txt_btnStaticText);
+					auto v = new TTrialStaticText(TRect(lc.x, lc.y, lc.x + 10, lc.y + 1), txt_btnStaticText);
 					forEach(&unselected, 0);
 					v->setSelected(true);
 					insert(v);
 					DialSaved = false;
-					clearEvent(event);
 					break;
 				}
 			case cm_drp_DropStaticText:
@@ -441,13 +478,17 @@ void TTrialDialog::handleEvent(TEvent& event)
 				}
 			case cm_ed_InsertInputLine:
 				{
+					TPoint tmp;
+					tmp.x = ((TPoint*)event.message.infoPtr)->x;
+					tmp.y = ((TPoint*)event.message.infoPtr)->y;
+					clearEvent(event);
+					auto lc = makeLocal(tmp);
 					//-- добавление нового TInputLine
-					auto v = new TTrialInputLine(TRect(size.x - 13, size.y - 3, size.x - 3, size.y - 2), 11);
+					auto v = new TTrialInputLine(TRect(lc.x, lc.y, lc.x + 10, lc.y + 1), 255);
 					forEach(&unselected, 0);
 					v->setSelected(true);
 					insert(v);
 					DialSaved = false;
-					clearEvent(event);
 					break;
 				}
 			case cm_drp_DropInputLine:
@@ -473,13 +514,17 @@ void TTrialDialog::handleEvent(TEvent& event)
 				}
 			case cm_ed_InsertButton:
 				{
+					TPoint tmp;
+					tmp.x = ((TPoint*)event.message.infoPtr)->x;
+					tmp.y = ((TPoint*)event.message.infoPtr)->y;
+					clearEvent(event);
+					auto lc = makeLocal(tmp);
 					//-- добавление нового TInputLine
-					auto v = new TTrialButton(TRect(size.x - 13, size.y - 4, size.x - 2, size.y - 2), txt_btnButton, -1);
+					auto v = new TTrialButton(TRect(lc.x, lc.y, lc.x + 10, lc.y + 2), txt_btnButton, -1);
 					forEach(&unselected, 0);
 					v->setSelected(true);
 					insert(v);
 					DialSaved = false;
-					clearEvent(event);
 					break;
 				}
 			case cm_drp_DropButton:
@@ -506,10 +551,14 @@ void TTrialDialog::handleEvent(TEvent& event)
 				}
 			case cm_ed_InsertCheckBoxes:
 				{
-					//-- добавление нового TCheckBoxes
-					insert(new TTrialCheckBoxes(TRect(size.x - 15, size.y - 4, size.x - 2, size.y - 2), new TSItem(txt_btnCheck1, new TSItem(txt_btnCheck2, nullptr))));
-					DialSaved = false;
+					TPoint tmp;
+					tmp.x = ((TPoint*)event.message.infoPtr)->x;
+					tmp.y = ((TPoint*)event.message.infoPtr)->y;
 					clearEvent(event);
+					auto lc = makeLocal(tmp);
+					//-- добавление нового TCheckBoxes
+					insert(new TTrialCheckBoxes(TRect(lc.x, lc.y, lc.x + 12, lc.y + 2), new TSItem(txt_btnCheck1, new TSItem(txt_btnCheck2, nullptr))));
+					DialSaved = false;
 					break;
 				}
 			case cm_drp_DropCheckBoxes:
@@ -536,10 +585,15 @@ void TTrialDialog::handleEvent(TEvent& event)
 				}
 			case cm_ed_InsertRadioButtons:
 				{
-					//-- добавление нового TCheckBoxes
-					insert(new TTrialRadioButtons(TRect(size.x - 15, size.y - 4, size.x - 2, size.y - 2), new TSItem(txt_btnCheck1, new TSItem(txt_btnCheck2, nullptr))));
-					DialSaved = false;
+					TPoint tmp;
+					tmp.x = ((TPoint*)event.message.infoPtr)->x;
+					tmp.y = ((TPoint*)event.message.infoPtr)->y;
 					clearEvent(event);
+					auto lc = makeLocal(tmp);
+
+					//-- добавление нового TCheckBoxes
+					insert(new TTrialRadioButtons(TRect(lc.x, lc.y, lc.x +12, lc.y + 2), new TSItem(txt_btnCheck1, new TSItem(txt_btnCheck2, nullptr))));
+					DialSaved = false;
 					break;
 				}
 			case cm_drp_DropRadioButtons:
@@ -566,10 +620,15 @@ void TTrialDialog::handleEvent(TEvent& event)
 				}
 			case cm_ed_InsertListBox:
 				{
-					//-- добавление нового TListBox
-					insert(new TTrialListBox(TRect(size.x - 15, size.y - 4, size.x - 2, size.y - 2), 1, 0));
-					DialSaved = false;
+					TPoint tmp;
+					tmp.x = ((TPoint*)event.message.infoPtr)->x;
+					tmp.y = ((TPoint*)event.message.infoPtr)->y;
 					clearEvent(event);
+					auto lc = makeLocal(tmp);
+
+					//-- добавление нового TListBox
+					insert(new TTrialListBox(TRect(lc.x, lc.y, lc.x + 10, lc.y + 3), 1, 0));
+					DialSaved = false;
 					break;
 				}
 			case cm_drp_DropListBox:
@@ -582,23 +641,41 @@ void TTrialDialog::handleEvent(TEvent& event)
 				}
 			case cm_ed_InsertMemo:
 				{
+					TPoint tmp;
+					tmp.x = ((TPoint*)event.message.infoPtr)->x;
+					tmp.y = ((TPoint*)event.message.infoPtr)->y;
+					clearEvent(event);
+					auto lc = makeLocal(tmp);
 					//-- добавление нового TInputLine
-					auto v = new TMemo(TRect(size.x - 15, size.y - 4, size.x - 2, size.y - 2), nullptr, nullptr, nullptr, 15);
+					auto v = new TTrialMemo(TRect(lc.x, lc.y, lc.x + 10, lc.y + 3), nullptr, nullptr, nullptr, 255);
 					forEach(&unselected, 0);
-					//v->setSelected(true);
+					v->setSelected(true);
 					insert(v);
 					DialSaved = false;
-					clearEvent(event);
 					break;
 				}
 			case cm_drp_DropMemo:
 				{
-					//-- добавление нового TListBox
-					//insert(new TTrialMemo(TRect(size.x - 15, size.y - 4, size.x - 2, size.y - 2), 1, 0));
-					clearEvent(event);
-					break;
-				}
+					//TPoint tmp;
+					//tmp.x = ((TPoint*)event.message.infoPtr)->x;
+					//tmp.y = ((TPoint*)event.message.infoPtr)->y;
+					//clearEvent(event);
 
+					//auto lc = makeLocal(tmp);
+					//auto b = getExtent();
+					////-- если Drop происходит ВНЕ границ окна - просто игнорируем событие и все
+					////-- чтобы не вставлять то, что не увидится
+					//if ((lc.x >= 1) && (lc.y >= 1) && (lc.x < b.b.x - 1) && (lc.y < b.b.y - 1))
+					//{
+					//	//-- добавление нового TStaticText
+					//	auto v = new TTrialMemo(TRect(lc.x, lc.y, lc.x + 12, lc.y + 2), nullptr, nullptr, nullptr, 255);
+					//	forEach(&unselected, 0);
+					//	v->setSelected(true);
+					//	insert(v);
+					//	DialSaved = false;
+					//}
+					//break;
+				}
 			case cmDialogSaveToRes:
 				{
 					clearEvent(event);
@@ -613,15 +690,6 @@ void TTrialDialog::handleEvent(TEvent& event)
 				}
 		}
 	}
-	//if (event.what | evMouse)
-	//{
-	//	//-- вызов окна редактирования свойств объекта
-	//	if ((event.mouse.buttons == mbLeftButton) && (event.mouse.eventFlags == meDoubleClick))
-	//	{
-	//		editDialogProperties();
-	//		clearEvent(event);
-	//	}
-	//}
 	//-- переопределяем действия клавиш в режиме разработки
 	if (event.what == evKeyDown)
 	{

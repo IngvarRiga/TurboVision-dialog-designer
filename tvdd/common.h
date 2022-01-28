@@ -5,6 +5,11 @@
 #define Uses_TPoint
 #define Uses_TEvent
 #define Uses_TGroup
+#define Uses_TMenu
+#define Uses_TMenuBox
+#define Uses_TMenuItem
+#define Uses_TSubMenu
+
 #include <tvision/tv.h>
 
 //-- значение имени переменной по умолчанию
@@ -15,7 +20,7 @@
 #define txt_TButton "TButton"
 #define txt_TCheckBoxes "TCheckBoxes"
 #define txt_TRadioButtons "TRadioButtons"
-#define txt_TSortedListBox "TSortedListBox"
+#define txt_TListBox "TListBox"
 #define txt_TMemo "TMemo"
 
 
@@ -45,11 +50,13 @@ const int cmColorTest = 10097;
 
 const int cm_test_ToolWin = 10999; //-- тестирование окна с компонентами
 
+
 const int cmDialogSizeOnOff = 10101; //-- Включение / выключение отображения размеров диалога
 const int cmDialogPosOnOff = 10102; //-- Включение / выключение отображения начальной позиции окна
 const int cmDialogPosSizeOnOff = 10103; //-- Включение / выключение отображения всех параметров окна
 const int cmDialogSaveToRes = 10104; //-- Сохранить диалог в ресурсах
 const int cmDialogGenCode = 10105; //-- Генерация исходного кода диалога
+
 
 //-- вызов диалогов редактирования параметров объектов
 const int cmOption_Dialog = 10201; //-- Вызов окна свойств диалога
@@ -59,6 +66,10 @@ const int cmOption_Button = 10204; //-- Вызов окна свойств кн�
 const int cmOption_CheckBoxes = 10205; //-- Вызов окна свойств списка check boxes
 const int cmOption_RadioButtons = 10206; //-- Вызов окна свойств списка RadioButtons
 const int cmOption_ListBox = 10207; //-- Вызов окна свойств списка ListBox
+const int cmOption_Memo = 10208; //-- Вызов окна свойств TMemo
+
+
+const int cmPopupMenu_Dialog = 10301; //-- Вызов контекстного меню диалога
 
 //-- вставка новых объектов
 //-- Стандартные объекты TurboVision 2.x / Standard objects
@@ -93,11 +104,16 @@ const int cm_ColorFieldClicked = 60001; //-- произошел клик по ц
 
 //-- Функция реализующая просчет перемещения или изменения размеров отображаемых объектов
 //-- наследников от TView
-void DragObject(TView *obj, TEvent event);
+void DragObject(TView* obj, TEvent event);
 //-- Снять признак выбранности со всех компонентов
-void unselected(TView *obj, void *);
+void unselected(TView* obj, void*);
 //-- Генерировать исходный код для всех компонентов
-void generateCode(TView *obj, void *val);
+void generateCode(TView* obj, void* val);
+/// <summary>
+/// Создание контекстного меню редактируемого диалогового окна
+/// </summary>
+/// <returns></returns>
+TMenuBox* dialogMenu();
 //-- Удалить выбранный элемент 
 //void deleteSelected(TView *obj, void *val);
 

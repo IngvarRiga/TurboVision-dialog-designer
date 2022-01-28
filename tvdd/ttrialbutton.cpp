@@ -108,12 +108,12 @@ void TTrialButton::genCode(void* val)
 	auto r = getBounds();
 	if (usedVarName)
 	{
-		*res << "\n auto " << var_name << " = new TButton(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), \"" << getCaption() << "\", -1, bfDefault)";
-		*res << "\n insert(" << var_name << ");\n";
+		*res << "\n " << var_name << " = new TButton(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), \"" << getCaption() << "\", -1, bfDefault)";
+		*res << "\n insert(" << var_name << ");";
 	}
 	else
 	{
-		*res << "\n insert(new TButton(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), \"" << getCaption() << "\", -1, bfDefault));\n";
+		*res << "\n insert(new TButton(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), \"" << getCaption() << "\", -1, bfDefault));";
 	}
 }
 

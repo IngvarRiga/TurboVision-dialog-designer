@@ -65,7 +65,7 @@ void TTrialRadioButtons::genCode(void *val)
 
     //-- генерируем код компонента
     auto r = getBounds();
-    *res << "\n auto " << var_name << " = new TRadioButtons(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), \n";
+    *res << "\n " << var_name << " = new TRadioButtons(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), \n";
     auto itm = getItems();
     auto cnt = itm->getCount();
     for (int i = 0; i < (cnt - 1); i++)
@@ -78,8 +78,8 @@ void TTrialRadioButtons::genCode(void *val)
     {
         *res << ")";
     }
-    *res << ");\n";
-    *res << "\n insert(" << var_name << ");\n";
+    *res << ");";
+    *res << "\n insert(" << var_name << ");";
 }
 char* TTrialRadioButtons::getVarName()
 {

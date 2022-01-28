@@ -1,6 +1,6 @@
 #include "ttrialstatictext.h"
 #include "common.h"
-
+#include <tvision/tkeys.h>
 
 const char * const TTrialStaticText::name = "TTrialStaticText";
 
@@ -39,6 +39,37 @@ void TTrialStaticText::handleEvent(TEvent& event)
             message(owner, evBroadcast, cmOption_StaticText, this);
             clearEvent(event);
         }
+        //if ((event.what == evMouseUp) && (event.mouse.buttons == mbRightButton))
+        //{
+        //    //-- создание контекстного меню диалога
+        //    TMenuBox* contextMenu = new TMenuBox(TRect(0, 0, 0, 0),
+        //                                         new TMenu(
+        //                                             *new TMenuItem("Настройка TST", cmOption_Dialog, -1, hcNoContext, "Ctrl+Enter") +
+        //                                             *new TMenuItem("Удалить", cm_ed_InsertMemo, kbCtrlDel)), nullptr);
+
+        //    TPoint tmp;
+        //    tmp.x = event.mouse.where.x;
+        //    tmp.y = event.mouse.where.y;
+        //    clearEvent(event);
+
+        //    //-- смещаем левую верхнюю точку меню в точку клика мышкой на экране
+        //    auto b = contextMenu->getBounds();
+        //    auto dx = b.b.x - b.a.x;
+        //    auto dy = b.b.y - b.a.y;
+        //    b.a.x = tmp.x;
+        //    b.a.y = tmp.y - 1;
+        //    b.b.x = b.a.x + dx;
+        //    b.b.y = b.a.y + dy;
+        //    contextMenu->setBounds(b);
+        //    //---------------------------------------------------------------------
+        //    auto res = this->owner->owner->execView(contextMenu);
+        //    destroy(contextMenu);
+        //    //-- рассылаем команды
+        //    if (res != 0)
+        //        //-- в качестве параметра передаем точку клика мышки, так можно будет указывать точное место вставки компонента
+        //        message(owner, evBroadcast, res, &tmp);
+
+        //}
         if (event.what == evMouseDown)
         {
             owner->forEach(&unselected, 0);
@@ -104,12 +135,12 @@ void TTrialStaticText::genCode(void *val)
     auto r = getBounds();
     if (usedVarName)
     {
-        *res << "\n auto " << var_name << " = new " << class_name << "(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), \"" << text << "\");";
-        *res << "\n insert(" << var_name << ");\n";
+        *res << "\n " << var_name << " = new " << class_name << "(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), \"" << text << "\");";
+        *res << "\n insert(" << var_name << ");";
     }
     else
     {
-        *res << "\n insert(new " << class_name << "(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), \"" << text << "\"));\n";
+        *res << "\n insert(new " << class_name << "(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), \"" << text << "\"));";
     }
 }
 

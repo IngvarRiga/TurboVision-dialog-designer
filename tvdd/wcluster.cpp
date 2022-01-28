@@ -13,22 +13,22 @@ TWrapCluster::TWrapCluster(const TRect& bounds, TSItem* aStrings, bool click) no
 	options |= ofSelectable | ofFirstClick | ofPreProcess | ofPostProcess;
 
 	recreateItems(aStrings);
-	/*
-	short i = 0;
-	TSItem* p;
-	for (p = aStrings; p != 0; p = p->next)
-		i++;
+	
+	//short i = 0;
+	//TSItem* p;
+	//for (p = aStrings; p != 0; p = p->next)
+	//	i++;
 
-	strings = new TStringCollection(i, 0);
+	//strings = new TStringCollection(i, 0);
 
-	while (aStrings != 0)
-	{
-		p = aStrings;
-		strings->atInsert(strings->getCount(), newStr(aStrings->value));
-		aStrings = aStrings->next;
-		delete p;
-	}
-	*/
+	//while (aStrings != 0)
+	//{
+	//	p = aStrings;
+	//	strings->atInsert(strings->getCount(), newStr(aStrings->value));
+	//	aStrings = aStrings->next;
+	//	delete p;
+	//}
+	
 	setCursor(2, 0);
 	showCursor();
 	enableMask = 0xFFFFFFFFL;
@@ -503,6 +503,7 @@ TStreamableClass RWrapCluster(
 );
 
 __link(RView)
+__link(RStringCollection)
 __link(RWrapCluster)
 
 #endif

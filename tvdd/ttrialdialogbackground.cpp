@@ -40,6 +40,16 @@ void TTrialDialogBackground::handleEvent(TEvent& event)
             message(owner, evBroadcast, cmOption_Dialog, nullptr);
             clearEvent(event);
         }
+
+        if (event.what | evMouseUp)
+        {
+            //-- вызов контекстного меню для диалога
+            if (event.mouse.buttons == mbRightButton)
+            {
+                message(owner, evBroadcast, cmPopupMenu_Dialog, &event.mouse.where);
+            }
+        }
+
     }
 
     //-- вызываем унаследованный метод обработки сообщений

@@ -1,5 +1,4 @@
 #include "ttriallistbox.h"
-#include "common.h"
 
 const char * const TTrialListBox::name = "TTrialListBox";
 
@@ -11,6 +10,10 @@ TListBox( bounds, aNumCols, aScrollBar)
     //-- ограничиваем перемещение внутри окна его границами
     dragMode |= dmLimitAll;
     Selected = false;
+    memset(var_name, 0x0, StringMaxLen);
+    memset(class_name, 0x0, StringMaxLen);
+    strncpy(var_name, txt_control, strlen(txt_control));
+    strncpy(class_name, txt_TListBox, strlen(txt_TListBox));
 
 }
 
@@ -43,9 +46,22 @@ void TTrialListBox::handleEvent(TEvent& event)
         {
             owner->forEach(&unselected, 0);
             setState(sfSelected, true);
-            select();
             DragObject(this, event);
             clearEvent(event);
+        }
+    }
+    if (Selected)
+    {
+        //-- переопределяем действия клавиш в режиме разработки
+        if (event.what == evKeyDown)
+        {
+            //-- обработка нажатий служебных клавиш
+            if (event.keyDown.keyCode == kbCtrlDel)
+            {
+                clearEvent(event);
+                destroy(this);
+                return;
+            }
         }
     }
 
@@ -75,12 +91,15 @@ void TTrialListBox::setSelected(bool val)
     }
 }
 
-void TTrialListBox::genCode(char *val)
+void TTrialListBox::genCode(void *val)
 {
+    ofstream* res = (ofstream*)val;
+    auto r = getBounds();
+
     //-- генерируем код компонента
-    //        auto t="\n insert(new TStaticText(TRect(";
-    //        strcat(s,t,strlen(t));
-    //        auto r = to->getBounds();
+    *res << "\n " << var_name << " = new " << class_name << "(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), 1, nullptr );";
+    *res << "\n insert(" << var_name << ");";
+
 }
 
 TStreamable *TTrialListBox::build()
@@ -92,12 +111,16 @@ void TTrialListBox::write(opstream& os)
 {
 
     TListBox::write(os);
+    os.writeBytes((void*)var_name, StringMaxLen);
+    os.writeBytes((void*)class_name, StringMaxLen);
     os << eventMask << options << dragMode;
 }
 
 void *TTrialListBox::read(ipstream& is)
 {
     TListBox::read(is);
+    is.readBytes((void*)var_name, StringMaxLen);
+    is.readBytes((void*)class_name, StringMaxLen);
     is >> eventMask >> options >> dragMode;
     return this;
 }

@@ -41,11 +41,11 @@ TComponentDialog::TComponentDialog() :
 	//auto sb = new TScrollBar(TRect(5, 6, 6, 9));
 	//insert(sb);
 
-	//auto lst = new TSortedListBox(TRect(2, 6, 6, 9), 1, sb);
+	//auto lst = new TListBox(TRect(2, 6, 6, 9), 1, sb);
 	//insert(lst);
 
 #pragma region TMemo
-	/*//-- полосы склоллинга не делаем
+	//-- полосы склоллинга не делаем
 	//auto sbv = new TScrollBar(TRect(18, 19, 19, 21));
 	//insert(sbv);
 
@@ -53,17 +53,17 @@ TComponentDialog::TComponentDialog() :
 	//insert(sbh);
 
 	//auto text = new TMemo(TRect(2, 19, 18, 21), (TScrollBar*)sbh, (TScrollBar*)sbv, 0, 255);
-	auto text = new TMemo(TRect(8, 8, 13, 9), 0, 0, 0, 255);
-	rb->setState(sfDisabled, true);
+	//auto text = new TWrapMemo(TRect(8, 8, 13, 9), nullptr, nullptr, nullptr, 255, true);
+	//rb->setState(sfDisabled, true);
 
-	auto rec = new memInfo();
-	memset(rec->buffer, 0x0, StringMaxLen);
-	rec->length = strlen(memTxt);
-	strncpy(rec->buffer, memTxt, rec->length);
-	text->setData(rec);
+	//auto rec = new memInfo();
+	//memset(rec->buffer, 0x0, StringMaxLen);
+	//rec->length = strlen(memTxt);
+	//strncpy(rec->buffer, memTxt, rec->length);
+	//text->setData(rec);
 
-	insert(text);
-	*/
+	//insert(text);
+	
 #pragma endregion
 
 

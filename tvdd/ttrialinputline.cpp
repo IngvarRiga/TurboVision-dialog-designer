@@ -60,20 +60,20 @@ void TTrialInputLine::sizeLimits(TPoint& min, TPoint& max)
 	//-- строка ввода занимает только одну строчку!
 	max.y = 1;
 }
-
-bool TTrialInputLine::isSelected()
-{
-	return Selected;
-}
-
-void TTrialInputLine::setSelected(bool val)
-{
-	if (Selected != val)
-	{
-		Selected = val;
-		drawView();
-	}
-}
+//
+//bool TTrialInputLine::isSelected()
+//{
+//	return Selected;
+//}
+//
+//void TTrialInputLine::setSelected(bool val)
+//{
+//	if (Selected != val)
+//	{
+//		Selected = val;
+//		drawView();
+//	}
+//}
 
 void TTrialInputLine::genCode(void* val)
 {
@@ -81,8 +81,8 @@ void TTrialInputLine::genCode(void* val)
 	auto r = getBounds();
 
 	//-- генерируем код компонента
-	*res << "\n auto " << var_name << " = new " << class_name << "(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), " << maxLen << ");";
-	*res << "\n insert(" << var_name << ");\n";
+	*res << "\n " << var_name << " = new " << class_name << "(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), " << maxLen << ");";
+	*res << "\n insert(" << var_name << ");";
 	
 }
 
