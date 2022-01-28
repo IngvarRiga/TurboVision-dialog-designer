@@ -6,3 +6,5 @@ MinGW_TDM-Windows
 *.obj
 Debug
 Release
+.vs/tvdd/v16/.suo
+*.db
