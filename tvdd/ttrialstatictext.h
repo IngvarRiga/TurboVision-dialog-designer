@@ -11,7 +11,12 @@
 #define Uses_TRect
 #define Uses_TGroup
 #define Uses_TText
+#define Uses_TKeys
 #include <tvision/tv.h>
+#include <vector>
+#include <sstream>
+#include <iostream>
+
 #include "wstatictext.h"
 
 class TTrialStaticText : public TWrapStaticText
@@ -51,6 +56,7 @@ protected:
 	virtual void write(opstream&);
 	virtual void* read(ipstream&);
 
+	std::vector<std::string> split(const std::string& s, char delim);
 private:
 	virtual const char* streamableName() const
 	{

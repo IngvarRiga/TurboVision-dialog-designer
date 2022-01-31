@@ -116,7 +116,7 @@ void TWrapStaticText::setSelected(bool val)
 	}
 }
 
-void TWrapStaticText::setCaption(char* val)
+void TWrapStaticText::setCaption(const char* val)
 {
 	memset(text, 0x0, StringMaxLen);
 	strncpy(text, val, StringMaxLen);

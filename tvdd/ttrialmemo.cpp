@@ -1,5 +1,6 @@
 #include "ttrialmemo.h"
 #include "common.h"
+#include "multilang.h"
 
 const char* const TTrialMemo::name = "TTrialMemo";
 
@@ -26,12 +27,53 @@ void TTrialMemo::handleEvent(TEvent& event)
 {
 	if (event.what | evMouse)
 	{
+		message(owner, evBroadcast, cm_DisableCursorPaint, 0);
+
 		//-- вызов окна редактирования свойств объекта
 		if ((event.mouse.buttons == mbLeftButton) && (event.mouse.eventFlags == meDoubleClick))
 		{
 			message(owner, evBroadcast, cmOption_Button, this);
 			clearEvent(event);
 		}
+		if (event.mouse.buttons == mbRightButton)
+			if (event.what == evMouseUp)
+			{
+				//-- создание контекстного меню диалога
+				TMenuBox* contextMenu = new TMenuBox(TRect(0, 0, 0, 0),
+													 new TMenu(
+														 *new TMenuItem(txt_PropertyMemo, cmOption_Memo, -1, hcNoContext) +
+														 *new TMenuItem(txt_mnu_cmDelete, cm_ed_DestroyMemo, kbCtrlDel, hcNoContext)), nullptr);
+
+				TPoint tmp;
+				tmp.x = event.mouse.where.x;
+				tmp.y = event.mouse.where.y;
+				clearEvent(event);
+
+				//-- смещаем левую верхнюю точку меню в точку клика мышкой на экране
+				auto b = contextMenu->getBounds();
+				auto dx = b.b.x - b.a.x;
+				auto dy = b.b.y - b.a.y;
+				b.a.x = tmp.x;
+				b.a.y = tmp.y - 1;
+				b.b.x = b.a.x + dx;
+				b.b.y = b.a.y + dy;
+				contextMenu->setBounds(b);
+				//---------------------------------------------------------------------
+				auto res = this->owner->owner->execView(contextMenu);
+				destroy(contextMenu);
+				if (res == cm_ed_DestroyMemo)
+				{
+					destroy(this);
+					return;
+				}
+				else
+				{
+					//-- рассылаем команды
+					if (res != 0)
+						message(owner, evBroadcast, res, this);
+				}
+			}
+
 		//-- Реакция на клик - выбор текущего объекта
 		if (event.what == evMouseDown)
 		{

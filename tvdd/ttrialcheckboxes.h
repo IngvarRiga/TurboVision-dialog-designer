@@ -12,6 +12,7 @@
 #define Uses_TEvent
 #define Uses_TCluster
 #define Uses_TStringCollection
+#define Uses_TKeys
 #include <tvision/tv.h>
 #include "wcheckboxes.h"
 

@@ -10,27 +10,28 @@
 
 void DragObject(TView* obj, TEvent event)
 {
-	TPoint MinSz, MaxSz;
-	ushort d;
-	//-- устанавливаем минимальные границы размера в размер хозяина объекта
-	//-- так, чтобы изменение размеров и перемещение не выводило объект
-	//-- за границы предка (окна в общем случае)
-	auto lims = obj->owner->getExtent();
-	lims.grow(-1, -1);
-	obj->sizeLimits(MinSz, MaxSz);
-
-	switch (event.mouse.buttons)
+	//-- перетаскивание и изменение размеров исключительно левой кнопкой мыши!
+	if (event.mouse.buttons == mbLeftButton)
 	{
-		//-- левой клавишей мыши мы перемещаем объект
-		case mbLeftButton:
-			d = dmDragMove;
-			break;
-			//-- правой клавишей мыши - изменяем его размер
-		case mbRightButton:
+		TPoint MinSz, MaxSz;
+		ushort d;
+		//-- устанавливаем минимальные границы размера в размер хозяина объекта
+		//-- так, чтобы изменение размеров и перемещение не выводило объект
+		//-- за границы предка (окна в общем случае)
+		auto lims = obj->owner->getExtent();
+		lims.grow(-1, -1);
+		obj->sizeLimits(MinSz, MaxSz);
+
+		auto r = obj->getBounds();
+		auto tx = r.b.x - r.a.x - 1;
+		auto ty = r.b.y - r.a.y - 1;
+		auto mp = obj->makeLocal(event.mouse.where);
+		
+		d = dmDragMove;
+		if ((mp.x == tx) && (mp.y == ty))
 			d = dmDragGrow;
-			break;
+		obj->dragView(event, obj->dragMode | d, lims, MinSz, MaxSz);
 	}
-	obj->dragView(event, obj->dragMode | d, lims, MinSz, MaxSz);
 }
 
 void unselected(TView* obj, void*)

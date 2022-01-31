@@ -1,0 +1,3 @@
+D:/Design/TurboVision-dialog-designer/tvdd/build/CMakeFiles/tvdd.dir
+D:/Design/TurboVision-dialog-designer/tvdd/build/CMakeFiles/ALL_BUILD.dir
+D:/Design/TurboVision-dialog-designer/tvdd/build/CMakeFiles/ZERO_CHECK.dir

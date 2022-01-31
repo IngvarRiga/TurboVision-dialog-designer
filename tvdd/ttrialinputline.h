@@ -39,8 +39,7 @@ class TTrialInputLine : public TWrapInputLine
 
     virtual void sizeLimits(TPoint& min, TPoint& max);
     virtual void handleEvent(TEvent& event);
-    //bool isSelected();
-    //void setSelected(bool val);
+
     void genCode(void *val);
 
     //-- получение значений

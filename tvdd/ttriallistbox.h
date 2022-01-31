@@ -11,9 +11,8 @@
 #define Uses_TEvent
 #define Uses_TKeys
 #include <tvision/tv.h>
-
-
 #include "common.h"
+
 class TTrialListBox : public TListBox
 {
 public:

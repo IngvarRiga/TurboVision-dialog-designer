@@ -21,6 +21,7 @@
 #define txt_mnu_AlgoritmTest "Тест алгоритмов"
 #define txt_mnu_ColorSelect "Тестирование выбора цвета"
 #define txt_mnu_ComponentsPanel "Панель компонентов"
+#define txt_mnu_cmDelete "Удалить"
 
 //-- дополнительное меню свойств диалога
 #define txt_mnu_DlgPropShowPosition "Отображать начальную позицию окна вкл/выкл"
@@ -29,10 +30,11 @@
 #define txt_cmExit "Выход"
 #define txt_cmStatusExit "~Alt+X~ Выход"
 
-#define txt_btnOk "OK"
+#define txt_btnOk "O~K~"
 #define txt_btnCancel "Отмена"
 #define txt_btnButton "Кнопка"
 #define txt_btnStaticText "StaticText"
+
 
 #define txt_btnCheck1 "Выбор1"
 #define txt_btnCheck2 "Выбор2"
@@ -41,11 +43,15 @@
 #define txt_DefaultNewDialogCaption "Новое диалоговое окно"
 #define txt_DlgInsertSubMenu "Вставить элемент"
 #define txt_SaveDialogQuest "Сохранить созданный диалог?"
-#define txt_PropertyDialogCaption "Свойства диалога"
+#define txt_PropertyDialogCaption "Свойства TDialog"
 #define txt_PropertyStaticText "Свойства TStaticText"
-#define txt_PropertyInputLIne "Свойства строки ввода"        
-#define txt_PropertyButton "Свойства кнопки"   
+#define txt_PropertyInputLIne "Свойства TInputLine"        
+#define txt_PropertyButton "Свойства TButton"   
 #define txt_PropertyCheckBoxes "Свойства TCheckBoxes"
+#define txt_PropertyMemo "Свойства TMemo"
+#define txt_PropertyListBox "Свойства TListBox"
+#define txt_PropertyAlignSize "Авторазмер по содержимому"
+
 
 #define txt_pd_ClassName "Имя класса"
 #define txt_pd_VariableName "Имя переменной"
@@ -89,6 +95,7 @@
 #define txt_mnu_AlgoritmTest "Algorithm test"
 #define txt_mnu_ColorSelect "(test) Color select"
 #define txt_mnu_ComponentsPanel "Component`s panel"
+#define txt_mnu_cmDelete "Delete"
 
 //-- additional Dialog Designer menu (click '=' on left border ) 
 #define txt_mnu_DlgPropShowPosition "Show window position on/off"
@@ -115,6 +122,9 @@
 #define txt_PropertyInputLIne "TInputLine properties"
 #define txt_PropertyButton "TButton properties"      
 #define txt_PropertyCheckBoxes "TCheckBoxes properties"
+#define txt_PropertyMemo "TMemo properties"
+#define txt_PropertyListBox "TListBox properties"
+#define txt_PropertyAlignSize "Auto resize"
 
 #define txt_pd_ClassName "Class name"
 #define txt_pd_VariableName "Variable name"

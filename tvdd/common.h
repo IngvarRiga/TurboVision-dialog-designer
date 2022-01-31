@@ -80,6 +80,15 @@ const int cm_ed_InsertCheckBoxes = 20004; //-- вставка TCheckBoxes
 const int cm_ed_InsertRadioButtons = 20005; //-- вставка TCheckBoxes
 const int cm_ed_InsertListBox = 20006; //-- вставка TListBox
 const int cm_ed_InsertMemo = 20007; //-- вставка TMemo
+
+const int cm_ed_DestroyStaticText = 20201; //-- удаление TStaticText
+const int cm_ed_DestroyInputLine = 20202; //-- удаление TInputLine
+const int cm_ed_DestroyButton = 20203; //-- удаление TButton
+const int cm_ed_DestroyCheckBoxes = 20204; //-- удаление TCheckBoxes
+const int cm_ed_DestroyRadioButtons = 20205; //-- удаление TCheckBoxes
+const int cm_ed_DestroyListBox = 20206; //-- удаление TListBox
+const int cm_ed_DestroyMemo = 20207; //-- удаление TMemo
+
 //-- "бросание компонентов при переносе"
 const int cm_drp_DropStaticText = 20101; //-- вставка TStaticText
 const int cm_drp_DropInputLine = 20102; //-- вставка TInputLine
@@ -101,6 +110,9 @@ const int cm_cmp_CreateMemo = 30007;
 
 //-- служебные команды
 const int cm_ColorFieldClicked = 60001; //-- произошел клик по цветовому полю
+const int cm_DisableCursorPaint = 60002; //-- запретить отрисовку положения мыши на подложке проектируемого диалога
+const int cm_AlignSize = 60003; //-- принудительное выравнивание размера компонента по содержимому (данный алгоритм персонален для каждого компонента в отдельности)
+
 
 //-- Функция реализующая просчет перемещения или изменения размеров отображаемых объектов
 //-- наследников от TView

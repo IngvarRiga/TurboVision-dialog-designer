@@ -13,56 +13,54 @@
 
 class TTrialDialogBackground : public TView
 {
-  public:
-    static const char * const name;
+public:
+	static const char* const name;
 
-    TTrialDialogBackground(TRect& Bounds);
+	TTrialDialogBackground(TRect& Bounds);
 
-    virtual ~TTrialDialogBackground()
-    {
-    }
+	virtual ~TTrialDialogBackground()
+	{}
 
-    TTrialDialogBackground(StreamableInit) :
-    TView(streamableInit)
-    {
-    };
-    virtual Boolean valid(ushort);
-    static TStreamable *build();
+	TTrialDialogBackground(StreamableInit) :
+		TView(streamableInit)
+	{};
+	virtual Boolean valid(ushort);
+	static TStreamable* build();
 
-    virtual const char *streamableName() const
-    {
-        return name;
-    }
-    virtual void draw();
-    virtual void handleEvent(TEvent& event);
+	virtual const char* streamableName() const
+	{
+		return name;
+	}
+	virtual void draw();
+	virtual void handleEvent(TEvent& event);
 
-  protected:
+protected:
+	TPoint currPos;
+	virtual void write(opstream&);
+	virtual void* read(ipstream&);
 
-    virtual void write(opstream&);
-    virtual void *read(ipstream&);
-
-  private:
-    bool Patterned;
+private:
+	bool Patterned;
 };
 
 inline ipstream& operator>>(ipstream& is, TTrialDialogBackground& cl)
 {
-    return is >> (TStreamable&) cl;
+	return is >> (TStreamable&)cl;
 }
 
 inline ipstream& operator>>(ipstream& is, TTrialDialogBackground*& cl)
 {
-    return is >> (void *&) cl;
+	return is >> (void*&)cl;
 }
 
 inline opstream& operator<<(opstream& os, TTrialDialogBackground& cl)
 {
-    return os << (TStreamable&) cl;
+	return os << (TStreamable&)cl;
 }
 
 inline opstream& operator<<(opstream& os, TTrialDialogBackground* cl)
 {
-    return os << (TStreamable *) cl;
+	return os << (TStreamable*)cl;
 }
 
 #endif /* TTRIALDIALOGBACKGROUND_H */

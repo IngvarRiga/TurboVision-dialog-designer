@@ -35,7 +35,7 @@ class TWrapStaticText : public TView
     virtual TPalette& getPalette() const;
     //-- Установка и чтение свойств...
     //-- отображаемый текст
-    virtual void setCaption(char *val);
+    virtual void setCaption(const char *val);
     virtual char* getCaption();
     virtual void handleEvent(TEvent& event);
     virtual TAttrPair getColor( ushort color );

@@ -16,6 +16,15 @@ TProgInit(&TPrg::initStatusLine,
 
 void TPrg::handleEvent(TEvent& event)
 {
+    if (event.what == evBroadcast)
+    {
+        if (event.message.command == cm_DisableCursorPaint)
+        {
+            message(0, evBroadcast, cm_DisableCursorPaint, 0);
+            clearEvent(event);
+            return;
+        }
+    }
     TApplication::handleEvent(event);
     if (event.what == evCommand)
     {

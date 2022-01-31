@@ -1,5 +1,6 @@
 #include "ttrialbutton.h"
 #include "common.h"
+#include "multilang.h"
 
 const char* const TTrialButton::name = "TTrialButton";
 
@@ -35,12 +36,77 @@ void TTrialButton::handleEvent(TEvent& event)
 {
 	if (event.what | evMouse)
 	{
+		message(owner, evBroadcast, cm_DisableCursorPaint, 0);
+
 		//-- вызов окна редактирования свойств объекта
 		if ((event.mouse.buttons == mbLeftButton) && (event.mouse.eventFlags == meDoubleClick))
 		{
 			message(owner, evBroadcast, cmOption_Button, this);
 			clearEvent(event);
 		}
+		if (event.mouse.buttons == mbRightButton)
+			if (event.what == evMouseUp)
+			{
+				TRect b1;
+				std::string s;
+				char* cpt;
+				int cntu = 0, cntc = 0, g = 0;
+				char tmpc[StringMaxLen];
+				memset(tmpc, 0x0, StringMaxLen);
+
+				//-- создание контекстного меню диалога
+				TMenuBox* contextMenu = new TMenuBox(TRect(0, 0, 0, 0),
+													 new TMenu(
+														 *new TMenuItem(txt_PropertyButton, cmOption_Button, -1, hcNoContext) +
+														 *new TMenuItem(txt_PropertyAlignSize, cm_AlignSize, -1, hcNoContext) +
+														 *new TMenuItem(txt_mnu_cmDelete, cm_ed_DestroyButton, kbCtrlDel, hcNoContext)), nullptr);
+
+				TPoint tmp;
+				tmp.x = event.mouse.where.x;
+				tmp.y = event.mouse.where.y;
+				clearEvent(event);
+
+				//-- смещаем левую верхнюю точку меню в точку клика мышкой на экране
+				auto b = contextMenu->getBounds();
+				auto dx = b.b.x - b.a.x;
+				auto dy = b.b.y - b.a.y;
+				b.a.x = tmp.x;
+				b.a.y = tmp.y - 1;
+				b.b.x = b.a.x + dx;
+				b.b.y = b.a.y + dy;
+				contextMenu->setBounds(b);
+				//---------------------------------------------------------------------
+				auto res = this->owner->owner->execView(contextMenu);
+				destroy(contextMenu);
+				switch (res)
+				{
+					case 0:
+						//-- нет команды
+						break;
+					case cm_ed_DestroyButton:
+						destroy(this);
+						return;
+						break;
+					case cm_AlignSize:
+						b1 = getBounds();
+						cpt = getCaption();
+						g = strlen(cpt);
+						for (int i = 0; i < g; i++)
+							if ((short)cpt[i] < 0)
+								cntu++;
+							else
+								cntc++;
+						//-- определяем количество строк
+						b1.b.x = b1.a.x + cntu / 2 + cntc + 4;
+						setBounds(b1);
+						drawView();
+						return;
+						break;
+					default:
+						message(owner, evBroadcast, res, this);
+						break;
+				}
+			}
 		if (event.what == evMouseDown)
 		{
 			owner->forEach(&unselected, 0);
