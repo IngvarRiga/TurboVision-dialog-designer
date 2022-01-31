@@ -9,3 +9,5 @@ Release
 .vs/tvdd/v16/.suo
 *.db
 .vs
+build
+/tvdd/CMakeLists.txt
