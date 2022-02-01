@@ -475,19 +475,20 @@ void TTrialDialog::handleEvent(TEvent& event)
 					TPoint tmp;
 					tmp.x = ((TPoint*)event.message.infoPtr)->x;
 					tmp.y = ((TPoint*)event.message.infoPtr)->y;
-					clearEvent(event);
 					auto lc = makeLocal(tmp);
 					auto b = getExtent();
 					//-- если Drop происходит ВНЕ границ окна - просто игнорируем событие и все
 					//-- чтобы не вставлять то, что не увидится
 					if ((lc.x >= 1) && (lc.y >= 1) && (lc.x < b.b.x - 1) && (lc.y < b.b.y - 1))
 					{
+						clearEvent(event);
 						//-- добавление нового TStaticText
 						auto v = new TTrialStaticText(TRect(lc.x, lc.y, lc.x + 10, lc.y + 1), txt_btnStaticText);
 						forEach(&unselected, 0);
 						v->setSelected(true);
 						insert(v);
 						DialSaved = false;
+						this->focus();
 					}
 					break;
 				}
@@ -499,7 +500,7 @@ void TTrialDialog::handleEvent(TEvent& event)
 					clearEvent(event);
 					auto lc = makeLocal(tmp);
 					//-- добавление нового TInputLine
-					auto v = new TTrialInputLine(TRect(lc.x, lc.y, lc.x + 10, lc.y + 1), 255);
+					auto v = new TTrialInputLine(TRect(lc.x, lc.y, lc.x + 12, lc.y + 1), 255);
 					forEach(&unselected, 0);
 					v->setSelected(true);
 					insert(v);
@@ -511,19 +512,20 @@ void TTrialDialog::handleEvent(TEvent& event)
 					TPoint tmp;
 					tmp.x = ((TPoint*)event.message.infoPtr)->x;
 					tmp.y = ((TPoint*)event.message.infoPtr)->y;
-					clearEvent(event);
 					auto lc = makeLocal(tmp);
 					auto b = getExtent();
 					//-- если Drop происходит ВНЕ границ окна - просто игнорируем событие и все
 					//-- чтобы не вставлять то, что не увидится
 					if ((lc.x >= 1) && (lc.y >= 1) && (lc.x < b.b.x - 1) && (lc.y < b.b.y - 1))
 					{
+						clearEvent(event);
 						//-- добавление нового TStaticText
-						auto v = new TTrialInputLine(TRect(lc.x, lc.y, lc.x + 10, lc.y + 1), 255);
+						auto v = new TTrialInputLine(TRect(lc.x, lc.y, lc.x + 12, lc.y + 1), 255);
 						forEach(&unselected, 0);
 						v->setSelected(true);
 						insert(v);
 						DialSaved = false;
+						this->focus();
 					}
 					break;
 				}
@@ -547,7 +549,6 @@ void TTrialDialog::handleEvent(TEvent& event)
 					TPoint tmp;
 					tmp.x = ((TPoint*)event.message.infoPtr)->x;
 					tmp.y = ((TPoint*)event.message.infoPtr)->y;
-					clearEvent(event);
 
 					auto lc = makeLocal(tmp);
 					auto b = getExtent();
@@ -555,12 +556,14 @@ void TTrialDialog::handleEvent(TEvent& event)
 					//-- чтобы не вставлять то, что не увидится
 					if ((lc.x >= 1) && (lc.y >= 1) && (lc.x < b.b.x - 1) && (lc.y < b.b.y - 1))
 					{
+						clearEvent(event);
 						//-- добавление нового TStaticText
 						auto v = new TTrialButton(TRect(lc.x, lc.y, lc.x + 10, lc.y + 2), txt_btnButton, -1);
 						forEach(&unselected, 0);
 						v->setSelected(true);
 						insert(v);
 						DialSaved = false;
+						this->focus();
 					}
 					break;
 				}
@@ -581,7 +584,6 @@ void TTrialDialog::handleEvent(TEvent& event)
 					TPoint tmp;
 					tmp.x = ((TPoint*)event.message.infoPtr)->x;
 					tmp.y = ((TPoint*)event.message.infoPtr)->y;
-					clearEvent(event);
 
 					auto lc = makeLocal(tmp);
 					auto b = getExtent();
@@ -589,12 +591,14 @@ void TTrialDialog::handleEvent(TEvent& event)
 					//-- чтобы не вставлять то, что не увидится
 					if ((lc.x >= 1) && (lc.y >= 1) && (lc.x < b.b.x - 1) && (lc.y < b.b.y - 1))
 					{
+						clearEvent(event);
 						//-- добавление нового TStaticText
 						auto v = new TTrialCheckBoxes(TRect(lc.x, lc.y, lc.x + 12, lc.y + 2), new TSItem(txt_btnCheck1, new TSItem(txt_btnCheck2, nullptr)));
 						forEach(&unselected, 0);
 						v->setSelected(true);
 						insert(v);
 						DialSaved = false;
+						this->focus();
 					}
 					break;
 				}
@@ -616,7 +620,6 @@ void TTrialDialog::handleEvent(TEvent& event)
 					TPoint tmp;
 					tmp.x = ((TPoint*)event.message.infoPtr)->x;
 					tmp.y = ((TPoint*)event.message.infoPtr)->y;
-					clearEvent(event);
 
 					auto lc = makeLocal(tmp);
 					auto b = getExtent();
@@ -624,12 +627,14 @@ void TTrialDialog::handleEvent(TEvent& event)
 					//-- чтобы не вставлять то, что не увидится
 					if ((lc.x >= 1) && (lc.y >= 1) && (lc.x < b.b.x - 1) && (lc.y < b.b.y - 1))
 					{
+						clearEvent(event);
 						//-- добавление нового TStaticText
 						auto v = new TTrialRadioButtons(TRect(lc.x, lc.y, lc.x + 12, lc.y + 2), new TSItem(txt_btnCheck1, new TSItem(txt_btnCheck2, nullptr)));
 						forEach(&unselected, 0);
 						v->setSelected(true);
 						insert(v);
 						DialSaved = false;
+						this->focus();
 					}
 					break;
 				}
