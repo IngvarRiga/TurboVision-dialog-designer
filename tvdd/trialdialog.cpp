@@ -797,22 +797,23 @@ bool TTrialDialog::valid(ushort command)
 
 void TTrialDialog::GenCode(ofstream* res)
 {
-	char tmp[StringMaxLen];
-	memset(tmp, 0x0, StringMaxLen);
-	//-- формируем начальный код самого диалога
-
-	/*TDialog::TDialog() :
-		TDialog(TRect(7, 2, 61, 16), "Caption"),
-		TWindowInit(TDialog::initFrame)
-		{
-
-		*/
+	std::vector<std::string> elem;
+	std::stringstream ss;
 	auto r = getBounds();
+	//-- генерируем код
+	std::string it;
+
 	*res << class_name << "::" << class_name << "() :\n ";
 	*res << base_class_name << "(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), \"" << title << "\"),\n";
-	*res << " TWindowInit(&" << base_class_name << "::initFrame)\n{";
-	//-- генерируем код
-	forEach(&generateCode, res);
+	*res << " TWindowInit(&" << base_class_name << "::initFrame)\n{\n";
+	forEach(&generateCode, &ss);
+
+	while (std::getline(ss, it))
+	{
+		elem.push_back(it);
+	}
+	for (int i = 0; i < elem.size(); i++)
+		*res << elem[i] << "\n";
 	//-- формируем заканчивающий код диалога
 	*res << "\n selectNext(false);\n}\n";
 }

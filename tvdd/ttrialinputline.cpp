@@ -123,7 +123,7 @@ void TTrialInputLine::genCode(void* val)
 	//-- генерируем код компонента
 	*res << "\n " << var_name << " = new " << class_name << "(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), " << maxLen << ");";
 	*res << "\n insert(" << var_name << ");";
-	
+
 }
 
 TStreamable* TTrialInputLine::build()

@@ -17,33 +17,26 @@ class TWinExtMenu : public TView
     static const char * const name;
 
     TWinExtMenu(const TRect& rect);
-    virtual ~TWinExtMenu();
+    virtual ~TWinExtMenu() {}
 
     TWinExtMenu(StreamableInit) :
     TView(streamableInit)
     {
-    };
+    }
 
     virtual void handleEvent(TEvent& event);
     static TStreamable *build();
     virtual void draw();
 
   private:
-
     virtual const char *streamableName() const
     {
         return name;
     }
 
   protected:
-
     virtual void write(opstream&);
     virtual void *read(ipstream&);
-
-  private:
-    //char *drawtext; //-- символ, отображаемый на границе экрана, по умолчанию "\360"
-    //-- задан напрямую в функци draw
-    TMenuBox *mw;
 
 };
 

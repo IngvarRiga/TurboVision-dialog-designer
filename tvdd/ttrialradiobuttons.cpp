@@ -123,6 +123,7 @@ void TTrialRadioButtons::genCode(void *val)
     *res << ");";
     *res << "\n insert(" << var_name << ");";
 }
+
 char* TTrialRadioButtons::getVarName()
 {
     return var_name;

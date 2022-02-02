@@ -16,24 +16,16 @@ const char * const TWinExtMenu::name = "TWinExtMenu";
 TWinExtMenu::TWinExtMenu(const TRect &rect) :
 TView(rect)
 {
-    //-- символ, отображающий служебное меню задан напрямую в функци  draw
-    //    drawtext = new char[StringMaxLen];
-    //    memset(drawtext, 0x0, StringMaxLen);
-    //    strcat(drawtext, "\360");
-    eventMask = 0xfce2; //-- установлен флаг получения кликом мышкой
+    eventMask = 0xFF; //-- установлен флаг получения кликом мышкой
     options |= ofPreProcess;
 }
 
-TWinExtMenu::~TWinExtMenu()
-{
-    //delete drawtext;
-}
 
 void TWinExtMenu::draw()
 {
     TColorAttr color;
     TDrawBuffer b;
-    color = 0x0a;
+    color = 0xAC;
     setBounds(TRect(0, 2, 1, 3));
     b.moveStr(0, "\360", color);
     writeBuf(0, 0, size.x, 1, b);
@@ -53,16 +45,6 @@ void TWinExtMenu::handleEvent(TEvent& event)
             TMenuBox *contextMenu = new TMenuBox(TRect(0, 0, 0, 0),
                     new TMenu(
                     * new TMenuItem(txt_PropertyDialogCaption, cmOption_Dialog, kbAlt1, hcNoContext, "Ctrl+Enter") +
-                    /*(TMenuItem &) (
-                    * new TSubMenu(txt_DlgInsertSubMenu, kbNoKey)+
-                    * new TMenuItem(txt_mnu_StaticText, cm_ed_InsertStaticText, kbNoKey) +
-                    * new TMenuItem(txt_mnu_Button, cm_ed_InsertButton, kbNoKey) +
-                    * new TMenuItem(txt_mnu_InputLine, cm_ed_InsertInputLine, kbNoKey) +
-                    * new TMenuItem(txt_mnu_RadioButtons, cm_ed_InsertRadioButtons, kbNoKey) +
-                    * new TMenuItem(txt_mnu_CheckBoxes, cm_ed_InsertCheckBoxes, kbNoKey) +
-                    * new TMenuItem(txt_mnu_ListBox, cm_ed_InsertListBox, kbNoKey) +
-                    * new TMenuItem(txt_mnu_Memo, cm_ed_InsertMemo, kbNoKey)
-                    ) +*/
                     newLine()+
                     * new TMenuItem(txt_mnu_DlgPropShowPosition, cmDialogPosOnOff, kbAlt2, hcNoContext, "Alt+2") +
                     * new TMenuItem(txt_mnu_DlgPropShowSize, cmDialogSizeOnOff, kbAlt3, hcNoContext, "Alt+3") +

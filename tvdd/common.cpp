@@ -69,7 +69,7 @@ void generateCode(TView* obj, void* res)
 	if (dynamic_cast<TTrialListBox*> (obj))
 	{
 		TTrialListBox* to = dynamic_cast<TTrialListBox*> (obj);
-		//to->genCode(s);
+		to->genCode(res);
 		return;
 	}
 	if (dynamic_cast<TTrialRadioButtons*> (obj))
@@ -78,13 +78,12 @@ void generateCode(TView* obj, void* res)
 		to->genCode(res);
 		return;
 	}
-	//if (dynamic_cast<TTrialMemo*> (obj))
-	//{
-	//    TTrialRadioButtons* to = dynamic_cast<TTrialRadioButtons*> (obj);
-	//    //to->genCode(s);
-	//    //strncat((char *) res, s, strlen(s));
-	//    return;
-	//}
+	if (dynamic_cast<TTrialMemo*> (obj))
+	{
+		TTrialMemo* to = dynamic_cast<TTrialMemo*> (obj);
+	    to->genCode(res);
+	    return;
+	}
 }
 
 TMenuBox* dialogMenu()
