@@ -9,7 +9,7 @@ TTrialMemo::TTrialMemo(const TRect& bounds,
 					   TScrollBar* aVScrollBar,
 					   TIndicator* aIndicator,
 					   ushort aBufSize) :
-	TMemo(bounds,aHScrollBar,aVScrollBar,aIndicator,aBufSize)
+	TMemo(bounds, aHScrollBar, aVScrollBar, aIndicator, aBufSize)
 {
 	eventMask |= 0xFF; //-- установлен флаг получения ВСЕХ сообщений
 	options |= ofPreProcess;
@@ -41,8 +41,9 @@ void TTrialMemo::handleEvent(TEvent& event)
 				//-- создание контекстного меню диалога
 				TMenuBox* contextMenu = new TMenuBox(TRect(0, 0, 0, 0),
 													 new TMenu(
-														 *new TMenuItem(txt_PropertyMemo, cmOption_Memo, -1, hcNoContext) +
-														 *new TMenuItem(txt_mnu_cmDelete, cm_ed_DestroyMemo, kbCtrlDel, hcNoContext)), nullptr);
+													 *new TMenuItem(txt_PropertyMemo, cmOption_Memo, -1, hcNoContext) +
+													 *new TMenuItem(0, 0, 0, hcNoContext, 0, 0) +
+													 *new TMenuItem(txt_mnu_cmDelete, cm_ed_DestroyMemo, kbCtrlDel, hcNoContext)), nullptr);
 
 				TPoint tmp;
 				tmp.x = event.mouse.where.x;

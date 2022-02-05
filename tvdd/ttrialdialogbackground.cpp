@@ -99,6 +99,7 @@ void* TTrialDialogBackground::read(ipstream& is)
 {
 	TView::read(is);
 	is.readBytes(&Patterned, sizeof(Patterned));
+	currPos.y = -1;
 	return this;
 }
 

@@ -1,5 +1,6 @@
 #ifndef TTRIALMEMO_H
 #define TTRIALMEMO_H
+#define Uses_TView
 #define Uses_TKeys
 #define Uses_TEditor
 #define Uses_TMemo
@@ -11,6 +12,10 @@
 #define Uses_TStreamableClass
 #define Uses_TDrawBuffer
 #define Uses_TScrollBar
+#define Uses_TMenuBar
+#define Uses_TSubMenu
+#define Uses_TMenuItem
+#define Uses_TMenuBox
 #include <tvision/tv.h>
 
 #include "common.h"

@@ -54,9 +54,10 @@ void TTrialStaticText::handleEvent(TEvent& event)
 				//-- создание контекстного меню диалога
 				TMenuBox* contextMenu = new TMenuBox(TRect(0, 0, 0, 0),
 													 new TMenu(
-														 *new TMenuItem(txt_PropertyStaticText, cmOption_StaticText, -1, hcNoContext) +
-														 *new TMenuItem(txt_PropertyAlignSize, cm_AlignSize, -1, hcNoContext) +
-														 *new TMenuItem(txt_mnu_cmDelete, cm_ed_DestroyStaticText, kbCtrlDel, hcNoContext)), nullptr);
+													 *new TMenuItem(txt_PropertyStaticText, cmOption_StaticText, -1, hcNoContext) +
+													 *new TMenuItem(txt_PropertyAlignSize, cm_AlignSize, -1, hcNoContext) +
+													 newLine() +
+													 *new TMenuItem(txt_mnu_cmDelete, cm_ed_DestroyStaticText, kbCtrlDel, hcNoContext)), nullptr);
 
 				TPoint tmp;
 				tmp.x = event.mouse.where.x;
