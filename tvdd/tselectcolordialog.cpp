@@ -3,7 +3,7 @@
 #include "multilang.h"
 
 TSelectColorDialog::TSelectColorDialog() :
-TCustomDialog(60, 25, txt_ColorTestDlgCaption),
+TCustomDialog(66, 23, txt_ColorTestDlgCaption),
 TWindowInit(&TCustomDialog::initFrame)
 {
     cf = new TColorField(2, 2);
