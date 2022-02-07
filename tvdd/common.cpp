@@ -41,48 +41,65 @@ void unselected(TView* obj, void*)
 
 void generateCode(TView* obj, void* res)
 {
-	auto nam = obj->name;
+	std::vector<std::string> *src = (std::vector<std::string> *) res;
+	std::stringstream ss;
+
 	if (dynamic_cast<TTrialStaticText*> (obj))
 	{
 		TTrialStaticText* to = dynamic_cast<TTrialStaticText*> (obj);
-		to->genCode(res);
-		return;
+		to->genCode(&ss);
+		//return;
 	}
 	if (dynamic_cast<TTrialButton*> (obj))
 	{
 		TTrialButton* to = dynamic_cast<TTrialButton*> (obj);
-		to->genCode(res);
-		return;
+		to->genCode(&ss);
+		//return;
 	}
 	if (dynamic_cast<TTrialInputLine*> (obj))
 	{
 		TTrialInputLine* to = dynamic_cast<TTrialInputLine*> (obj);
-		to->genCode(res);
-		return;
+		to->genCode(&ss);
+		//return;
 	}
 	if (dynamic_cast<TTrialCheckBoxes*> (obj))
 	{
 		TTrialCheckBoxes* to = dynamic_cast<TTrialCheckBoxes*> (obj);
-		to->genCode(res);
-		return;
+		to->genCode(&ss);
+		//return;
 	}
 	if (dynamic_cast<TTrialListBox*> (obj))
 	{
 		TTrialListBox* to = dynamic_cast<TTrialListBox*> (obj);
-		to->genCode(res);
-		return;
+		to->genCode(&ss);
+		//return;
 	}
 	if (dynamic_cast<TTrialRadioButtons*> (obj))
 	{
 		TTrialRadioButtons* to = dynamic_cast<TTrialRadioButtons*> (obj);
-		to->genCode(res);
-		return;
+		to->genCode(&ss);
+		//return;
 	}
 	if (dynamic_cast<TTrialMemo*> (obj))
 	{
 		TTrialMemo* to = dynamic_cast<TTrialMemo*> (obj);
-	    to->genCode(res);
-	    return;
+	    to->genCode(&ss);
+	    //return;
+	}
+
+	std::vector<std::string> elem;
+	std::vector<std::string>::iterator iter;
+	std::string it;
+	while (std::getline(ss, it))
+	{
+		if (it.length()>0)
+			elem.push_back(it);
+	}
+
+	for (int i = elem.size() - 1; i > -1; i--)
+	{
+		iter = src->begin();
+		src->insert(iter, elem[i]);
 	}
 }
 
@@ -91,7 +108,7 @@ TMenuBox* dialogMenu()
 	//-- создание контекстного меню диалога
 	TMenuBox* contextMenu = new TMenuBox(TRect(0, 0, 0, 0),
 										 new TMenu(
-											 *new TMenuItem(txt_PropertyDialogCaption, cmOption_Dialog, kbAlt1, hcNoContext, "Ctrl+Enter") +
+											 *new TMenuItem(txt_PropertyDialogCaption, cmOption_Dialog, kbCtrlEnter, hcNoContext, "Ctrl+Enter") +
 											 newLine() +
 											 *new TMenuItem(txt_mnu_StaticText, cm_ed_InsertStaticText, kbNoKey) +
 											 *new TMenuItem(txt_mnu_Button, cm_ed_InsertButton, kbNoKey) +
@@ -103,53 +120,3 @@ TMenuBox* dialogMenu()
 	return contextMenu;
 }
 
-
-/*
-void deleteSelected(TView *obj, void *val)
-{
-	//-- Удалению мы можем подвергать только то, что вставили сами
-	if (dynamic_cast<TTrialStaticText*> (obj))
-	{
-		TTrialStaticText *to = dynamic_cast<TTrialStaticText*> (obj);
-		if (to->isSelected())
-			obj->owner->destroy(to);
-		return;
-	}
-	if (dynamic_cast<TTrialButton*> (obj))
-	{
-		TTrialButton *to = dynamic_cast<TTrialButton*> (obj);
-		if (to->isSelected())
-			obj->owner->destroy(to);
-		return;
-	}
-	if (dynamic_cast<TTrialInputLine*> (obj))
-	{
-		TTrialInputLine *to = dynamic_cast<TTrialInputLine*> (obj);
-		if (to->isSelected())
-			obj->owner->destroy(to);
-		return;
-	}
-	if (dynamic_cast<TTrialCheckBoxes*> (obj))
-	{
-		TTrialCheckBoxes *to = dynamic_cast<TTrialCheckBoxes*> (obj);
-		if (to->isSelected())
-			obj->owner->destroy(to);
-		return;
-	}
-	if (dynamic_cast<TTrialListBox*> (obj))
-	{
-		TTrialListBox *to = dynamic_cast<TTrialListBox*> (obj);
-		if (to->isSelected())
-			obj->owner->destroy(to);
-		return;
-	}
-	if (dynamic_cast<TTrialRadioButtons*> (obj))
-	{
-		TTrialRadioButtons *to = dynamic_cast<TTrialRadioButtons*> (obj);
-		if (to->isSelected())
-			obj->owner->destroy(to);
-		return;
-	}
-
-}
-*/

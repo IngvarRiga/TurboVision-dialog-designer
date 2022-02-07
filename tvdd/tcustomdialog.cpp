@@ -11,8 +11,6 @@ TWindowInit(&TDialog::initFrame)
         options |= ofCentered;
     if (sizeable)
         flags |= wfGrow;
-    //-- убирает тень окна
-    //setState(sfShadow, false);
 }
 
 TCustomDialog::TCustomDialog(const int width, const int height, TStringView aTitle, bool sizeable, bool restrictSize) :
@@ -20,7 +18,7 @@ TDialog(TRect(0, 0, width, height), aTitle),
 TWindowInit(&TDialog::initFrame)
 {
     frestrictSize = restrictSize;
-    //-- диалого центрируется автоматически
+    //-- диалог центрируется автоматически
     options |= ofCentered;
     //-- Возможность изменения размеров вкл/выкл
     if (sizeable)
@@ -54,14 +52,11 @@ void TCustomDialog::handleEvent(TEvent& event)
 void TCustomDialog::write(opstream& os)
 {
     TDialog::write(os);
-    //os << frestrictSize;
-
 }
 
 void *TCustomDialog::read(ipstream& is)
 {
     TDialog::read(is);
-    //is.readBytes(&frestrictSize, sizeof(frestrictSize));
     return this;
 }
 

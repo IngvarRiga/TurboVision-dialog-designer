@@ -52,10 +52,12 @@ TTrialDialog::TTrialDialog(const int width, const int height, TStringView aTitle
 	//-- окно можно перемещать за границы зоны видимости. для запрета - раскомментарить строку ниже
 	//dragMode = dmLimitAll;
 	flags |= wfGrow; // это позволяет изменять размеры диалога, хотя по умолчанию опция включена в предке
+	
 	memset(class_name, 0x0, StringMaxLen);
 	memset(base_class_name, 0x0, StringMaxLen);
 	memcpy(class_name, _class_name, strlen(_class_name) + 1);
 	memcpy(base_class_name, _base_class_name, strlen(_base_class_name) + 1);
+	Centered = true;
 
 	//-- Дополнительное меню в заголовке
 	emnu = new TWinExtMenu(TRect(10, size.y - 1, 20, size.y));
@@ -85,6 +87,7 @@ void TTrialDialog::editDialogProperties()
 	memcpy(data->dlgClassName, class_name, strlen(class_name));
 	memcpy(data->dlgBaseClass, base_class_name, strlen(base_class_name));
 	memcpy(data->dlgCaption, title, strlen(title));
+	data->dlgOpt_Centered = Centered;
 	TDialogProperties* win = new TDialogProperties();
 	win->setData(data);
 	if (owner->execView(win) == cmOK)
@@ -94,6 +97,7 @@ void TTrialDialog::editDialogProperties()
 		memset(base_class_name, 0x0, StringMaxLen);
 		memcpy(class_name, data->dlgClassName, strlen(data->dlgClassName));
 		memcpy(base_class_name, data->dlgBaseClass, strlen(data->dlgBaseClass));
+		Centered = data->dlgOpt_Centered;
 		//-- с заголовком окна немного позамороченнее --------------
 		delete title;
 		auto lenCapt = strlen(data->dlgCaption) + 1;
@@ -798,20 +802,15 @@ bool TTrialDialog::valid(ushort command)
 void TTrialDialog::GenCode(ofstream* res)
 {
 	std::vector<std::string> elem;
-	std::stringstream ss;
 	auto r = getBounds();
 	//-- генерируем код
-	std::string it;
-
 	*res << class_name << "::" << class_name << "() :\n ";
 	*res << base_class_name << "(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), \"" << title << "\"),\n";
 	*res << " TWindowInit(&" << base_class_name << "::initFrame)\n{\n";
-	forEach(&generateCode, &ss);
-
-	while (std::getline(ss, it))
-	{
-		elem.push_back(it);
-	}
+	//-- если установлен признак центрирования диалога
+	if (Centered)
+		*res << " options |= ofCentered;\n";
+	forEach(&generateCode, &elem);
 	for (int i = 0; i < elem.size(); i++)
 		*res << elem[i] << "\n";
 	//-- формируем заканчивающий код диалога
