@@ -48,8 +48,8 @@ class TTrialCheckBoxes : public TWrapCheckBoxes
     char* getClassName();
 
     //-- установка значений
-    void setVarName(char* val);
-    void setClassName(char* val);
+    void setVarName(const char* val);
+    void setClassName(const char* val);
 
   protected:
     char var_name[StringMaxLen]; //-- имя переменной для создания строки ввода

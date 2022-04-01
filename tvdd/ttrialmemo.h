@@ -50,8 +50,8 @@ public:
     char* getClassName();
 
     //-- установка значений
-    void setVarName(char* val);
-    void setClassName(char* val);
+    void setVarName(const char* val);
+    void setClassName(const char* val);
     bool isSelected();
     void setSelected(bool val);
 

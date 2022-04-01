@@ -166,7 +166,7 @@ bool TTrialStaticText::getUsedVarName()
 	return usedVarName;
 }
 
-void TTrialStaticText::setVarName(char* val)
+void TTrialStaticText::setVarName(const char* val)
 {
 	memset(var_name, 0x0, StringMaxLen);
 	auto len = strlen(val);
@@ -174,7 +174,7 @@ void TTrialStaticText::setVarName(char* val)
 		memcpy(var_name, val, len > StringMaxLen ? StringMaxLen : len);
 }
 
-void TTrialStaticText::setClassName(char* val)
+void TTrialStaticText::setClassName(const char* val)
 {
 	memset(class_name, 0x0, StringMaxLen);
 	auto len = strlen(val);

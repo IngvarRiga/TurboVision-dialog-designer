@@ -1,23 +1,21 @@
 #ifndef TRIALDIALOG_H
 #define TRIALDIALOG_H
-
-#define Uses_TStreamable
-#define Uses_TStreamableClass
-#define Uses_TEvent
-#define Uses_TFileDialog
-#include <tvision/tv.h>
+#include "common.h"
 
 #include "tcustomdialog.h"
 #include "ttrialdialogbackground.h"
 #include "twinsizeindicator.h"
 #include "twinextmenu.h"
 
+/// <summary>
+/// Описание класса, реализующего диалог в режиме конструктора
+/// </summary>
 class TTrialDialog : public TCustomDialog
 {
 public:
 	static const char* const name;
 
-	//-- используем упрощенную форму задания размера диалога
+	//-- используем упрощенную форму задания размера диалога, поскольку всё равно новый диалог просто центрируется на экране
 	TTrialDialog(const int width, const int height, TStringView aTitle, bool sizeable = true);
 
 	TTrialDialog(StreamableInit) :
@@ -37,21 +35,32 @@ public:
 	}
 
 	void editDialogProperties();
-	void saveDialogToRes();
+	void saveDialogToRes(); //-- сохранение в потоковых ресурсах TVision
+	void saveDialogToJSON(); //-- сохранение в JSON
 	void saveDialogToSrc();
+
+	//-- установка свойств при загрузке из JSON
+	void setClassName(const char* val);
+	void setBaseClassName(const char* val);
+	void setCentered(bool val);
+	void setCaption(const char* val);
 
 private:
 	bool DialSaved; //-- признак сохраненности диалога
 	char class_name[StringMaxLen]; //-- название класса диалога
 	char base_class_name[StringMaxLen]; //-- название базового класса диалога
 	TTrialDialogBackground* Background; //-- хрень отвечающая за отрисовку подложки диалога в режиме конструктора
-	bool Centered; //-- диалог должен быть отцентрирован
 	//bool GenDefaults;
 	TWinSizeIndicator* ind; //-- индикатор размеров окна
 	TWinExtMenu* emnu; //-- дополнительное управляющее меню
-	//    
 
-	virtual void GenCode(ofstream* res); //-- генерация кода диалога
+	//-- СЛУЖЕБНЫЕ ПЕРЕМЕННЫЕ
+	bool prp_Centered; //-- диалог должен быть отцентрирован
+
+	//-----------------------------------------------------------
+
+	void GenCode(ofstream* res); //-- генерация кода диалога
+	void GenJSON(nlohmann::json res); //-- генерация описания объекта в JSON
 
 protected:
 	bool isDest; //-- объект находится в стадии уничтожения

@@ -146,7 +146,7 @@ bool TTrialButton::getUsedVarName()
 	return usedVarName;
 }
 
-void TTrialButton::setVarName(char* val)
+void TTrialButton::setVarName(const char* val)
 {
 	memset(var_name, 0x0, StringMaxLen);
 	auto len = strlen(val);
@@ -154,7 +154,7 @@ void TTrialButton::setVarName(char* val)
 		memcpy(var_name, val, len > StringMaxLen ? StringMaxLen : len);
 }
 
-void TTrialButton::setClassName(char* val)
+void TTrialButton::setClassName(const char* val)
 {
 	memset(class_name, 0x0, StringMaxLen);
 	auto len = strlen(val);

@@ -131,7 +131,7 @@ char* TTrialRadioButtons::getVarName()
 }
 
 
-void TTrialRadioButtons::setClassName(char* val)
+void TTrialRadioButtons::setClassName(const char* val)
 {
 	memset(class_name, 0x0, StringMaxLen);
 	auto len = strlen(val);
@@ -144,7 +144,7 @@ char* TTrialRadioButtons::getClassName()
 	return class_name;
 }
 
-void TTrialRadioButtons::setVarName(char* val)
+void TTrialRadioButtons::setVarName(const char* val)
 {
 	memset(var_name, 0x0, StringMaxLen);
 	auto len = strlen(val);

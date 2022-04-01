@@ -52,12 +52,12 @@ TTrialDialog::TTrialDialog(const int width, const int height, TStringView aTitle
 	//-- окно можно перемещать за границы зоны видимости. для запрета - раскомментарить строку ниже
 	//dragMode = dmLimitAll;
 	flags |= wfGrow; // это позволяет изменять размеры диалога, хотя по умолчанию опция включена в предке
-	
+
 	memset(class_name, 0x0, StringMaxLen);
 	memset(base_class_name, 0x0, StringMaxLen);
 	memcpy(class_name, _class_name, strlen(_class_name) + 1);
 	memcpy(base_class_name, _base_class_name, strlen(_base_class_name) + 1);
-	Centered = true;
+	prp_Centered = true;
 
 	//-- Дополнительное меню в заголовке
 	emnu = new TWinExtMenu(TRect(10, size.y - 1, 20, size.y));
@@ -81,23 +81,28 @@ void TTrialDialog::setState(ushort aState, bool enable)
 	TCustomDialog::setState(aState, enable);
 }
 
+/// <summary>
+/// Изменение свойств диалога
+/// </summary>
 void TTrialDialog::editDialogProperties()
 {
 	auto data = new dataTDP();
 	memcpy(data->dlgClassName, class_name, strlen(class_name));
 	memcpy(data->dlgBaseClass, base_class_name, strlen(base_class_name));
 	memcpy(data->dlgCaption, title, strlen(title));
-	data->dlgOpt_Centered = Centered;
+	data->dlgOpt_Centered = prp_Centered;
 	TDialogProperties* win = new TDialogProperties();
 	win->setData(data);
 	if (owner->execView(win) == cmOK)
 	{
 		win->getData(data);
-		memset(class_name, 0x0, StringMaxLen);
-		memset(base_class_name, 0x0, StringMaxLen);
-		memcpy(class_name, data->dlgClassName, strlen(data->dlgClassName));
-		memcpy(base_class_name, data->dlgBaseClass, strlen(data->dlgBaseClass));
-		Centered = data->dlgOpt_Centered;
+		setClassName(data->dlgClassName);
+		setBaseClassName(data->dlgClassName);
+		setCentered(data->dlgOpt_Centered);
+		//memset(class_name, 0x0, StringMaxLen);
+		//memcpy(class_name, data->dlgClassName, strlen(data->dlgClassName));
+		//memset(base_class_name, 0x0, StringMaxLen);
+		//memcpy(base_class_name, data->dlgBaseClass, strlen(data->dlgBaseClass));
 		//-- с заголовком окна немного позамороченнее --------------
 		delete title;
 		auto lenCapt = strlen(data->dlgCaption) + 1;
@@ -111,6 +116,29 @@ void TTrialDialog::editDialogProperties()
 	}
 	delete data;
 	destroy(win);
+}
+
+void TTrialDialog::setClassName(const char* val)
+{
+	memset(class_name, 0x0, StringMaxLen);
+	memcpy(class_name, val, strlen(val));
+}
+void TTrialDialog::setBaseClassName(const char* val)
+{
+	memset(base_class_name, 0x0, StringMaxLen);
+	memcpy(base_class_name, val, strlen(val));
+}
+void TTrialDialog::setCaption(const char* val)
+{
+	delete title;
+	auto lenCapt = strlen(val) + 1;
+	title = new char[lenCapt];
+	memset((void*)title, 0x0, lenCapt);
+	memcpy((void*)title, val, lenCapt - 1);
+}
+void TTrialDialog::setCentered(bool val)
+{
+	prp_Centered = val;
 }
 
 void TTrialDialog::close()
@@ -379,6 +407,7 @@ void TTrialDialog::handleEvent(TEvent& event)
 					if (rep <= cnt) { strncpy(data->v15, (char*)itm->at(15), strlen((char*)itm->at(15))); rep++; }
 					TCheckBoxesProperties* win = new TCheckBoxesProperties();
 					win->setData(data);
+					
 					if (owner->execView(win) == cmOK)
 					{
 						win->getData(data);
@@ -706,6 +735,12 @@ void TTrialDialog::handleEvent(TEvent& event)
 					saveDialogToRes();
 					break;
 				}
+			case cmDialogSaveToJson:
+				{
+					clearEvent(event);
+					saveDialogToJSON();
+					break;
+				}
 			case cmDialogGenCode:
 				{
 					clearEvent(event);
@@ -757,7 +792,12 @@ void TTrialDialog::handleEvent(TEvent& event)
 
 void TTrialDialog::saveDialogToRes()
 {
-	TFileDialog* fd = new TFileDialog("*.dlg", txt_dlg_SaveAsCaption, txt_dlg_SaveAsName, fdOKButton, 100);
+	//-- формируем имя диалога из его названия класса
+	char fileNameMask[maxLineLength];
+	memset(fileNameMask, 0x0, maxLineLength);
+	strcat(fileNameMask, class_name);
+	strcat(fileNameMask, ".dlg");
+	auto fd = new TFileDialog(fileNameMask, txt_dlg_SaveAsCaption, txt_dlg_SaveAsName, fdOKButton, 100);
 
 	if (fd != 0 && owner->execView(fd) != cmCancel)
 	{
@@ -772,9 +812,60 @@ void TTrialDialog::saveDialogToRes()
 	destroy(fd);
 }
 
+/// <summary>
+/// Сохранение текущего диалога в JSON файле
+/// </summary>
+void TTrialDialog::saveDialogToJSON()
+{
+	//-- формируем имя диалога из его названия класса
+	char fileNameMask[maxLineLength];
+	memset(fileNameMask, 0x0, maxLineLength);
+	strcat(fileNameMask, class_name);
+	strcat(fileNameMask, ".json");
+	auto fd = new TFileDialog(fileNameMask, txt_dlg_SaveAsCaption, txt_dlg_SaveAsName, fdOKButton, 100);
+
+	if (fd != 0 && owner->execView(fd) != cmCancel)
+	{
+		nlohmann::json sav;
+		std::vector<nlohmann::json> src;
+
+		//-- Формируем JSON описание диалога. В это описание входят только те свойства, которые реально
+		//-- имеют значение для конечного пользователя. Т.е. всякие индикаторы во время разработки не участвуют 
+		//-- в сохранении
+		sav["type"] = otDialog; //-- тип сохраняемого ресурса
+		sav["class_name"] = class_name; //-- имя класса
+		sav["base_class_name"] = base_class_name; //-- имя базового класса
+		//--  запоминаем размеры
+		auto sz = getBounds();
+		sav["size"]["x"] = sz.b.x - sz.a.x;
+		sav["size"]["y"] = sz.b.y - sz.a.y;
+		sav["caption"] = title;
+		sav["centered"] = prp_Centered;
+		//-- перечень объектов в окне
+
+		forEach(&generateDialogJSON, &src);
+
+		for (int i = src.size() - 1; i > -1; i--)
+			sav["objects"].push_back(src[i]);
+
+		std::string serialized_string = sav.dump();
+
+		char fileName[MAXPATH];
+		fd->getFileName(fileName);
+		ofstream os;
+		os.open(fileName);
+		os << serialized_string;
+		os.close();
+		DialSaved = true;
+	}
+	destroy(fd);
+}
+
+
+
 void TTrialDialog::saveDialogToSrc()
 {
-	TFileDialog* fd = new TFileDialog("*.cpp", txt_dlg_SaveCodeAsCaption, txt_dlg_SaveAsName, fdOKButton, 100);
+	auto fd = new TFileDialog("*.cpp", txt_dlg_SaveCodeAsCaption, txt_dlg_SaveAsName, fdOKButton, 100);
 
 	if (fd != 0 && owner->execView(fd) != cmCancel)
 	{
@@ -799,6 +890,24 @@ bool TTrialDialog::valid(ushort command)
 	return rslt;
 }
 
+void TTrialDialog::GenJSON(nlohmann::json res)
+{
+	//std::vector<std::string> elem;
+	//auto r = getBounds();
+	////-- генерируем код
+	//*res << class_name << "::" << class_name << "() :\n ";
+	//*res << base_class_name << "(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), \"" << title << "\"),\n";
+	//*res << " TWindowInit(&" << base_class_name << "::initFrame)\n{\n";
+	////-- если установлен признак центрирования диалога
+	//if (prp_Centered)
+	//	*res << " options |= ofCentered;\n";
+	//forEach(&generateCode, &elem);
+	//for (int i = 0; i < elem.size(); i++)
+	//	*res << elem[i] << "\n";
+	////-- формируем заканчивающий код диалога
+	//*res << "\n selectNext(false);\n}\n";
+}
+
 void TTrialDialog::GenCode(ofstream* res)
 {
 	std::vector<std::string> elem;
@@ -808,9 +917,9 @@ void TTrialDialog::GenCode(ofstream* res)
 	*res << base_class_name << "(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), \"" << title << "\"),\n";
 	*res << " TWindowInit(&" << base_class_name << "::initFrame)\n{\n";
 	//-- если установлен признак центрирования диалога
-	if (Centered)
+	if (prp_Centered)
 		*res << " options |= ofCentered;\n";
-	forEach(&generateCode, &elem);
+	forEach(&generateDialogCode, &elem);
 	for (int i = 0; i < elem.size(); i++)
 		*res << elem[i] << "\n";
 	//-- формируем заканчивающий код диалога

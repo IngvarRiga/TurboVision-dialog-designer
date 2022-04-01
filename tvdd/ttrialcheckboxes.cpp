@@ -128,7 +128,7 @@ char* TTrialCheckBoxes::getVarName()
 }
 
 
-void TTrialCheckBoxes::setClassName(char* val)
+void TTrialCheckBoxes::setClassName(const char* val)
 {
 	memset(class_name, 0x0, StringMaxLen);
 	auto len = strlen(val);
@@ -141,7 +141,7 @@ char* TTrialCheckBoxes::getClassName()
 	return class_name;
 }
 
-void TTrialCheckBoxes::setVarName(char* val)
+void TTrialCheckBoxes::setVarName(const char* val)
 {
 	memset(var_name, 0x0, StringMaxLen);
 	auto len = strlen(val);

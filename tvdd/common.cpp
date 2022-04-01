@@ -39,7 +39,7 @@ void unselected(TView* obj, void*)
 	obj->setState(sfSelected, false);
 }
 
-void generateCode(TView* obj, void* res)
+void generateDialogCode(TView* obj, void* res)
 {
 	std::vector<std::string> *src = (std::vector<std::string> *) res;
 	std::stringstream ss;
@@ -48,43 +48,36 @@ void generateCode(TView* obj, void* res)
 	{
 		TTrialStaticText* to = dynamic_cast<TTrialStaticText*> (obj);
 		to->genCode(&ss);
-		//return;
 	}
 	if (dynamic_cast<TTrialButton*> (obj))
 	{
 		TTrialButton* to = dynamic_cast<TTrialButton*> (obj);
 		to->genCode(&ss);
-		//return;
 	}
 	if (dynamic_cast<TTrialInputLine*> (obj))
 	{
 		TTrialInputLine* to = dynamic_cast<TTrialInputLine*> (obj);
 		to->genCode(&ss);
-		//return;
 	}
 	if (dynamic_cast<TTrialCheckBoxes*> (obj))
 	{
 		TTrialCheckBoxes* to = dynamic_cast<TTrialCheckBoxes*> (obj);
 		to->genCode(&ss);
-		//return;
 	}
 	if (dynamic_cast<TTrialListBox*> (obj))
 	{
 		TTrialListBox* to = dynamic_cast<TTrialListBox*> (obj);
 		to->genCode(&ss);
-		//return;
 	}
 	if (dynamic_cast<TTrialRadioButtons*> (obj))
 	{
 		TTrialRadioButtons* to = dynamic_cast<TTrialRadioButtons*> (obj);
 		to->genCode(&ss);
-		//return;
 	}
 	if (dynamic_cast<TTrialMemo*> (obj))
 	{
 		TTrialMemo* to = dynamic_cast<TTrialMemo*> (obj);
 	    to->genCode(&ss);
-	    //return;
 	}
 
 	std::vector<std::string> elem;
@@ -100,6 +93,115 @@ void generateCode(TView* obj, void* res)
 	{
 		iter = src->begin();
 		src->insert(iter, elem[i]);
+	}
+}
+
+void generateDialogJSON(TView* obj, void* _src)
+{
+	nlohmann::json job;
+	std::vector<nlohmann::json>* sav = (std::vector<nlohmann::json>*) _src;
+
+	if (dynamic_cast<TTrialStaticText*> (obj))
+	{
+		TTrialStaticText* to = dynamic_cast<TTrialStaticText*> (obj);
+		job["type"] = otStaticText;
+		job["text"] = to->getCaption();
+		job["variable"]["use_var_name"] = to->getUsedVarName();
+		job["variable"]["var_name"] = to->getVarName();
+		auto sz = to->getBounds();
+		//-- начальная позиция
+		job["pos"]["x"] = sz.a.x;
+		job["pos"]["y"] = sz.a.y;
+		//-- размеры
+		job["size"]["x"] = sz.b.x - sz.a.x;
+		job["size"]["y"] = sz.b.y - sz.a.y;
+		sav->push_back(job);
+	}
+	if (dynamic_cast<TTrialButton*> (obj))
+	{
+		TTrialButton* to = dynamic_cast<TTrialButton*> (obj);
+		job["type"] = otButton;
+		job["text"] = to->getCaption();
+		job["variable"]["use_var_name"] = to->getUsedVarName();
+		job["variable"]["var_name"] = to->getVarName();
+		auto sz = to->getBounds();
+		//-- начальная позиция
+		job["pos"]["x"] = sz.a.x;
+		job["pos"]["y"] = sz.a.y;
+		//-- размеры
+		job["size"]["x"] = sz.b.x - sz.a.x;
+		job["size"]["y"] = sz.b.y - sz.a.y;
+		sav->push_back(job);
+	}
+	if (dynamic_cast<TTrialInputLine*> (obj))
+	{
+		TTrialInputLine* to = dynamic_cast<TTrialInputLine*> (obj);
+		job["type"] = otInputLine;
+		job["max_len"] = to->getVarLen();
+		job["var_name"] = to->getVarName();
+		job["class_name"] = to->getClassName();
+		auto sz = to->getBounds();
+		//-- начальная позиция
+		job["pos"]["x"] = sz.a.x;
+		job["pos"]["y"] = sz.a.y;
+		//-- размеры
+		job["size"]["x"] = sz.b.x - sz.a.x;
+		job["size"]["y"] = sz.b.y - sz.a.y;
+		sav->push_back(job);
+	}
+	if (dynamic_cast<TTrialCheckBoxes*> (obj))
+	{
+		TTrialCheckBoxes* to = dynamic_cast<TTrialCheckBoxes*> (obj);
+		job["type"] = otCheckBox;
+		auto items = to->getItems();
+		for (int i = 0; i < items->getCount(); i++)
+			job["items"].push_back((char*)items->at(i));
+		job["var_name"] = to->getVarName();
+		auto sz = to->getBounds();
+		//-- начальная позиция
+		job["pos"]["x"] = sz.a.x;
+		job["pos"]["y"] = sz.a.y;
+		//-- размеры
+		job["size"]["x"] = sz.b.x - sz.a.x;
+		job["size"]["y"] = sz.b.y - sz.a.y;
+		sav->push_back(job);
+	}
+	//if (dynamic_cast<TTrialListBox*> (obj))
+	//{
+	//	TTrialListBox* to = dynamic_cast<TTrialListBox*> (obj);
+	//	src->push_back(to);
+	//}
+	if (dynamic_cast<TTrialRadioButtons*> (obj))
+	{
+		TTrialRadioButtons* to = dynamic_cast<TTrialRadioButtons*> (obj);
+		job["type"] = otRadioButton;
+		auto items = to->getItems();
+		for (int i = 0; i < items->getCount(); i++)
+			job["items"].push_back((char*)items->at(i));
+		job["var_name"] = to->getVarName();
+		auto sz = to->getBounds();
+		//-- начальная позиция
+		job["pos"]["x"] = sz.a.x;
+		job["pos"]["y"] = sz.a.y;
+		//-- размеры
+		job["size"]["x"] = sz.b.x - sz.a.x;
+		job["size"]["y"] = sz.b.y - sz.a.y;
+		sav->push_back(job);
+	}
+	if (dynamic_cast<TTrialMemo*> (obj))
+	{
+		TTrialMemo* to = dynamic_cast<TTrialMemo*> (obj);
+		job["type"] = otMemo;
+		job["var_name"] = to->getVarName();
+		job["class_name"] = to->getVarName();
+		auto sz = to->getBounds();
+		//-- начальная позиция
+		job["pos"]["x"] = sz.a.x;
+		job["pos"]["y"] = sz.a.y;
+		//-- размеры
+		job["size"]["x"] = sz.b.x - sz.a.x;
+		job["size"]["y"] = sz.b.y - sz.a.y;
+		sav->push_back(job);
 	}
 }
 

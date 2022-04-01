@@ -141,7 +141,7 @@ uint TTrialInputLine::getVarLen()
 {
 	return maxLen;
 }
-void TTrialInputLine::setClassName(char* val)
+void TTrialInputLine::setClassName(const char* val)
 {
 	memset(class_name, 0x0, StringMaxLen);
 	auto len = strlen(val);
@@ -154,7 +154,7 @@ char* TTrialInputLine::getClassName()
 	return class_name;
 }
 
-void TTrialInputLine::setVarName(char* val)
+void TTrialInputLine::setVarName(const char* val)
 {
 	memset(var_name, 0x0, StringMaxLen);
 	auto len = strlen(val);

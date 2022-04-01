@@ -158,7 +158,7 @@ char* TTrialMemo::getVarName()
 	return var_name;
 }
 
-void TTrialMemo::setClassName(char* val)
+void TTrialMemo::setClassName(const char* val)
 {
 	memset(class_name, 0x0, StringMaxLen);
 	auto len = strlen(val);
@@ -171,7 +171,7 @@ char* TTrialMemo::getClassName()
 	return class_name;
 }
 
-void TTrialMemo::setVarName(char* val)
+void TTrialMemo::setVarName(const char* val)
 {
 	memset(var_name, 0x0, StringMaxLen);
 	auto len = strlen(val);

@@ -62,6 +62,10 @@ public:
     void setSelected(bool val);
 
     void setCaption(char* val);
+    /// <summary>
+    /// Получить текст, отображаемый на кнопке
+    /// </summary>
+    /// <returns></returns>
     char* getCaption();
 
     void setDragged()

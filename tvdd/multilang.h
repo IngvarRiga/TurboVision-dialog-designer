@@ -9,7 +9,9 @@
 #define txt_mnu_Designer "Дизайнер"
 #define txt_mnu_NewDialogWindow "Создать новое диалоговое окно"
 #define txt_mnu_LoadFromResource "Загрузить из файла ресурсов..."
+#define txt_mnu_LoadFromJSON "Загрузить из файла JSON..."
 #define txt_mnu_SaveToRes "Сохранить в файл ресурсов..."
+#define txt_mnu_SaveToJson "Сохранить в файл JSON..."
 #define txt_mnu_GenCode "Генерировать исходный код..."
 #define txt_mnu_StaticText "Статический текст"
 #define txt_mnu_Button "Кнопка"
@@ -75,6 +77,8 @@
 #define txt_dlg_InputLine "ABC"
 #define txt_dlg_Buton "OK"
 
+//-- Сообщения об ошибках
+#define txt_error_NotJSON "Ошибка чтения JSON-файла, возможно он содержит ошибки в структуре?"
 
 #endif
 
@@ -85,7 +89,9 @@
 #define txt_mnu_Designer "Designer"
 #define txt_mnu_NewDialogWindow "Create new Dialog window"
 #define txt_mnu_LoadFromResource "Load from resource file..."
+#define txt_mnu_LoadFromJSON "Load from JSON..."
 #define txt_mnu_SaveToRes "Save to resource file..."
+#define txt_mnu_SaveToJson "Save to JSON..."
 #define txt_mnu_GenCode "Generate source code..."
 #define txt_mnu_StaticText "Static text"
 #define txt_mnu_Button "Button"
@@ -149,6 +155,8 @@
 #define txt_dlg_StaticText "Text"
 #define txt_dlg_InputLine "ABC"
 #define txt_dlg_Buton "~O~K"
+
+#define txt_error_NotJSON "Error reading JSON, probably consist structure errors?"
 
 #endif
 

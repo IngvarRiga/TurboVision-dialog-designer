@@ -48,8 +48,8 @@ class TTrialInputLine : public TWrapInputLine
     uint getVarLen();
 
     //-- установка значений
-    void setVarName(char *val);
-    void setClassName(char* val);
+    void setVarName(const char *val);
+    void setClassName(const char* val);
     void setVarLen(uint val);
 
 

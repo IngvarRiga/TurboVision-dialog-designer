@@ -48,8 +48,8 @@ public:
 	bool getUsedVarName();
 
 	//-- установка значений
-	void setVarName(char* val);
-	void setClassName(char* val);
+	void setVarName(const char* val);
+	void setClassName(const char* val);
 	void setUsedVarName(bool val);
 
 protected:
