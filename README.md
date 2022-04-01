@@ -3,6 +3,7 @@
 Спасибо авторам:
 
 Дизайнер диалогов, основанный на портированной библиотеке [Turbo Vision](https://github.com/magiblot/tvision)
+
 При сохранении в JSON используется [JSON for Modern C++](https://github.com/nlohmann/json/releases)
 
 #### To compile with English resources, use the definition when building the project.
