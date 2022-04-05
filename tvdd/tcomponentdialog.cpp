@@ -112,7 +112,7 @@ void TComponentDialog::handleEvent(TEvent& event)
 				{
 					//-- очистка события должна быть именно здесь иначе сообщение о Drop  не доходит до диалогового окна
 					clearEvent(event);
-					auto v = new TWrapButton(TRect(pt->x, pt->y - 2, pt->x + 11, pt->y), txt_btnButton, -1, bfDefault);
+					auto v = new TWrapButton(TRect(pt->x, pt->y - 2, pt->x + 10, pt->y), txt_btnButton, -1, bfDefault);
 					v->setDragged();
 					v->options |= ofPreProcess | ofPostProcess;
 					//-- прикручиваем тень к объекту, чтобы он "парил"

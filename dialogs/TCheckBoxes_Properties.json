@@ -1,0 +1,322 @@
+{
+    "base_class_name": "TDialog",
+    "caption": "Свойства TCheckBoxes",
+    "centered": false,
+    "class_name": "TCheckBoxes_Properties",
+    "objects": [{
+            "class_name": "TButton",
+            "max_len": 254,
+            "pos": {
+                "x": 2,
+                "y": 18
+            },
+            "size": {
+                "x": 21,
+                "y": 1
+            },
+            "type": 1000,
+            "var_name": "v15"
+        }, {
+            "class_name": "TButton",
+            "max_len": 254,
+            "pos": {
+                "x": 2,
+                "y": 3
+            },
+            "size": {
+                "x": 21,
+                "y": 1
+            },
+            "type": 1000,
+            "var_name": "v0"
+        }, {
+            "class_name": "TButton",
+            "max_len": 254,
+            "pos": {
+                "x": 2,
+                "y": 4
+            },
+            "size": {
+                "x": 21,
+                "y": 1
+            },
+            "type": 1000,
+            "var_name": "v1"
+        }, {
+            "class_name": "TButton",
+            "max_len": 254,
+            "pos": {
+                "x": 2,
+                "y": 5
+            },
+            "size": {
+                "x": 21,
+                "y": 1
+            },
+            "type": 1000,
+            "var_name": "v2"
+        }, {
+            "class_name": "TButton",
+            "max_len": 254,
+            "pos": {
+                "x": 2,
+                "y": 6
+            },
+            "size": {
+                "x": 21,
+                "y": 1
+            },
+            "type": 1000,
+            "var_name": "v3"
+        }, {
+            "class_name": "TButton",
+            "max_len": 254,
+            "pos": {
+                "x": 2,
+                "y": 7
+            },
+            "size": {
+                "x": 21,
+                "y": 1
+            },
+            "type": 1000,
+            "var_name": "v4"
+        }, {
+            "class_name": "TButton",
+            "max_len": 254,
+            "pos": {
+                "x": 2,
+                "y": 8
+            },
+            "size": {
+                "x": 21,
+                "y": 1
+            },
+            "type": 1000,
+            "var_name": "v5"
+        }, {
+            "class_name": "TButton",
+            "max_len": 254,
+            "pos": {
+                "x": 2,
+                "y": 9
+            },
+            "size": {
+                "x": 21,
+                "y": 1
+            },
+            "type": 1000,
+            "var_name": "v6"
+        }, {
+            "class_name": "TButton",
+            "max_len": 254,
+            "pos": {
+                "x": 2,
+                "y": 10
+            },
+            "size": {
+                "x": 21,
+                "y": 1
+            },
+            "type": 1000,
+            "var_name": "v7"
+        }, {
+            "class_name": "TButton",
+            "max_len": 254,
+            "pos": {
+                "x": 2,
+                "y": 11
+            },
+            "size": {
+                "x": 21,
+                "y": 1
+            },
+            "type": 1000,
+            "var_name": "v8"
+        }, {
+            "class_name": "TButton",
+            "max_len": 254,
+            "pos": {
+                "x": 2,
+                "y": 12
+            },
+            "size": {
+                "x": 21,
+                "y": 1
+            },
+            "type": 1000,
+            "var_name": "v9"
+        }, {
+            "class_name": "TButton",
+            "max_len": 254,
+            "pos": {
+                "x": 2,
+                "y": 13
+            },
+            "size": {
+                "x": 21,
+                "y": 1
+            },
+            "type": 1000,
+            "var_name": "v10"
+        }, {
+            "class_name": "TButton",
+            "max_len": 254,
+            "pos": {
+                "x": 2,
+                "y": 14
+            },
+            "size": {
+                "x": 21,
+                "y": 1
+            },
+            "type": 1000,
+            "var_name": "v11"
+        }, {
+            "class_name": "TButton",
+            "max_len": 254,
+            "pos": {
+                "x": 2,
+                "y": 15
+            },
+            "size": {
+                "x": 21,
+                "y": 1
+            },
+            "type": 1000,
+            "var_name": "v12"
+        }, {
+            "class_name": "TButton",
+            "max_len": 254,
+            "pos": {
+                "x": 2,
+                "y": 16
+            },
+            "size": {
+                "x": 21,
+                "y": 1
+            },
+            "type": 1000,
+            "var_name": "v13"
+        }, {
+            "class_name": "TButton",
+            "max_len": 254,
+            "pos": {
+                "x": 2,
+                "y": 17
+            },
+            "size": {
+                "x": 21,
+                "y": 1
+            },
+            "type": 1000,
+            "var_name": "v14"
+        }, {
+            "pos": {
+                "x": 24,
+                "y": 2
+            },
+            "size": {
+                "x": 20,
+                "y": 1
+            },
+            "text": "Название переменной:",
+            "type": 1001,
+            "variable": {
+                "use_var_name": false,
+                "var_name": "control"
+            }
+        }, {
+            "pos": {
+                "x": 24,
+                "y": 4
+            },
+            "size": {
+                "x": 14,
+                "y": 1
+            },
+            "text": "Базовый класс:",
+            "type": 1001,
+            "variable": {
+                "use_var_name": false,
+                "var_name": "control"
+            }
+        }, {
+            "pos": {
+                "x": 41,
+                "y": 18
+            },
+            "size": {
+                "x": 10,
+                "y": 2
+            },
+            "text": "O~K~",
+            "type": 1002,
+            "variable": {
+                "use_var_name": false,
+                "var_name": "control"
+            }
+        }, {
+            "pos": {
+                "x": 2,
+                "y": 2
+            },
+            "size": {
+                "x": 16,
+                "y": 1
+            },
+            "text": "Список значений:",
+            "type": 1001,
+            "variable": {
+                "use_var_name": false,
+                "var_name": "control"
+            }
+        }, {
+            "class_name": "TButton",
+            "max_len": 254,
+            "pos": {
+                "x": 24,
+                "y": 3
+            },
+            "size": {
+                "x": 26,
+                "y": 1
+            },
+            "type": 1000,
+            "var_name": "var_name"
+        }, {
+            "class_name": "TButton",
+            "max_len": 254,
+            "pos": {
+                "x": 24,
+                "y": 5
+            },
+            "size": {
+                "x": 26,
+                "y": 1
+            },
+            "type": 1000,
+            "var_name": "class_name"
+        }, {
+            "pos": {
+                "x": 31,
+                "y": 18
+            },
+            "size": {
+                "x": 10,
+                "y": 2
+            },
+            "text": "Отмена",
+            "type": 1002,
+            "variable": {
+                "use_var_name": false,
+                "var_name": "control"
+            }
+        }
+    ],
+    "size": {
+        "x": 52,
+        "y": 21
+    },
+    "type": 0
+}

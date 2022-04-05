@@ -95,6 +95,75 @@ void generateDialogCode(TView* obj, void* res)
 		src->insert(iter, elem[i]);
 	}
 }
+void scanComponentsSize(TView* obj, void* val)
+{
+	TRect* r = (TRect*)val;
+
+	if (dynamic_cast<TTrialStaticText*> (obj))
+	{
+		TTrialStaticText* to = dynamic_cast<TTrialStaticText*> (obj);
+		auto rect = to->getBounds();
+		if (rect.b.x > r->b.x)
+			r->b.x = rect.b.x;
+		if (rect.b.y > r->b.y)
+			r->b.y = rect.b.y;
+	}
+	if (dynamic_cast<TTrialButton*> (obj))
+	{
+		TTrialButton* to = dynamic_cast<TTrialButton*> (obj);
+		auto rect = to->getBounds();
+		if (rect.b.x > r->b.x)
+			r->b.x = rect.b.x;
+		if (rect.b.y > r->b.y)
+			r->b.y = rect.b.y;
+	}
+	if (dynamic_cast<TTrialInputLine*> (obj))
+	{
+		TTrialInputLine* to = dynamic_cast<TTrialInputLine*> (obj);
+		auto rect = to->getBounds();
+		if (rect.b.x > r->b.x)
+			r->b.x = rect.b.x;
+		if (rect.b.y > r->b.y)
+			r->b.y = rect.b.y;
+	}
+	if (dynamic_cast<TTrialCheckBoxes*> (obj))
+	{
+		TTrialCheckBoxes* to = dynamic_cast<TTrialCheckBoxes*> (obj);
+		auto rect = to->getBounds();
+		if (rect.b.x > r->b.x)
+			r->b.x = rect.b.x;
+		if (rect.b.y > r->b.y)
+			r->b.y = rect.b.y;
+	}
+	if (dynamic_cast<TTrialListBox*> (obj))
+	{
+		TTrialListBox* to = dynamic_cast<TTrialListBox*> (obj);
+		auto rect = to->getBounds();
+		if (rect.b.x > r->b.x)
+			r->b.x = rect.b.x;
+		if (rect.b.y > r->b.y)
+			r->b.y = rect.b.y;
+	}
+	if (dynamic_cast<TTrialRadioButtons*> (obj))
+	{
+		TTrialRadioButtons* to = dynamic_cast<TTrialRadioButtons*> (obj);
+		auto rect = to->getBounds();
+		if (rect.b.x > r->b.x)
+			r->b.x = rect.b.x;
+		if (rect.b.y > r->b.y)
+			r->b.y = rect.b.y;
+	}
+	if (dynamic_cast<TTrialMemo*> (obj))
+	{
+		TTrialMemo* to = dynamic_cast<TTrialMemo*> (obj);
+		auto rect = to->getBounds();
+		if (rect.b.x > r->b.x)
+			r->b.x = rect.b.x;
+		if (rect.b.y > r->b.y)
+			r->b.y = rect.b.y;
+	}
+
+}
 
 void generateDialogJSON(TView* obj, void* _src)
 {
@@ -218,7 +287,11 @@ TMenuBox* dialogMenu()
 											 *new TMenuItem(txt_mnu_RadioButtons, cm_ed_InsertRadioButtons, kbNoKey) +
 											 *new TMenuItem(txt_mnu_CheckBoxes, cm_ed_InsertCheckBoxes, kbNoKey) +
 											 *new TMenuItem(txt_mnu_ListBox, cm_ed_InsertListBox, kbNoKey) +
-											 *new TMenuItem(txt_mnu_Memo, cm_ed_InsertMemo, kbNoKey)), nullptr);
+											 *new TMenuItem(txt_mnu_Memo, cm_ed_InsertMemo, kbNoKey)+
+											 newLine() +
+											 *new TMenuItem(txt_mnu_Copy, cm_ed_Copy, kbNoKey) +
+											 *new TMenuItem(txt_mnu_Paste, cm_ed_Paste, kbNoKey) 
+										 ), nullptr);
 	return contextMenu;
 }
 

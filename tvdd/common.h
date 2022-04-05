@@ -61,6 +61,7 @@ const int cmDialogPosSizeOnOff = 10103; //-- Включение / выключе
 const int cmDialogSaveToRes = 10104; //-- Сохранить диалог в ресурсах
 const int cmDialogGenCode = 10105; //-- Генерация исходного кода диалога
 const int cmDialogSaveToJson = 10106; //-- Сохранить диалог в ресурсах JSON
+const int cmDialogAutoSize = 10107; //-- Автоматический подбор размера диалога по содержимому
 
 
 //-- вызов диалогов редактирования параметров объектов
@@ -85,6 +86,9 @@ const int cm_ed_InsertCheckBoxes = 20004; //-- вставка TCheckBoxes
 const int cm_ed_InsertRadioButtons = 20005; //-- вставка TCheckBoxes
 const int cm_ed_InsertListBox = 20006; //-- вставка TListBox
 const int cm_ed_InsertMemo = 20007; //-- вставка TMemo
+const int cm_ed_Copy = 20008; //-- Копировать текущий объект
+const int cm_ed_Paste = 20009; //-- Вставить скопированный объект
+
 
 const int cm_ed_DestroyStaticText = 20201; //-- удаление TStaticText
 const int cm_ed_DestroyInputLine = 20202; //-- удаление TInputLine
@@ -136,6 +140,13 @@ void generateDialogCode(TView* obj, void* val);
 /// <param name="obj"></param>
 /// <param name="val"></param>
 void generateDialogJSON(TView* obj, void* val);
+/// <summary>
+/// Определение максимальных размеров компонентов в диалоговом окне
+/// </summary>
+/// <param name="obj"></param>
+/// <param name="val"></param>
+void scanComponentsSize(TView* obj, void* val);
+
 /// <summary>
 /// Создание контекстного меню редактируемого диалогового окна
 /// </summary>

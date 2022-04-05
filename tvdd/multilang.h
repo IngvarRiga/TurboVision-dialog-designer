@@ -24,6 +24,8 @@
 #define txt_mnu_ColorSelect "Тестирование выбора цвета"
 #define txt_mnu_ComponentsPanel "Панель компонентов"
 #define txt_mnu_cmDelete "Удалить"
+#define txt_mnu_Copy "Копировать объект в буфер"
+#define txt_mnu_Paste "Вставить из буфера"
 
 //-- дополнительное меню свойств диалога
 #define txt_mnu_DlgPropShowPosition "Отображать начальную позицию окна вкл/выкл"
@@ -53,6 +55,7 @@
 #define txt_PropertyMemo "Свойства TMemo"
 #define txt_PropertyListBox "Свойства TListBox"
 #define txt_PropertyAlignSize "Авторазмер по содержимому"
+#define txt_DialogAlignSize "Авторазмер диалога по содержимому"
 
 
 #define txt_pd_ClassName "Имя класса"
@@ -104,6 +107,8 @@
 #define txt_mnu_ColorSelect "(test) Color select"
 #define txt_mnu_ComponentsPanel "Component`s panel"
 #define txt_mnu_cmDelete "Delete"
+#define txt_mnu_Copy "Copy to buffer"
+#define txt_mnu_Paste "Paste from buffer"
 
 //-- additional Dialog Designer menu (click '=' on left border ) 
 #define txt_mnu_DlgPropShowPosition "Show window position on/off"
@@ -133,6 +138,7 @@
 #define txt_PropertyMemo "TMemo properties"
 #define txt_PropertyListBox "TListBox properties"
 #define txt_PropertyAlignSize "Auto resize"
+#define txt_DialogAlignSize "Auto resize dialog window"
 
 #define txt_pd_ClassName "Class name"
 #define txt_pd_VariableName "Variable name"
