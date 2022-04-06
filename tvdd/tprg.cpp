@@ -89,8 +89,8 @@ void TPrg::handleEvent(TEvent& event)
                     dlg->forEach(&scanComponentsSize, &r);
                     if ((r.b.x > 0) && (r.b.y > 0))
                     {
-                        rect.b.x = r.b.x+1;
-                        rect.b.y = r.b.y+1;
+                        rect.b.x = r.b.x + 1;
+                        rect.b.y = r.b.y + 1;
 
                         auto jsn = dlg->DialogToJSON();
 
@@ -119,12 +119,21 @@ void TPrg::handleEvent(TEvent& event)
                 message(deskTop->current, evBroadcast, cmDialogSaveToJson, NULL);
                 clearEvent(event);
                 break;
+            case cmDialogTest:
+                {
+                    //-- тестирование активного диалога
+                    //-- получаем ссылку на текущий диалог
+                    auto dlg = (TTrialDialog*)deskTop->current;
+                    auto jsn = dlg->DialogToJSON();
+                    doTestDialog(jsn);
+                    clearEvent(event);
+                    break;
+                }
             case cmColorTest:
                 deskTop->insert(new TSelectColorDialog());
                 clearEvent(event);
                 break;
             default:
-
                 break;
         }
     }
@@ -292,6 +301,118 @@ TTrialDialog* TPrg::LoadDialogJSON(nlohmann::json json)
     return win;
 }
 
+void TPrg::doTestDialog(nlohmann::json json)
+{
+    //-- загрузка диалога из JSON файла
+    auto win = new TDialog(TRect(0,0,json["size"]["x"], json["size"]["y"]), json["caption"]);
+    win->options |= ofCentered;
+
+    std::string tmp;
+    auto obj = json["objects"];
+    for (int i = 0; i < obj.size(); i++)
+    {
+        auto ob = obj[i];
+        objType ot = ob["type"];
+        switch (ot)
+        {
+            case otInputLine:
+                {
+                    int ax = ob["pos"]["x"];
+                    int ay = ob["pos"]["y"];
+                    int ax1 = ob["pos"]["x"]; ax1 += ob["size"]["x"];
+                    int ay1 = ob["pos"]["y"]; ay1 += ob["size"]["y"];
+                    auto cmp = new TInputLine(TRect(ax, ay, ax1, ay1), ob["max_len"]);
+                    win->insert(cmp);
+                    break;
+                }
+            case otStaticText:
+                {
+                    int ax = ob["pos"]["x"];
+                    int ay = ob["pos"]["y"];
+                    int ax1 = ob["pos"]["x"]; ax1 += ob["size"]["x"];
+                    int ay1 = ob["pos"]["y"]; ay1 += ob["size"]["y"];
+                    tmp = ob["text"];
+                    auto cmp = new TStaticText(TRect(ax, ay, ax1, ay1), tmp.c_str());
+                    win->insert(cmp);
+                    break;
+                }
+            case otButton:
+                {
+                    int ax = ob["pos"]["x"];
+                    int ay = ob["pos"]["y"];
+                    int ax1 = ob["pos"]["x"]; ax1 += ob["size"]["x"];
+                    int ay1 = ob["pos"]["y"]; ay1 += ob["size"]["y"];
+                    tmp = ob["text"];
+                    auto cmp = new TTrialButton(TRect(ax, ay, ax1, ay1), tmp.c_str());
+                    cmp->setUsedVarName(ob["variable"]["use_var_name"]);
+                    tmp = ob["variable"]["var_name"];
+                    cmp->setVarName(tmp.c_str());
+                    win->insert(cmp);
+                    break;
+                }
+                break;
+            case otRadioButton:
+                {
+                    int ax = ob["pos"]["x"];
+                    int ay = ob["pos"]["y"];
+                    int ax1 = ob["pos"]["x"]; ax1 += ob["size"]["x"];
+                    int ay1 = ob["pos"]["y"]; ay1 += ob["size"]["y"];
+                    auto cnt = ob["items"].size();
+                    tmp = ob["items"][0];
+                    auto its = new TSItem(TStringView(tmp.c_str()), nullptr);
+                    auto itsn = its;
+                    for (int i = 1; i < cnt; i++)
+                    {
+                        tmp = ob["items"][i];
+                        itsn->next = new TSItem(TStringView(tmp.c_str()), nullptr);
+                        itsn = itsn->next;
+                    }
+                    auto cmp = new TRadioButtons(TRect(ax, ay, ax1, ay1), its);
+                    win->insert(cmp);
+                    break;
+                }
+            case otCheckBox:
+                {
+                    int ax = ob["pos"]["x"];
+                    int ay = ob["pos"]["y"];
+                    int ax1 = ob["pos"]["x"]; ax1 += ob["size"]["x"];
+                    int ay1 = ob["pos"]["y"]; ay1 += ob["size"]["y"];
+                    auto cnt = ob["items"].size();
+                    tmp = ob["items"][0];
+                    auto its = new TSItem(TStringView(tmp.c_str()), nullptr);
+                    auto itsn = its;
+                    for (int i = 1; i < cnt; i++)
+                    {
+                        tmp = ob["items"][i];
+                        itsn->next = new TSItem(TStringView(tmp.c_str()), nullptr);
+                        itsn = itsn->next;
+                    }
+                    auto cmp = new TCheckBoxes(TRect(ax, ay, ax1, ay1), its);
+                    win->insert(cmp);
+                    break;
+                }
+            case otMemo:
+                {
+                    int ax = ob["pos"]["x"];
+                    int ay = ob["pos"]["y"];
+                    int ax1 = ob["pos"]["x"]; ax1 += ob["size"]["x"];
+                    int ay1 = ob["pos"]["y"]; ay1 += ob["size"]["y"];
+                    tmp = ob["text"];
+                    auto cmp = new TMemo(TRect(ax, ay, ax1, ay1), nullptr, nullptr, nullptr, 0);
+                    win->insert(cmp);
+                    break;
+                }
+            case otListBox:
+                break;
+                //-- здесь это не обслуживается
+            case otDialog:
+            default:
+                break;
+        }
+    }
+    //-- вставляем окно
+    deskTop->execView(win);
+}
 
 TMenuBar* TPrg::initMenuBar(TRect r)
 {
@@ -313,9 +434,11 @@ TMenuBar* TPrg::initMenuBar(TRect r)
                             *new TMenuItem(txt_mnu_LoadFromJSON, cmLoadJSON, kbAltF3, hcNoContext, "Alt+F3") +
                             newLine() +
                             *new TMenuItem(txt_mnu_SaveToRes, cmDialogSaveToRes, kbCtrlS, hcNoContext, "Ctrl+S") +
-                            *new TMenuItem(txt_mnu_SaveToJson, cmDialogSaveToJson, kbCtrlJ, hcNoContext, "Ctrl+J")+
+                            *new TMenuItem(txt_mnu_SaveToJson, cmDialogSaveToJson, kbCtrlJ, hcNoContext, "Ctrl+J") +
                             newLine() +
-                            *new TMenuItem(txt_DialogAlignSize, cmDialogAutoSize, kbAltC, hcNoContext, "Alt+C")
+                            *new TMenuItem(txt_DialogAlignSize, cmDialogAutoSize, kbAltC, hcNoContext, "Alt+C") +
+                            newLine() +
+                            *new TMenuItem(txt_DialogTest, cmDialogTest, kbF9, hcNoContext, "F9")
 
                             // +newLine()+
                         //* new TMenuItem(txt_mnu_ComponentsPanel, cm_test_ToolWin, kbCtrlF12, hcNoContext, "Ctrl-F12")

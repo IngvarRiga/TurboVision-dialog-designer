@@ -56,6 +56,7 @@
 #define txt_PropertyListBox "Свойства TListBox"
 #define txt_PropertyAlignSize "Авторазмер по содержимому"
 #define txt_DialogAlignSize "Авторазмер диалога по содержимому"
+#define txt_DialogTest "Тестировать диалог"
 
 
 #define txt_pd_ClassName "Имя класса"
@@ -139,6 +140,7 @@
 #define txt_PropertyListBox "TListBox properties"
 #define txt_PropertyAlignSize "Auto resize"
 #define txt_DialogAlignSize "Auto resize dialog window"
+#define txt_DialogTest "Test"
 
 #define txt_pd_ClassName "Class name"
 #define txt_pd_VariableName "Variable name"

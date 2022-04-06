@@ -99,17 +99,7 @@ void TTrialDialog::editDialogProperties()
         setClassName(data->dlgClassName);
         setBaseClassName(data->dlgClassName);
         setCentered(data->dlgOpt_Centered);
-        //memset(class_name, 0x0, StringMaxLen);
-        //memcpy(class_name, data->dlgClassName, strlen(data->dlgClassName));
-        //memset(base_class_name, 0x0, StringMaxLen);
-        //memcpy(base_class_name, data->dlgBaseClass, strlen(data->dlgBaseClass));
-        //-- с заголовком окна немного позамороченнее --------------
-        delete title;
-        auto lenCapt = strlen(data->dlgCaption) + 1;
-        title = new char[lenCapt];
-        memset((void*)title, 0x0, lenCapt);
-        memcpy((void*)title, data->dlgCaption, lenCapt - 1);
-        //----------------------------------------------------------
+        setCaption(data->dlgCaption);
         drawView();
         frame->drawView();
         DialSaved = false;
@@ -140,7 +130,6 @@ void TTrialDialog::setCentered(bool val)
 {
     prp_Centered = val;
 }
-
 void TTrialDialog::close()
 {
     if (!DialSaved)

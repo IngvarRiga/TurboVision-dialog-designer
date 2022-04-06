@@ -52,6 +52,11 @@ class TPrg : public TApplication
     /// <param name=""></param>
     /// <returns></returns>
     static TStatusLine *initStatusLine(TRect);
+    /// <summary>
+    /// Тестирование текущего диалога
+    /// </summary>
+    /// <param name="json"></param>
+    void doTestDialog(nlohmann::json json);
 
   private:
     /// <summary>

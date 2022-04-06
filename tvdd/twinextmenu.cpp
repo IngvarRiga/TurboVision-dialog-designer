@@ -44,16 +44,17 @@ void TWinExtMenu::handleEvent(TEvent& event)
 			r.b.y = r.a.y + 20;
 			TMenuBox* contextMenu = new TMenuBox(TRect(0, 0, 0, 0),
 												 new TMenu(
-													 *new TMenuItem(txt_PropertyDialogCaption, cmOption_Dialog, kbAlt1, hcNoContext, "Ctrl+Enter") +
+													 *new TMenuItem(txt_PropertyDialogCaption, cmOption_Dialog, kbNoKey, hcNoContext) +
 													 newLine() +
-													 *new TMenuItem(txt_mnu_DlgPropShowPosition, cmDialogPosOnOff, kbAlt2, hcNoContext, "Alt+2") +
-													 *new TMenuItem(txt_mnu_DlgPropShowSize, cmDialogSizeOnOff, kbAlt3, hcNoContext, "Alt+3") +
+													 *new TMenuItem(txt_mnu_DlgPropShowPosition, cmDialogPosOnOff, kbNoKey, hcNoContext) +
+													 *new TMenuItem(txt_mnu_DlgPropShowSize, cmDialogSizeOnOff, kbNoKey, hcNoContext) +
 													 newLine() +
-													 *new TMenuItem(txt_mnu_DlgPropShowSizePos, cmDialogPosSizeOnOff, kbAlt4, hcNoContext, "Alt+4") +
+													 *new TMenuItem(txt_mnu_DlgPropShowSizePos, cmDialogPosSizeOnOff, kbNoKey, hcNoContext) +
 													 newLine() +
-													 *new TMenuItem(txt_mnu_SaveToRes, cmDialogSaveToRes, kbAlt5, hcNoContext, "Ctrl+S") +
-													 *new TMenuItem(txt_mnu_SaveToRes, cmDialogSaveToJson, kbAlt5, hcNoContext, "Ctrl+J") +
-													 *new TMenuItem(txt_mnu_GenCode, cmDialogGenCode, kbAlt6, hcNoContext, "Ctrl+C")
+													 *new TMenuItem(txt_mnu_SaveToRes, cmDialogSaveToRes, kbNoKey, hcNoContext) +
+													 *new TMenuItem(txt_mnu_SaveToJson, cmDialogSaveToJson, kbNoKey, hcNoContext) +
+													 newLine() +
+													 *new TMenuItem(txt_mnu_GenCode, cmDialogGenCode, kbNoKey, hcNoContext)
 												 ), nullptr);
 			contextMenu->options |= ofCentered;
 			auto res = owner->owner->execView(contextMenu);
