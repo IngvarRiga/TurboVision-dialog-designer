@@ -64,7 +64,6 @@ void TPrg::handleEvent(TEvent& event)
                     break;
                 }
             case cmLoadJSON:
-                //-- не реализовано пока что
                 {
                     auto fd = new TFileDialog("*.json", txt_dlg_LoadAsCaption, txt_dlg_SaveAsName, fdOpenButton, 100);
 
@@ -122,10 +121,15 @@ void TPrg::handleEvent(TEvent& event)
             case cmDialogTest:
                 {
                     //-- тестирование активного диалога
-                    //-- получаем ссылку на текущий диалог
-                    auto dlg = (TTrialDialog*)deskTop->current;
-                    auto jsn = dlg->DialogToJSON();
-                    doTestDialog(jsn);
+                    //-- получаем ссылку на текущий диалог 
+                    auto obj = deskTop->current;
+                    if (dynamic_cast<TTrialDialog*> (obj))
+                    {
+                        //-- если это разрабатываемый диалог - тогда отображаем его
+                        auto dlg = dynamic_cast<TTrialDialog*> (obj);
+                        auto jsn = dlg->DialogToJSON();
+                        doTestDialog(jsn);
+                    }
                     clearEvent(event);
                     break;
                 }
@@ -304,7 +308,7 @@ TTrialDialog* TPrg::LoadDialogJSON(nlohmann::json json)
 void TPrg::doTestDialog(nlohmann::json json)
 {
     //-- загрузка диалога из JSON файла
-    auto win = new TDialog(TRect(0,0,json["size"]["x"], json["size"]["y"]), json["caption"]);
+    auto win = new TDialog(TRect(0, 0, json["size"]["x"], json["size"]["y"]), json["caption"]);
     win->options |= ofCentered;
 
     std::string tmp;
@@ -343,10 +347,7 @@ void TPrg::doTestDialog(nlohmann::json json)
                     int ax1 = ob["pos"]["x"]; ax1 += ob["size"]["x"];
                     int ay1 = ob["pos"]["y"]; ay1 += ob["size"]["y"];
                     tmp = ob["text"];
-                    auto cmp = new TTrialButton(TRect(ax, ay, ax1, ay1), tmp.c_str());
-                    cmp->setUsedVarName(ob["variable"]["use_var_name"]);
-                    tmp = ob["variable"]["var_name"];
-                    cmp->setVarName(tmp.c_str());
+                    auto cmp = new TButton(TRect(ax, ay, ax1, ay1), tmp.c_str(), cmCancel, NULL);
                     win->insert(cmp);
                     break;
                 }
@@ -410,6 +411,7 @@ void TPrg::doTestDialog(nlohmann::json json)
                 break;
         }
     }
+
     //-- вставляем окно
     deskTop->execView(win);
 }
@@ -426,7 +428,7 @@ TMenuBar* TPrg::initMenuBar(TRect r)
                         newLine() +
                         *new TMenuItem(txt_cmExit, cmQuit, kbAltX, hcNoContext, "Alt-X") +
                         //-- перечень реализованных алгоритмов
-                        *new TSubMenu(txt_mnu_Designer, kbNoKey) +
+                        *new TSubMenu(txt_mnu_DialogDesign, kbNoKey) +
                         (TMenuItem&)(
                             *new TMenuItem(txt_mnu_NewDialogWindow, cmNewDialog, kbCtrlN, hcNoContext, "Ctrl-N") +
                             newLine() +

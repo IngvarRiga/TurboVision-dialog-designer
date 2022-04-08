@@ -6,7 +6,7 @@
 #define winAboutCapt "О программе..."
 
 //-- тексты меню
-#define txt_mnu_Designer "Дизайнер"
+#define txt_mnu_DialogDesign "Диалог"
 #define txt_mnu_NewDialogWindow "Создать новое диалоговое окно"
 #define txt_mnu_LoadFromResource "Загрузить из файла ресурсов..."
 #define txt_mnu_LoadFromJSON "Загрузить из файла JSON..."
@@ -90,7 +90,7 @@
 #define winAboutText1 "\003Dialog forms designer for TurboVision 2.0 C++"
 #define winAboutCapt "About..."
 
-#define txt_mnu_Designer "Designer"
+#define txt_mnu_DialogDesign "Dialog"
 #define txt_mnu_NewDialogWindow "Create new Dialog window"
 #define txt_mnu_LoadFromResource "Load from resource file..."
 #define txt_mnu_LoadFromJSON "Load from JSON..."

@@ -95,6 +95,7 @@ void generateDialogCode(TView* obj, void* res)
 		src->insert(iter, elem[i]);
 	}
 }
+
 void scanComponentsSize(TView* obj, void* val)
 {
 	TRect* r = (TRect*)val;

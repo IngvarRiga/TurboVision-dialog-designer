@@ -45,6 +45,7 @@ void TWinExtMenu::handleEvent(TEvent& event)
 			TMenuBox* contextMenu = new TMenuBox(TRect(0, 0, 0, 0),
 												 new TMenu(
 													 *new TMenuItem(txt_PropertyDialogCaption, cmOption_Dialog, kbNoKey, hcNoContext) +
+													 //*new TMenuItem(txt_DialogAlignSize, cmDialogAutoSize, kbNoKey, hcNoContext) +
 													 newLine() +
 													 *new TMenuItem(txt_mnu_DlgPropShowPosition, cmDialogPosOnOff, kbNoKey, hcNoContext) +
 													 *new TMenuItem(txt_mnu_DlgPropShowSize, cmDialogSizeOnOff, kbNoKey, hcNoContext) +

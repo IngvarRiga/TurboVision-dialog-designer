@@ -14,10 +14,14 @@
 #define Uses_TStreamableClass
 #define Uses_TEvent
 #define Uses_TFileDialog
-
+#define Uses_TFrame
+#define Uses_ipstream
+#define Uses_opstream
+#define Uses_ofpstream
 #include <tvision/tv.h>
-#include <nlohmann/json.hpp>
+#include <tvision/tkeys.h>
 
+#include <nlohmann/json.hpp>
 //-- значение имени переменной по умолчанию
 #define txt_control "control"
 //-- значение имен классов по умолчанию

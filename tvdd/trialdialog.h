@@ -49,7 +49,16 @@ public:
 	bool getSaved() { return DialSaved; }
 	void setSaved(bool val = true) { DialSaved = val; }
 
+	/// <summary>
+	/// Установка ссылки на корневое приложение
+	/// </summary>
+	/// <param name="val"></param>
+	//void setApp(TView* val = nullptr) { app = val; }
 private:
+	/// <summary>
+	/// Иногда требуется отослать сообщение на самый верх, поэтому мы сохраняем ссылку на приложение 
+	/// </summary>
+	//TView* app; //-- ссылка на базовое приложение
 	bool DialSaved; //-- признак сохранённости диалога
 	char class_name[StringMaxLen]; //-- название класса диалога
 	char base_class_name[StringMaxLen]; //-- название базового класса диалога

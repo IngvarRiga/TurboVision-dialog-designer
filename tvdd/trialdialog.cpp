@@ -1,16 +1,6 @@
-//#include <strings>
 #include <stdlib.h>
-#define Uses_MsgBox
-#define Uses_TFrame
-#define Uses_TStreamable
-#define Uses_ipstream
-#define Uses_opstream
-#define Uses_ofpstream
-#include <tvision/tv.h>
-#include <tvision/tkeys.h>
 
 #include "trialdialog.h"
-#include "common.h"
 #include "multilang.h"
 #include "tdialogproperties.h"
 #include "ttrialstatictext.h"
@@ -736,6 +726,12 @@ void TTrialDialog::handleEvent(TEvent& event)
                     saveDialogToSrc();
                     break;
                 }
+                //case cmDialogAutoSize:
+                //    {
+                //        clearEvent(event);
+                //        message(app, evBroadcast, cmDialogAutoSize, nullptr);
+                //        break;
+                //    }
         }
     }
     //-- переопределяем действия клавиш в режиме разработки
@@ -788,17 +784,21 @@ void TTrialDialog::saveDialogToRes()
     strcat(fileNameMask, ".dlg");
     auto fd = new TFileDialog(fileNameMask, txt_dlg_SaveAsCaption, txt_dlg_SaveAsName, fdOKButton, 100);
 
-    if (fd != 0 && owner->execView(fd) != cmCancel)
+    if (fd != 0)
     {
-        char fileName[MAXPATH];
-        fd->getFileName(fileName);
-        ofpstream os;
-        os.open(fileName);
-        os << this;
-        os.close();
-        DialSaved = true;
+        auto res = owner->execView(fd);
+        if (res != cmCancel)
+        {
+            char fileName[MAXPATH];
+            fd->getFileName(fileName);
+            ofpstream os;
+            os.open(fileName);
+            os << this;
+            os.close();
+            DialSaved = true;
+        }
+        destroy(fd);
     }
-    destroy(fd);
 }
 
 /// <summary>
