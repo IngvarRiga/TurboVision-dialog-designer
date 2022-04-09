@@ -105,13 +105,12 @@ void from_json(const BasicJsonType& j, typename BasicJsonType::string_t& s)
 }
 
 template <
-    typename BasicJsonType, typename ConstructibleStringType,
+    typename BasicJsonType, typename StringType,
     enable_if_t <
-        is_constructible_string_type<BasicJsonType, ConstructibleStringType>::value&&
-        !std::is_same<typename BasicJsonType::string_t,
-                      ConstructibleStringType>::value,
-        int > = 0 >
-void from_json(const BasicJsonType& j, ConstructibleStringType& s)
+        std::is_assignable<StringType&, const typename BasicJsonType::string_t>::value
+        && !std::is_same<typename BasicJsonType::string_t, StringType>::value
+        && !is_json_ref<StringType>::value, int > = 0 >
+void from_json(const BasicJsonType& j, StringType& s)
 {
     if (JSON_HEDLEY_UNLIKELY(!j.is_string()))
     {
@@ -464,8 +463,7 @@ void from_json(const BasicJsonType& j, std_fs::path& p)
 {
     if (JSON_HEDLEY_UNLIKELY(!j.is_string()))
     {
-        // Not tested because of #3377 (related #3070)
-        JSON_THROW(type_error::create(302, "type must be string, but is " + std::string(j.type_name()), j)); // LCOV_EXCL_LINE
+        JSON_THROW(type_error::create(302, "type must be string, but is " + std::string(j.type_name()), j));
     }
     p = *j.template get_ptr<const typename BasicJsonType::string_t*>();
 }
