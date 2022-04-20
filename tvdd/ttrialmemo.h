@@ -54,6 +54,11 @@ public:
     void setClassName(const char* val);
     bool isSelected();
     void setSelected(bool val);
+    /// <summary>
+    /// Генерирует JSON-код компонента
+    /// </summary>
+    /// <returns></returns>
+    nlohmann::json genJSON();
 
 protected:
     bool Selected;

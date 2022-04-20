@@ -8,291 +8,408 @@
 #include "ttriallistbox.h"
 #include "ttrialmemo.h"
 
+nlohmann::json copy_buffer;
+
+//-- определение перечня строковых констант для чтения/записи JSON объектов
+const char* str_pos = "pos";
+const char* str_size = "size";
+const char* str_x = "x";
+const char* str_y = "y";
+const char* str_type = "type";
+const char* str_class_name = "class_name";
+const char* str_var_name = "var_name";
+const char* str_base_class_name = "base_class_name";
+const char* str_caption = "caption";
+const char* str_centered = "centered";
+const char* str_objects = "objects";
+const char* str_items = "items";
+const char* str_text = "text";
+const char* str_variable = "variable";
+const char* str_use_var_name = "use_var_name";
+const char* str_max_len = "max_len";
+
+
+
 void DragObject(TView* obj, TEvent event)
 {
-	//-- перетаскивание и изменение размеров исключительно левой кнопкой мыши!
-	if (event.mouse.buttons == mbLeftButton)
-	{
-		TPoint MinSz, MaxSz;
-		ushort d;
-		//-- устанавливаем минимальные границы размера в размер хозяина объекта
-		//-- так, чтобы изменение размеров и перемещение не выводило объект
-		//-- за границы предка (окна в общем случае)
-		auto lims = obj->owner->getExtent();
-		lims.grow(-1, -1);
-		obj->sizeLimits(MinSz, MaxSz);
+    //-- перетаскивание и изменение размеров исключительно левой кнопкой мыши!
+    if (event.mouse.buttons == mbLeftButton)
+    {
+        TPoint MinSz, MaxSz;
+        ushort d;
+        //-- устанавливаем минимальные границы размера в размер хозяина объекта
+        //-- так, чтобы изменение размеров и перемещение не выводило объект
+        //-- за границы предка (окна в общем случае)
+        auto lims = obj->owner->getExtent();
+        lims.grow(-1, -1);
+        obj->sizeLimits(MinSz, MaxSz);
 
-		auto r = obj->getBounds();
-		auto tx = r.b.x - r.a.x - 1;
-		auto ty = r.b.y - r.a.y - 1;
-		auto mp = obj->makeLocal(event.mouse.where);
-		
-		d = dmDragMove;
-		if ((mp.x == tx) && (mp.y == ty))
-			d = dmDragGrow;
-		obj->dragView(event, obj->dragMode | d, lims, MinSz, MaxSz);
-	}
+        auto r = obj->getBounds();
+        auto tx = r.b.x - r.a.x - 1;
+        auto ty = r.b.y - r.a.y - 1;
+        auto mp = obj->makeLocal(event.mouse.where);
+
+        d = dmDragMove;
+        if ((mp.x == tx) && (mp.y == ty))
+            d = dmDragGrow;
+        obj->dragView(event, obj->dragMode | d, lims, MinSz, MaxSz);
+    }
 }
 
 void unselected(TView* obj, void*)
 {
-	obj->setState(sfSelected, false);
+    obj->setState(sfSelected, false);
 }
 
 void generateDialogCode(TView* obj, void* res)
 {
-	std::vector<std::string> *src = (std::vector<std::string> *) res;
-	std::stringstream ss;
+    std::vector<std::string>* src = (std::vector<std::string>*) res;
+    std::stringstream ss;
 
-	if (dynamic_cast<TTrialStaticText*> (obj))
-	{
-		TTrialStaticText* to = dynamic_cast<TTrialStaticText*> (obj);
-		to->genCode(&ss);
-	}
-	if (dynamic_cast<TTrialButton*> (obj))
-	{
-		TTrialButton* to = dynamic_cast<TTrialButton*> (obj);
-		to->genCode(&ss);
-	}
-	if (dynamic_cast<TTrialInputLine*> (obj))
-	{
-		TTrialInputLine* to = dynamic_cast<TTrialInputLine*> (obj);
-		to->genCode(&ss);
-	}
-	if (dynamic_cast<TTrialCheckBoxes*> (obj))
-	{
-		TTrialCheckBoxes* to = dynamic_cast<TTrialCheckBoxes*> (obj);
-		to->genCode(&ss);
-	}
-	if (dynamic_cast<TTrialListBox*> (obj))
-	{
-		TTrialListBox* to = dynamic_cast<TTrialListBox*> (obj);
-		to->genCode(&ss);
-	}
-	if (dynamic_cast<TTrialRadioButtons*> (obj))
-	{
-		TTrialRadioButtons* to = dynamic_cast<TTrialRadioButtons*> (obj);
-		to->genCode(&ss);
-	}
-	if (dynamic_cast<TTrialMemo*> (obj))
-	{
-		TTrialMemo* to = dynamic_cast<TTrialMemo*> (obj);
-	    to->genCode(&ss);
-	}
+    if (dynamic_cast<TTrialStaticText*> (obj))
+    {
+        TTrialStaticText* to = dynamic_cast<TTrialStaticText*> (obj);
+        to->genCode(&ss);
+    }
+    if (dynamic_cast<TTrialButton*> (obj))
+    {
+        TTrialButton* to = dynamic_cast<TTrialButton*> (obj);
+        to->genCode(&ss);
+    }
+    if (dynamic_cast<TTrialInputLine*> (obj))
+    {
+        TTrialInputLine* to = dynamic_cast<TTrialInputLine*> (obj);
+        to->genCode(&ss);
+    }
+    if (dynamic_cast<TTrialCheckBoxes*> (obj))
+    {
+        TTrialCheckBoxes* to = dynamic_cast<TTrialCheckBoxes*> (obj);
+        to->genCode(&ss);
+    }
+    if (dynamic_cast<TTrialListBox*> (obj))
+    {
+        TTrialListBox* to = dynamic_cast<TTrialListBox*> (obj);
+        to->genCode(&ss);
+    }
+    if (dynamic_cast<TTrialRadioButtons*> (obj))
+    {
+        TTrialRadioButtons* to = dynamic_cast<TTrialRadioButtons*> (obj);
+        to->genCode(&ss);
+    }
+    if (dynamic_cast<TTrialMemo*> (obj))
+    {
+        TTrialMemo* to = dynamic_cast<TTrialMemo*> (obj);
+        to->genCode(&ss);
+    }
 
-	std::vector<std::string> elem;
-	std::vector<std::string>::iterator iter;
-	std::string it;
-	while (std::getline(ss, it))
-	{
-		if (it.length()>0)
-			elem.push_back(it);
-	}
+    std::vector<std::string> elem;
+    std::vector<std::string>::iterator iter;
+    std::string it;
+    while (std::getline(ss, it))
+    {
+        if (it.length() > 0)
+            elem.push_back(it);
+    }
 
-	for (int i = elem.size() - 1; i > -1; i--)
-	{
-		iter = src->begin();
-		src->insert(iter, elem[i]);
-	}
+    for (int i = elem.size() - 1; i > -1; i--)
+    {
+        iter = src->begin();
+        src->insert(iter, elem[i]);
+    }
 }
 
 void scanComponentsSize(TView* obj, void* val)
 {
-	TRect* r = (TRect*)val;
+    TRect* r = (TRect*)val;
 
-	if (dynamic_cast<TTrialStaticText*> (obj))
-	{
-		TTrialStaticText* to = dynamic_cast<TTrialStaticText*> (obj);
-		auto rect = to->getBounds();
-		if (rect.b.x > r->b.x)
-			r->b.x = rect.b.x;
-		if (rect.b.y > r->b.y)
-			r->b.y = rect.b.y;
-	}
-	if (dynamic_cast<TTrialButton*> (obj))
-	{
-		TTrialButton* to = dynamic_cast<TTrialButton*> (obj);
-		auto rect = to->getBounds();
-		if (rect.b.x > r->b.x)
-			r->b.x = rect.b.x;
-		if (rect.b.y > r->b.y)
-			r->b.y = rect.b.y;
-	}
-	if (dynamic_cast<TTrialInputLine*> (obj))
-	{
-		TTrialInputLine* to = dynamic_cast<TTrialInputLine*> (obj);
-		auto rect = to->getBounds();
-		if (rect.b.x > r->b.x)
-			r->b.x = rect.b.x;
-		if (rect.b.y > r->b.y)
-			r->b.y = rect.b.y;
-	}
-	if (dynamic_cast<TTrialCheckBoxes*> (obj))
-	{
-		TTrialCheckBoxes* to = dynamic_cast<TTrialCheckBoxes*> (obj);
-		auto rect = to->getBounds();
-		if (rect.b.x > r->b.x)
-			r->b.x = rect.b.x;
-		if (rect.b.y > r->b.y)
-			r->b.y = rect.b.y;
-	}
-	if (dynamic_cast<TTrialListBox*> (obj))
-	{
-		TTrialListBox* to = dynamic_cast<TTrialListBox*> (obj);
-		auto rect = to->getBounds();
-		if (rect.b.x > r->b.x)
-			r->b.x = rect.b.x;
-		if (rect.b.y > r->b.y)
-			r->b.y = rect.b.y;
-	}
-	if (dynamic_cast<TTrialRadioButtons*> (obj))
-	{
-		TTrialRadioButtons* to = dynamic_cast<TTrialRadioButtons*> (obj);
-		auto rect = to->getBounds();
-		if (rect.b.x > r->b.x)
-			r->b.x = rect.b.x;
-		if (rect.b.y > r->b.y)
-			r->b.y = rect.b.y;
-	}
-	if (dynamic_cast<TTrialMemo*> (obj))
-	{
-		TTrialMemo* to = dynamic_cast<TTrialMemo*> (obj);
-		auto rect = to->getBounds();
-		if (rect.b.x > r->b.x)
-			r->b.x = rect.b.x;
-		if (rect.b.y > r->b.y)
-			r->b.y = rect.b.y;
-	}
+    if (dynamic_cast<TTrialStaticText*> (obj))
+    {
+        TTrialStaticText* to = dynamic_cast<TTrialStaticText*> (obj);
+        auto rect = to->getBounds();
+        if (rect.b.x > r->b.x)
+            r->b.x = rect.b.x;
+        if (rect.b.y > r->b.y)
+            r->b.y = rect.b.y;
+    }
+    if (dynamic_cast<TTrialButton*> (obj))
+    {
+        TTrialButton* to = dynamic_cast<TTrialButton*> (obj);
+        auto rect = to->getBounds();
+        if (rect.b.x > r->b.x)
+            r->b.x = rect.b.x;
+        if (rect.b.y > r->b.y)
+            r->b.y = rect.b.y;
+    }
+    if (dynamic_cast<TTrialInputLine*> (obj))
+    {
+        TTrialInputLine* to = dynamic_cast<TTrialInputLine*> (obj);
+        auto rect = to->getBounds();
+        if (rect.b.x > r->b.x)
+            r->b.x = rect.b.x;
+        if (rect.b.y > r->b.y)
+            r->b.y = rect.b.y;
+    }
+    if (dynamic_cast<TTrialCheckBoxes*> (obj))
+    {
+        TTrialCheckBoxes* to = dynamic_cast<TTrialCheckBoxes*> (obj);
+        auto rect = to->getBounds();
+        if (rect.b.x > r->b.x)
+            r->b.x = rect.b.x;
+        if (rect.b.y > r->b.y)
+            r->b.y = rect.b.y;
+    }
+    if (dynamic_cast<TTrialListBox*> (obj))
+    {
+        TTrialListBox* to = dynamic_cast<TTrialListBox*> (obj);
+        auto rect = to->getBounds();
+        if (rect.b.x > r->b.x)
+            r->b.x = rect.b.x;
+        if (rect.b.y > r->b.y)
+            r->b.y = rect.b.y;
+    }
+    if (dynamic_cast<TTrialRadioButtons*> (obj))
+    {
+        TTrialRadioButtons* to = dynamic_cast<TTrialRadioButtons*> (obj);
+        auto rect = to->getBounds();
+        if (rect.b.x > r->b.x)
+            r->b.x = rect.b.x;
+        if (rect.b.y > r->b.y)
+            r->b.y = rect.b.y;
+    }
+    if (dynamic_cast<TTrialMemo*> (obj))
+    {
+        TTrialMemo* to = dynamic_cast<TTrialMemo*> (obj);
+        auto rect = to->getBounds();
+        if (rect.b.x > r->b.x)
+            r->b.x = rect.b.x;
+        if (rect.b.y > r->b.y)
+            r->b.y = rect.b.y;
+    }
 
 }
 
 void generateDialogJSON(TView* obj, void* _src)
 {
-	nlohmann::json job;
-	std::vector<nlohmann::json>* sav = (std::vector<nlohmann::json>*) _src;
+    nlohmann::json job;
+    std::vector<nlohmann::json>* sav = (std::vector<nlohmann::json>*) _src;
 
-	if (dynamic_cast<TTrialStaticText*> (obj))
-	{
-		TTrialStaticText* to = dynamic_cast<TTrialStaticText*> (obj);
-		job["type"] = otStaticText;
-		job["text"] = to->getCaption();
-		job["variable"]["use_var_name"] = to->getUsedVarName();
-		job["variable"]["var_name"] = to->getVarName();
-		auto sz = to->getBounds();
-		//-- начальная позиция
-		job["pos"]["x"] = sz.a.x;
-		job["pos"]["y"] = sz.a.y;
-		//-- размеры
-		job["size"]["x"] = sz.b.x - sz.a.x;
-		job["size"]["y"] = sz.b.y - sz.a.y;
-		sav->push_back(job);
-	}
-	if (dynamic_cast<TTrialButton*> (obj))
-	{
-		TTrialButton* to = dynamic_cast<TTrialButton*> (obj);
-		job["type"] = otButton;
-		job["text"] = to->getCaption();
-		job["variable"]["use_var_name"] = to->getUsedVarName();
-		job["variable"]["var_name"] = to->getVarName();
-		auto sz = to->getBounds();
-		//-- начальная позиция
-		job["pos"]["x"] = sz.a.x;
-		job["pos"]["y"] = sz.a.y;
-		//-- размеры
-		job["size"]["x"] = sz.b.x - sz.a.x;
-		job["size"]["y"] = sz.b.y - sz.a.y;
-		sav->push_back(job);
-	}
-	if (dynamic_cast<TTrialInputLine*> (obj))
-	{
-		TTrialInputLine* to = dynamic_cast<TTrialInputLine*> (obj);
-		job["type"] = otInputLine;
-		job["max_len"] = to->getVarLen();
-		job["var_name"] = to->getVarName();
-		job["class_name"] = to->getClassName();
-		auto sz = to->getBounds();
-		//-- начальная позиция
-		job["pos"]["x"] = sz.a.x;
-		job["pos"]["y"] = sz.a.y;
-		//-- размеры
-		job["size"]["x"] = sz.b.x - sz.a.x;
-		job["size"]["y"] = sz.b.y - sz.a.y;
-		sav->push_back(job);
-	}
-	if (dynamic_cast<TTrialCheckBoxes*> (obj))
-	{
-		TTrialCheckBoxes* to = dynamic_cast<TTrialCheckBoxes*> (obj);
-		job["type"] = otCheckBox;
-		auto items = to->getItems();
-		for (int i = 0; i < items->getCount(); i++)
-			job["items"].push_back((char*)items->at(i));
-		job["var_name"] = to->getVarName();
-		auto sz = to->getBounds();
-		//-- начальная позиция
-		job["pos"]["x"] = sz.a.x;
-		job["pos"]["y"] = sz.a.y;
-		//-- размеры
-		job["size"]["x"] = sz.b.x - sz.a.x;
-		job["size"]["y"] = sz.b.y - sz.a.y;
-		sav->push_back(job);
-	}
-	//if (dynamic_cast<TTrialListBox*> (obj))
-	//{
-	//	TTrialListBox* to = dynamic_cast<TTrialListBox*> (obj);
-	//	src->push_back(to);
-	//}
-	if (dynamic_cast<TTrialRadioButtons*> (obj))
-	{
-		TTrialRadioButtons* to = dynamic_cast<TTrialRadioButtons*> (obj);
-		job["type"] = otRadioButton;
-		auto items = to->getItems();
-		for (int i = 0; i < items->getCount(); i++)
-			job["items"].push_back((char*)items->at(i));
-		job["var_name"] = to->getVarName();
-		auto sz = to->getBounds();
-		//-- начальная позиция
-		job["pos"]["x"] = sz.a.x;
-		job["pos"]["y"] = sz.a.y;
-		//-- размеры
-		job["size"]["x"] = sz.b.x - sz.a.x;
-		job["size"]["y"] = sz.b.y - sz.a.y;
-		sav->push_back(job);
-	}
-	if (dynamic_cast<TTrialMemo*> (obj))
-	{
-		TTrialMemo* to = dynamic_cast<TTrialMemo*> (obj);
-		job["type"] = otMemo;
-		job["var_name"] = to->getVarName();
-		job["class_name"] = to->getVarName();
-		auto sz = to->getBounds();
-		//-- начальная позиция
-		job["pos"]["x"] = sz.a.x;
-		job["pos"]["y"] = sz.a.y;
-		//-- размеры
-		job["size"]["x"] = sz.b.x - sz.a.x;
-		job["size"]["y"] = sz.b.y - sz.a.y;
-		sav->push_back(job);
-	}
+    if (dynamic_cast<TTrialStaticText*> (obj))
+    {
+        TTrialStaticText* to = dynamic_cast<TTrialStaticText*> (obj);
+        sav->push_back(to->genJSON());
+    }
+    if (dynamic_cast<TTrialButton*> (obj))
+    {
+        TTrialButton* to = dynamic_cast<TTrialButton*> (obj);
+        sav->push_back(to->genJSON());
+    }
+    if (dynamic_cast<TTrialInputLine*> (obj))
+    {
+        TTrialInputLine* to = dynamic_cast<TTrialInputLine*> (obj);
+        sav->push_back(to->genJSON());
+    }
+    if (dynamic_cast<TTrialCheckBoxes*> (obj))
+    {
+        TTrialCheckBoxes* to = dynamic_cast<TTrialCheckBoxes*> (obj);
+        sav->push_back(to->genJSON());
+    }
+    //if (dynamic_cast<TTrialListBox*> (obj))
+    //{
+    //	TTrialListBox* to = dynamic_cast<TTrialListBox*> (obj);
+    //  sav->push_back(to->genJSON());
+    //}
+    if (dynamic_cast<TTrialRadioButtons*> (obj))
+    {
+        TTrialRadioButtons* to = dynamic_cast<TTrialRadioButtons*> (obj);
+        sav->push_back(to->genJSON());
+    }
+    if (dynamic_cast<TTrialMemo*> (obj))
+    {
+        TTrialMemo* to = dynamic_cast<TTrialMemo*> (obj);
+        sav->push_back(to->genJSON());
+    }
+}
+
+TView* object_fromJSON(nlohmann::json object, bool test)
+{
+    objType type = object[str_type];
+    std::string tmp;
+    switch (type)
+    {
+        case otInputLine:
+            {
+                int ax = object[str_pos][str_x];
+                int ay = object[str_pos][str_y];
+                int ax1 = object[str_pos][str_x]; ax1 += object[str_size][str_x];
+                int ay1 = object[str_pos][str_y]; ay1 += object[str_size][str_y];
+                if (test)
+                {
+                    auto cmp = new TInputLine(TRect(ax, ay, ax1, ay1), object[str_max_len]);
+                    return cmp;
+                }
+                else
+                {
+                    auto cmp = new TTrialInputLine(TRect(ax, ay, ax1, ay1), object[str_max_len]);
+                    tmp = object[str_var_name];
+                    cmp->setVarName(tmp.c_str());
+                    return cmp;
+                }
+                break;
+            }
+        case otStaticText:
+            {
+                int ax = object[str_pos][str_x];
+                int ay = object[str_pos][str_y];
+                int ax1 = object[str_pos][str_x]; ax1 += object[str_size][str_x];
+                int ay1 = object[str_pos][str_y]; ay1 += object[str_size][str_y];
+                tmp = object[str_text];
+                if (test)
+                {
+                    auto cmp = new TStaticText(TRect(ax, ay, ax1, ay1), tmp.c_str());
+                    return cmp;
+                }
+                else
+                {
+                    auto cmp = new TTrialStaticText(TRect(ax, ay, ax1, ay1), tmp.c_str());
+                    cmp->setUsedVarName(object[str_variable][str_use_var_name]);
+                    tmp = object[str_variable][str_var_name];
+                    cmp->setVarName(tmp.c_str());
+                    return cmp;
+                }
+                break;
+            }
+        case otButton:
+            {
+                int ax = object[str_pos][str_x];
+                int ay = object[str_pos][str_y];
+                int ax1 = object[str_pos][str_x]; ax1 += object[str_size][str_x];
+                int ay1 = object[str_pos][str_y]; ay1 += object[str_size][str_y];
+                tmp = object[str_text];
+                if (test)
+                {
+                    auto cmp = new TButton(TRect(ax, ay, ax1, ay1), tmp.c_str(), cmOK, bfDefault);
+                    return cmp;
+                }
+                else
+                {
+                    auto cmp = new TTrialButton(TRect(ax, ay, ax1, ay1), tmp.c_str());
+                    cmp->setUsedVarName(object[str_variable][str_use_var_name]);
+                    tmp = object[str_variable][str_var_name];
+                    cmp->setVarName(tmp.c_str());
+                    return cmp;
+                }
+                break;
+            }
+        case otRadioButton:
+            {
+                int ax = object[str_pos][str_x];
+                int ay = object[str_pos][str_y];
+                int ax1 = object[str_pos][str_x]; ax1 += object[str_size][str_x];
+                int ay1 = object[str_pos][str_y]; ay1 += object[str_size][str_y];
+                auto cnt = object[str_items].size();
+                tmp = object[str_items][0];
+                auto its = new TSItem(TStringView(tmp.c_str()), nullptr);
+                auto itsn = its;
+                for (int i = 1; i < cnt; i++)
+                {
+                    tmp = object[str_items][i];
+                    itsn->next = new TSItem(TStringView(tmp.c_str()), nullptr);
+                    itsn = itsn->next;
+                }
+                if (test)
+                {
+                    auto cmp = new TRadioButtons(TRect(ax, ay, ax1, ay1), its);
+                    return cmp;
+                }
+                else
+                {
+                    auto cmp = new TTrialRadioButtons(TRect(ax, ay, ax1, ay1), its);
+                    tmp = object[str_var_name];
+                    cmp->setVarName(tmp.c_str());
+                    return cmp;
+                }
+                break;
+            }
+        case otCheckBox:
+            {
+                int ax = object[str_pos][str_x];
+                int ay = object[str_pos][str_y];
+                int ax1 = object[str_pos][str_x]; ax1 += object[str_size][str_x];
+                int ay1 = object[str_pos][str_y]; ay1 += object[str_size][str_y];
+                auto cnt = object[str_items].size();
+                tmp = object[str_items][0];
+                auto its = new TSItem(TStringView(tmp.c_str()), nullptr);
+                auto itsn = its;
+                for (int i = 1; i < cnt; i++)
+                {
+                    tmp = object[str_items][i];
+                    itsn->next = new TSItem(TStringView(tmp.c_str()), nullptr);
+                    itsn = itsn->next;
+                }
+                if (test)
+                {
+                    auto cmp = new TCheckBoxes(TRect(ax, ay, ax1, ay1), its);
+                    return cmp;
+                }
+                else
+                {
+                    auto cmp = new TTrialCheckBoxes(TRect(ax, ay, ax1, ay1), its);
+                    tmp = object[str_var_name];
+                    cmp->setVarName(tmp.c_str());
+                    return (cmp);
+                }
+                break;
+            }
+        case otMemo:
+            {
+                int ax = object[str_pos][str_x];
+                int ay = object[str_pos][str_y];
+                int ax1 = object[str_pos][str_x]; ax1 += object[str_size][str_x];
+                int ay1 = object[str_pos][str_y]; ay1 += object[str_size][str_y];
+                if (test)
+                {
+                    auto cmp = new TMemo(TRect(ax, ay, ax1, ay1), nullptr, nullptr, nullptr, 0);
+                    return (cmp);
+                }
+                else
+                {
+                    auto cmp = new TTrialMemo(TRect(ax, ay, ax1, ay1), nullptr, nullptr, nullptr, 0);
+                    tmp = object[str_var_name];
+                    cmp->setVarName(tmp.c_str());
+                    tmp = object[str_class_name];
+                    cmp->setClassName(tmp.c_str());
+                    return (cmp);
+                }
+                break;
+            }
+        case otListBox:
+            break;
+            //-- здесь это не обслуживается
+        case otDialog:
+        default:
+            break;
+    }
+
 }
 
 TMenuBox* dialogMenu()
 {
-	//-- создание контекстного меню диалога
-	TMenuBox* contextMenu = new TMenuBox(TRect(0, 0, 0, 0),
-										 new TMenu(
-											 *new TMenuItem(txt_PropertyDialogCaption, cmOption_Dialog, kbCtrlEnter, hcNoContext, "Ctrl+Enter") +
-											 newLine() +
-											 *new TMenuItem(txt_mnu_StaticText, cm_ed_InsertStaticText, kbNoKey) +
-											 *new TMenuItem(txt_mnu_Button, cm_ed_InsertButton, kbNoKey) +
-											 *new TMenuItem(txt_mnu_InputLine, cm_ed_InsertInputLine, kbNoKey) +
-											 *new TMenuItem(txt_mnu_RadioButtons, cm_ed_InsertRadioButtons, kbNoKey) +
-											 *new TMenuItem(txt_mnu_CheckBoxes, cm_ed_InsertCheckBoxes, kbNoKey) +
-											 *new TMenuItem(txt_mnu_ListBox, cm_ed_InsertListBox, kbNoKey) +
-											 *new TMenuItem(txt_mnu_Memo, cm_ed_InsertMemo, kbNoKey)+
-											 newLine() +
-											 *new TMenuItem(txt_mnu_Copy, cm_ed_Copy, kbNoKey) +
-											 *new TMenuItem(txt_mnu_Paste, cm_ed_Paste, kbNoKey) 
-										 ), nullptr);
-	return contextMenu;
+    //-- создание контекстного меню диалога
+    TMenuBox* contextMenu = new TMenuBox(TRect(0, 0, 0, 0),
+                                         new TMenu(
+                                             *new TMenuItem(txt_PropertyDialogCaption, cmOption_Dialog, kbCtrlEnter, hcNoContext, "Ctrl+Enter") +
+                                             newLine() +
+                                             *new TMenuItem(txt_mnu_StaticText, cm_ed_InsertStaticText, kbNoKey) +
+                                             *new TMenuItem(txt_mnu_Button, cm_ed_InsertButton, kbNoKey) +
+                                             *new TMenuItem(txt_mnu_InputLine, cm_ed_InsertInputLine, kbNoKey) +
+                                             *new TMenuItem(txt_mnu_RadioButtons, cm_ed_InsertRadioButtons, kbNoKey) +
+                                             *new TMenuItem(txt_mnu_CheckBoxes, cm_ed_InsertCheckBoxes, kbNoKey) +
+                                             *new TMenuItem(txt_mnu_ListBox, cm_ed_InsertListBox, kbNoKey) +
+                                             *new TMenuItem(txt_mnu_Memo, cm_ed_InsertMemo, kbNoKey)
+                                             + newLine() +
+                                             //*new TMenuItem(txt_mnu_Copy, cm_ed_Copy, kbNoKey) +
+                                             *new TMenuItem(txt_mnu_Paste, cm_ed_Paste, kbShiftIns, -1, "Shift+Ins")
+                                         ), nullptr);
+    return contextMenu;
 }
 

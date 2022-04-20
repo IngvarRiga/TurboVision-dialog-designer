@@ -57,6 +57,7 @@
 #define txt_PropertyAlignSize "Авторазмер по содержимому"
 #define txt_DialogAlignSize "Авторазмер диалога по содержимому"
 #define txt_DialogTest "Тестировать диалог"
+#define txt_CopyPasteBufferIsEmpty "\003Буфер обмена пуст, вставлять нечего!"
 
 
 #define txt_pd_ClassName "Имя класса"
@@ -141,6 +142,7 @@
 #define txt_PropertyAlignSize "Auto resize"
 #define txt_DialogAlignSize "Auto resize dialog window"
 #define txt_DialogTest "Test"
+#define txt_CopyPasteBufferIsEmpty "\003Copy/Paste buffer is empty!"
 
 #define txt_pd_ClassName "Class name"
 #define txt_pd_VariableName "Variable name"

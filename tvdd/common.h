@@ -2,6 +2,8 @@
 #define COMMON_H
 
 #define Uses_TView
+//#define Uses_TInputLine
+//#define Uses_TFileInputLine
 #define Uses_TPoint
 #define Uses_TEvent
 #define Uses_TGroup
@@ -32,6 +34,8 @@
 #define txt_TRadioButtons "TRadioButtons"
 #define txt_TListBox "TListBox"
 #define txt_TMemo "TMemo"
+
+//-- определение перечня строковых констант для чтения/записи JSON объектов
 
 
 #define color_DraggedColor 0xDF //-- цвет компонента при Drag&Drop белый шрифт на фиолетовом поле
@@ -173,8 +177,36 @@ enum objType
 	otListBox
 };
 
+/// <summary>
+/// Переменная, содержащая JSON-описание копируемого объекта
+/// </summary>
+extern nlohmann::json copy_buffer;
 
 
+extern const char* str_pos;
+extern const char* str_size;
+extern const char* str_x;
+extern const char* str_y;
+extern const char* str_type;
+extern const char* str_class_name;
+extern const char* str_var_name;
+extern const char* str_base_class_name;
+extern const char* str_caption;
+extern const char* str_centered;
+extern const char* str_objects;
+extern const char* str_items;
+extern const char* str_text;
+extern const char* str_variable;
+extern const char* str_use_var_name;
+extern const char* str_max_len;
+
+/// <summary>
+/// Создание объекта из JSON-описания.
+/// </summary>
+/// <param name="json_text">- JSON-описание</param>
+/// <param name="test">- если параметр = true, то объект создаётся для тестирования диалога</param>
+/// <returns></returns>
+TView* object_fromJSON(nlohmann::json json_text, bool test = false);
 
 #endif /* COMMON_H */
 

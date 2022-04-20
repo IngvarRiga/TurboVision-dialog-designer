@@ -43,27 +43,20 @@ public:
 	//-- установка свойств при загрузке из JSON
 	void setClassName(const char* val);
 	void setBaseClassName(const char* val);
+	//void setDialogFileName(const char* val);
 	void setCentered(bool val);
 	void setCaption(const char* val);
 
 	bool getSaved() { return DialSaved; }
 	void setSaved(bool val = true) { DialSaved = val; }
+	//const char * getDialogFileName();
 
-	/// <summary>
-	/// Установка ссылки на корневое приложение
-	/// </summary>
-	/// <param name="val"></param>
-	//void setApp(TView* val = nullptr) { app = val; }
 private:
-	/// <summary>
-	/// Иногда требуется отослать сообщение на самый верх, поэтому мы сохраняем ссылку на приложение 
-	/// </summary>
-	//TView* app; //-- ссылка на базовое приложение
 	bool DialSaved; //-- признак сохранённости диалога
+	//char dlg_file_name[StringMaxLen]; //-- имя файла диалога (при загрузке устанавливается из имени, при создании в имя класса)
 	char class_name[StringMaxLen]; //-- название класса диалога
 	char base_class_name[StringMaxLen]; //-- название базового класса диалога
 	TTrialDialogBackground* Background; //-- хрень отвечающая за отрисовку подложки диалога в режиме конструктора
-	//bool GenDefaults;
 	TWinSizeIndicator* ind; //-- индикатор размеров окна
 	TWinExtMenu* emnu; //-- дополнительное управляющее меню
 
@@ -73,8 +66,7 @@ private:
 	//-----------------------------------------------------------
 
 	void GenCode(ofstream* res); //-- генерация кода диалога
-	void GenJSON(nlohmann::json res); //-- генерация описания объекта в JSON
-
+	
 protected:
 	bool isDest; //-- объект находится в стадии уничтожения
 	virtual void write(opstream&);

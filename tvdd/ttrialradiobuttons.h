@@ -18,66 +18,71 @@
 class TTrialRadioButtons : public TWrapRadioButtons
 {
 public:
-	static const char* const name;
+    static const char* const name;
 
-	TTrialRadioButtons(const TRect& bounds, TSItem* aStrings);
+    TTrialRadioButtons(const TRect& bounds, TSItem* aStrings);
 
-	virtual ~TTrialRadioButtons()
-	{}
+    virtual ~TTrialRadioButtons()
+    {}
 
-	TTrialRadioButtons(StreamableInit) :
-		TWrapRadioButtons(streamableInit)
-	{}
-	static TStreamable* build();
+    TTrialRadioButtons(StreamableInit) :
+        TWrapRadioButtons(streamableInit)
+    {}
+    static TStreamable* build();
 
-	virtual const char* streamableName() const
-	{
-		return name;
-	}
-	virtual void sizeLimits(TPoint& min, TPoint& max);
-	virtual void handleEvent(TEvent& event);
+    virtual const char* streamableName() const
+    {
+        return name;
+    }
+    virtual void sizeLimits(TPoint& min, TPoint& max);
+    virtual void handleEvent(TEvent& event);
 
-	//-- получение значений
-	char* getVarName();
-	char* getClassName();
+    //-- получение значений
+    char* getVarName();
+    char* getClassName();
 
-	//-- установка значений
-	void setVarName(const char* val);
-	void setClassName(const char* val);
+    //-- установка значений
+    void setVarName(const char* val);
+    void setClassName(const char* val);
 
-	virtual void setState(ushort aState, Boolean enable);
-	void genCode(void* val);
+    virtual void setState(ushort aState, Boolean enable);
+    void genCode(void* val);
+    /// <summary>
+    /// Генерирует JSON-код компонента
+    /// </summary>
+    /// <returns></returns>
+    nlohmann::json genJSON();
 
 protected:
-	char var_name[StringMaxLen]; //-- имя переменной для создания строки ввода
-	char class_name[StringMaxLen]; //-- имя переменной для создания текста
+    char var_name[StringMaxLen]; //-- имя переменной для создания строки ввода
+    char class_name[StringMaxLen]; //-- имя переменной для создания текста
 
-	virtual void write(opstream&);
-	virtual void* read(ipstream&);
+    virtual void write(opstream&);
+    virtual void* read(ipstream&);
 
 private:
-	bool Selected;
+    bool Selected;
 
 };
 
 inline ipstream& operator>>(ipstream& is, TTrialRadioButtons& cl)
 {
-	return is >> (TStreamable&)cl;
+    return is >> (TStreamable&)cl;
 }
 
 inline ipstream& operator>>(ipstream& is, TTrialRadioButtons*& cl)
 {
-	return is >> (void*&)cl;
+    return is >> (void*&)cl;
 }
 
 inline opstream& operator<<(opstream& os, TTrialRadioButtons& cl)
 {
-	return os << (TStreamable&)cl;
+    return os << (TStreamable&)cl;
 }
 
 inline opstream& operator<<(opstream& os, TTrialRadioButtons* cl)
 {
-	return os << (TStreamable*)cl;
+    return os << (TStreamable*)cl;
 }
 
 #endif /* TTRIALRADIOBUTTONS_H */

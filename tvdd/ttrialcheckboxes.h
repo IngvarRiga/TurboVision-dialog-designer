@@ -18,22 +18,20 @@
 
 class TTrialCheckBoxes : public TWrapCheckBoxes
 {
-  public:
-    static const char * const name;
+public:
+    static const char* const name;
 
-    TTrialCheckBoxes(const TRect& bounds, TSItem *aStrings);
+    TTrialCheckBoxes(const TRect& bounds, TSItem* aStrings);
 
     virtual ~TTrialCheckBoxes()
-    {
-    }
+    {}
 
     TTrialCheckBoxes(StreamableInit) :
-    TWrapCheckBoxes(streamableInit)
-    {
-    }
-    static TStreamable *build();
+        TWrapCheckBoxes(streamableInit)
+    {}
+    static TStreamable* build();
 
-    virtual const char *streamableName() const
+    virtual const char* streamableName() const
     {
         return name;
     }
@@ -41,7 +39,7 @@ class TTrialCheckBoxes : public TWrapCheckBoxes
     virtual void handleEvent(TEvent& event);
 
     virtual void setState(ushort aState, Boolean enable);
-    void genCode(void *val);
+    void genCode(void* val);
 
     //-- получение значений
     char* getVarName();
@@ -50,35 +48,40 @@ class TTrialCheckBoxes : public TWrapCheckBoxes
     //-- установка значений
     void setVarName(const char* val);
     void setClassName(const char* val);
+    /// <summary>
+    /// √енерирует JSON-код компонента
+    /// </summary>
+    /// <returns></returns>
+    nlohmann::json genJSON();
 
-  protected:
+protected:
     char var_name[StringMaxLen]; //-- им€ переменной дл€ создани€ строки ввода
     char class_name[StringMaxLen]; //-- им€ переменной дл€ создани€ текста
 
     virtual void write(opstream&);
-    virtual void *read(ipstream&);
+    virtual void* read(ipstream&);
 
-  private:
+private:
 };
 
 inline ipstream& operator>>(ipstream& is, TTrialCheckBoxes& cl)
 {
-    return is >> (TStreamable&) cl;
+    return is >> (TStreamable&)cl;
 }
 
 inline ipstream& operator>>(ipstream& is, TTrialCheckBoxes*& cl)
 {
-    return is >> (void *&) cl;
+    return is >> (void*&)cl;
 }
 
 inline opstream& operator<<(opstream& os, TTrialCheckBoxes& cl)
 {
-    return os << (TStreamable&) cl;
+    return os << (TStreamable&)cl;
 }
 
 inline opstream& operator<<(opstream& os, TTrialCheckBoxes* cl)
 {
-    return os << (TStreamable *) cl;
+    return os << (TStreamable*)cl;
 }
 
 #endif /* TTRIALCHECKBOXES_H */

@@ -16,6 +16,7 @@
 #include <vector>
 #include <sstream>
 #include <iostream>
+#include "common.h"
 
 #include "wstatictext.h"
 
@@ -48,6 +49,12 @@ public:
 	void setVarName(const char* val);
 	void setClassName(const char* val);
 	void setUsedVarName(bool val);
+
+	/// <summary>
+	/// Генерирует JSON-код компонента
+	/// </summary>
+	/// <returns></returns>
+	nlohmann::json genJSON();
 
 protected:
 	bool usedVarName; //-- при генерации исходного кода использовать отдельную переменную для объекта

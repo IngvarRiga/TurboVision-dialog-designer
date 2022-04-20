@@ -52,6 +52,8 @@ class TTrialInputLine : public TWrapInputLine
     void setClassName(const char* val);
     void setVarLen(uint val);
 
+    nlohmann::json genJSON();
+
 
   protected:
     virtual void write(opstream&);

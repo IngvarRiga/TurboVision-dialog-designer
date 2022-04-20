@@ -93,12 +93,12 @@ void TPrg::handleEvent(TEvent& event)
 
                         auto jsn = dlg->DialogToJSON();
 
-                        int xold = jsn["size"]["x"];
-                        int yold = jsn["size"]["y"];
+                        int xold = jsn[str_size][str_x];
+                        int yold = jsn[str_size][str_y];
 
 
-                        jsn["size"]["x"] = rect.b.x;
-                        jsn["size"]["y"] = rect.b.y;
+                        jsn[str_size][str_x] = rect.b.x;
+                        jsn[str_size][str_y] = rect.b.y;
                         dlg->setSaved();
                         dlg->close();
                         auto win = LoadDialogJSON(jsn);
@@ -156,7 +156,7 @@ void TPrg::LoadFromJSON(const char* fname)
         src >> json;
         src.close();
         //-- определяем тип ресурса, который содержится в загруженном JSON
-        objType typ = json["type"];
+        objType typ = json[str_type];
         switch (typ)
         {
             case otDialog:
@@ -177,129 +177,18 @@ void TPrg::LoadFromJSON(const char* fname)
 TTrialDialog* TPrg::LoadDialogJSON(nlohmann::json json)
 {
     //-- загрузка диалога из JSON файла
-    auto win = new TTrialDialog(json["size"]["x"], json["size"]["y"], json["caption"]);
-    std::string tmp = json["class_name"];
+    auto win = new TTrialDialog(json[str_size][str_x], json[str_size][str_y], json[str_caption]);
+    std::string tmp = json[str_class_name];
     win->setClassName(tmp.c_str());
-    tmp = json["base_class_name"];
+    tmp = json[str_base_class_name];
     win->setBaseClassName(tmp.c_str());
-    win->setCentered(json["centered"]);
-    tmp = json["caption"];
+    win->setCentered(json[str_centered]);
+    tmp = json[str_caption];
     win->setCaption(tmp.c_str());
-    auto obj = json["objects"];
+    //-- формирование перечня объектов
+    auto obj = json[str_objects];
     for (int i = 0; i < obj.size(); i++)
-    {
-        auto ob = obj[i];
-        objType ot = ob["type"];
-        switch (ot)
-        {
-            case otInputLine:
-                {
-                    int ax = ob["pos"]["x"];
-                    int ay = ob["pos"]["y"];
-                    int ax1 = ob["pos"]["x"]; ax1 += ob["size"]["x"];
-                    int ay1 = ob["pos"]["y"]; ay1 += ob["size"]["y"];
-                    auto cmp = new TTrialInputLine(TRect(ax, ay, ax1, ay1), ob["max_len"]);
-                    tmp = ob["var_name"];
-                    cmp->setVarName(tmp.c_str());
-                    win->insert(cmp);
-                    break;
-                }
-            case otStaticText:
-                {
-                    int ax = ob["pos"]["x"];
-                    int ay = ob["pos"]["y"];
-                    int ax1 = ob["pos"]["x"]; ax1 += ob["size"]["x"];
-                    int ay1 = ob["pos"]["y"]; ay1 += ob["size"]["y"];
-                    tmp = ob["text"];
-                    auto cmp = new TTrialStaticText(TRect(ax, ay, ax1, ay1), tmp.c_str());
-                    cmp->setUsedVarName(ob["variable"]["use_var_name"]);
-                    tmp = ob["variable"]["var_name"];
-                    cmp->setVarName(tmp.c_str());
-                    win->insert(cmp);
-                    break;
-                }
-            case otButton:
-                {
-                    int ax = ob["pos"]["x"];
-                    int ay = ob["pos"]["y"];
-                    int ax1 = ob["pos"]["x"]; ax1 += ob["size"]["x"];
-                    int ay1 = ob["pos"]["y"]; ay1 += ob["size"]["y"];
-                    tmp = ob["text"];
-                    auto cmp = new TTrialButton(TRect(ax, ay, ax1, ay1), tmp.c_str());
-                    cmp->setUsedVarName(ob["variable"]["use_var_name"]);
-                    tmp = ob["variable"]["var_name"];
-                    cmp->setVarName(tmp.c_str());
-                    win->insert(cmp);
-                    break;
-                }
-                break;
-            case otRadioButton:
-                {
-                    int ax = ob["pos"]["x"];
-                    int ay = ob["pos"]["y"];
-                    int ax1 = ob["pos"]["x"]; ax1 += ob["size"]["x"];
-                    int ay1 = ob["pos"]["y"]; ay1 += ob["size"]["y"];
-                    auto cnt = ob["items"].size();
-                    tmp = ob["items"][0];
-                    auto its = new TSItem(TStringView(tmp.c_str()), nullptr);
-                    auto itsn = its;
-                    for (int i = 1; i < cnt; i++)
-                    {
-                        tmp = ob["items"][i];
-                        itsn->next = new TSItem(TStringView(tmp.c_str()), nullptr);
-                        itsn = itsn->next;
-                    }
-                    auto cmp = new TTrialRadioButtons(TRect(ax, ay, ax1, ay1), its);
-                    tmp = ob["var_name"];
-                    cmp->setVarName(tmp.c_str());
-                    win->insert(cmp);
-                    break;
-                }
-            case otCheckBox:
-                {
-                    int ax = ob["pos"]["x"];
-                    int ay = ob["pos"]["y"];
-                    int ax1 = ob["pos"]["x"]; ax1 += ob["size"]["x"];
-                    int ay1 = ob["pos"]["y"]; ay1 += ob["size"]["y"];
-                    auto cnt = ob["items"].size();
-                    tmp = ob["items"][0];
-                    auto its = new TSItem(TStringView(tmp.c_str()), nullptr);
-                    auto itsn = its;
-                    for (int i = 1; i < cnt; i++)
-                    {
-                        tmp = ob["items"][i];
-                        itsn->next = new TSItem(TStringView(tmp.c_str()), nullptr);
-                        itsn = itsn->next;
-                    }
-                    auto cmp = new TTrialCheckBoxes(TRect(ax, ay, ax1, ay1), its);
-                    tmp = ob["var_name"];
-                    cmp->setVarName(tmp.c_str());
-                    win->insert(cmp);
-                    break;
-                }
-            case otMemo:
-                {
-                    int ax = ob["pos"]["x"];
-                    int ay = ob["pos"]["y"];
-                    int ax1 = ob["pos"]["x"]; ax1 += ob["size"]["x"];
-                    int ay1 = ob["pos"]["y"]; ay1 += ob["size"]["y"];
-                    tmp = ob["text"];
-                    auto cmp = new TTrialMemo(TRect(ax, ay, ax1, ay1), nullptr, nullptr, nullptr, 0);
-                    tmp = ob["var_name"];
-                    cmp->setVarName(tmp.c_str());
-                    tmp = ob["class_name"];
-                    cmp->setClassName(tmp.c_str());
-                    win->insert(cmp);
-                    break;
-                }
-            case otListBox:
-                break;
-                //-- здесь это не обслуживается
-            case otDialog:
-            default:
-                break;
-        }
-    }
+        win->insert(object_fromJSON(obj[i]));
     //-- вставляем окно
     deskTop->insert(win);
     return win;
@@ -308,110 +197,13 @@ TTrialDialog* TPrg::LoadDialogJSON(nlohmann::json json)
 void TPrg::doTestDialog(nlohmann::json json)
 {
     //-- загрузка диалога из JSON файла
-    auto win = new TDialog(TRect(0, 0, json["size"]["x"], json["size"]["y"]), json["caption"]);
+    auto win = new TDialog(TRect(0, 0, json[str_size][str_x], json[str_size][str_y]), json[str_caption]);
     win->options |= ofCentered;
 
     std::string tmp;
-    auto obj = json["objects"];
+    auto obj = json[str_objects];
     for (int i = 0; i < obj.size(); i++)
-    {
-        auto ob = obj[i];
-        objType ot = ob["type"];
-        switch (ot)
-        {
-            case otInputLine:
-                {
-                    int ax = ob["pos"]["x"];
-                    int ay = ob["pos"]["y"];
-                    int ax1 = ob["pos"]["x"]; ax1 += ob["size"]["x"];
-                    int ay1 = ob["pos"]["y"]; ay1 += ob["size"]["y"];
-                    auto cmp = new TInputLine(TRect(ax, ay, ax1, ay1), ob["max_len"]);
-                    win->insert(cmp);
-                    break;
-                }
-            case otStaticText:
-                {
-                    int ax = ob["pos"]["x"];
-                    int ay = ob["pos"]["y"];
-                    int ax1 = ob["pos"]["x"]; ax1 += ob["size"]["x"];
-                    int ay1 = ob["pos"]["y"]; ay1 += ob["size"]["y"];
-                    tmp = ob["text"];
-                    auto cmp = new TStaticText(TRect(ax, ay, ax1, ay1), tmp.c_str());
-                    win->insert(cmp);
-                    break;
-                }
-            case otButton:
-                {
-                    int ax = ob["pos"]["x"];
-                    int ay = ob["pos"]["y"];
-                    int ax1 = ob["pos"]["x"]; ax1 += ob["size"]["x"];
-                    int ay1 = ob["pos"]["y"]; ay1 += ob["size"]["y"];
-                    tmp = ob["text"];
-                    auto cmp = new TButton(TRect(ax, ay, ax1, ay1), tmp.c_str(), cmCancel, NULL);
-                    win->insert(cmp);
-                    break;
-                }
-                break;
-            case otRadioButton:
-                {
-                    int ax = ob["pos"]["x"];
-                    int ay = ob["pos"]["y"];
-                    int ax1 = ob["pos"]["x"]; ax1 += ob["size"]["x"];
-                    int ay1 = ob["pos"]["y"]; ay1 += ob["size"]["y"];
-                    auto cnt = ob["items"].size();
-                    tmp = ob["items"][0];
-                    auto its = new TSItem(TStringView(tmp.c_str()), nullptr);
-                    auto itsn = its;
-                    for (int i = 1; i < cnt; i++)
-                    {
-                        tmp = ob["items"][i];
-                        itsn->next = new TSItem(TStringView(tmp.c_str()), nullptr);
-                        itsn = itsn->next;
-                    }
-                    auto cmp = new TRadioButtons(TRect(ax, ay, ax1, ay1), its);
-                    win->insert(cmp);
-                    break;
-                }
-            case otCheckBox:
-                {
-                    int ax = ob["pos"]["x"];
-                    int ay = ob["pos"]["y"];
-                    int ax1 = ob["pos"]["x"]; ax1 += ob["size"]["x"];
-                    int ay1 = ob["pos"]["y"]; ay1 += ob["size"]["y"];
-                    auto cnt = ob["items"].size();
-                    tmp = ob["items"][0];
-                    auto its = new TSItem(TStringView(tmp.c_str()), nullptr);
-                    auto itsn = its;
-                    for (int i = 1; i < cnt; i++)
-                    {
-                        tmp = ob["items"][i];
-                        itsn->next = new TSItem(TStringView(tmp.c_str()), nullptr);
-                        itsn = itsn->next;
-                    }
-                    auto cmp = new TCheckBoxes(TRect(ax, ay, ax1, ay1), its);
-                    win->insert(cmp);
-                    break;
-                }
-            case otMemo:
-                {
-                    int ax = ob["pos"]["x"];
-                    int ay = ob["pos"]["y"];
-                    int ax1 = ob["pos"]["x"]; ax1 += ob["size"]["x"];
-                    int ay1 = ob["pos"]["y"]; ay1 += ob["size"]["y"];
-                    tmp = ob["text"];
-                    auto cmp = new TMemo(TRect(ax, ay, ax1, ay1), nullptr, nullptr, nullptr, 0);
-                    win->insert(cmp);
-                    break;
-                }
-            case otListBox:
-                break;
-                //-- здесь это не обслуживается
-            case otDialog:
-            default:
-                break;
-        }
-    }
-
+        win->insert(object_fromJSON(obj[i], true));
     //-- вставляем окно
     deskTop->execView(win);
 }
