@@ -66,11 +66,12 @@ const int cmColorTest = 10097;
 const int cmDialogSizeOnOff = 10101; //-- Включение / выключение отображения размеров диалога
 const int cmDialogPosOnOff = 10102; //-- Включение / выключение отображения начальной позиции окна
 const int cmDialogPosSizeOnOff = 10103; //-- Включение / выключение отображения всех параметров окна
-const int cmDialogSaveToRes = 10104; //-- Сохранить диалог в ресурсах
+//const int cmDialogSaveToRes = 10104; //-- (УДАЛЕНО ИЗ АЛГОРИТМА КАК УСТАРЕВШЕЕ) Сохранить диалог в ресурсах
 const int cmDialogGenCode = 10105; //-- Генерация исходного кода диалога
 const int cmDialogSaveToJson = 10106; //-- Сохранить диалог в ресурсах JSON
 const int cmDialogAutoSize = 10107; //-- Автоматический подбор размера диалога по содержимому
 const int cmDialogTest = 10108; //-- Тестирование разрабатываемого диалога
+const int cmDialogSaveToJsonAs = 10109; //-- Сохранить диалог в ресурсах JSON как...
 
 
 //-- вызов диалогов редактирования параметров объектов

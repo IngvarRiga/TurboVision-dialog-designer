@@ -43,10 +43,12 @@ TTrialDialog::TTrialDialog(const int width, const int height, TStringView aTitle
     //dragMode = dmLimitAll;
     flags |= wfGrow; // это позволяет изменять размеры диалога, хотя по умолчанию опция включена в предке
 
-    //memset(dlg_file_name, 0x0, StringMaxLen);
+    memset(dlg_file_name, 0x0, StringMaxLen);
     memset(class_name, 0x0, StringMaxLen);
     memset(base_class_name, 0x0, StringMaxLen);
-    //memcpy(dlg_file_name, _class_name, strlen(_class_name) + 1);
+    memcpy(dlg_file_name, _class_name, strlen(_class_name));
+    strcat(dlg_file_name, ".json");
+    dlg_loaded = false;
     memcpy(class_name, _class_name, strlen(_class_name) + 1);
     memcpy(base_class_name, _base_class_name, strlen(_base_class_name) + 1);
     prp_Centered = true;
@@ -110,7 +112,7 @@ void TTrialDialog::setBaseClassName(const char* val)
     memset(base_class_name, 0x0, StringMaxLen);
     memcpy(base_class_name, val, strlen(val));
 }
-/*
+
 void TTrialDialog::setDialogFileName(const char* val)
 {
     memset(dlg_file_name, 0x0, StringMaxLen);
@@ -120,7 +122,7 @@ void TTrialDialog::setDialogFileName(const char* val)
 const char* TTrialDialog::getDialogFileName()
 {
     return dlg_file_name;
-}*/
+}
 
 void TTrialDialog::setCaption(const char* val)
 {
@@ -721,16 +723,16 @@ void TTrialDialog::handleEvent(TEvent& event)
                     //}
                     //break;
                 }
-            case cmDialogSaveToRes:
-                {
-                    clearEvent(event);
-                    saveDialogToRes();
-                    break;
-                }
             case cmDialogSaveToJson:
                 {
                     clearEvent(event);
                     saveDialogToJSON();
+                    break;
+                }
+            case cmDialogSaveToJsonAs:
+                {
+                    clearEvent(event);
+                    SaveDialogAs();
                     break;
                 }
             case cmDialogGenCode:
@@ -760,12 +762,6 @@ void TTrialDialog::handleEvent(TEvent& event)
         {
             clearEvent(event);
             editDialogProperties();
-            return;
-        }
-        if (event.keyDown.keyCode == kbCtrlS)
-        {
-            clearEvent(event);
-            saveDialogToRes();
             return;
         }
         if (event.keyDown.keyCode == kbCtrlC)
@@ -804,46 +800,89 @@ void TTrialDialog::handleEvent(TEvent& event)
     TCustomDialog::handleEvent(event);
 }
 
-void TTrialDialog::saveDialogToRes()
-{
-    //-- формируем имя диалога из его названия класса
-    //char fileNameMask[maxLineLength];
-    //memset(fileNameMask, 0x0, maxLineLength);
-    //strcat(fileNameMask, class_name);
-    //strcat(fileNameMask, ".dlg");
-    auto fd = new TFileDialog("*.dlg", txt_dlg_SaveAsCaption, txt_dlg_SaveAsName, fdOKButton, 100);
-    if (fd != 0)
-    {
-        auto res = owner->execView(fd);
-        if (res != cmCancel)
-        {
-            char fileName[MAXPATH];
-            fd->getFileName(fileName);
-            ofpstream os;
-            os.open(fileName);
-            os << this;
-            os.close();
-            DialSaved = true;
-        }
-        destroy(fd);
-    }
-}
+//-- (УСТАРЕЛО) код оставлен для истории...
+//void TTrialDialog::saveDialogToRes()
+//{
+//    //-- формируем имя диалога из его названия класса
+//    //char fileNameMask[maxLineLength];
+//    //memset(fileNameMask, 0x0, maxLineLength);
+//    //strcat(fileNameMask, class_name);
+//    //strcat(fileNameMask, ".dlg");
+//    auto fd = new TFileDialog("*.dlg", txt_dlg_SaveAsCaption, txt_dlg_SaveAsName, fdOKButton, 100);
+//    if (fd != 0)
+//    {
+//        auto res = owner->execView(fd);
+//        if (res != cmCancel)
+//        {
+//            char fileName[MAXPATH];
+//            fd->getFileName(fileName);
+//            ofpstream os;
+//            os.open(fileName);
+//            os << this;
+//            os.close();
+//            DialSaved = true;
+//        }
+//        destroy(fd);
+//    }
+//}
 
 /// <summary>
-/// Сохранение текущего диалога в JSON файле
+/// Сохранение текущего диалога в JSON-файле
 /// </summary>
 void TTrialDialog::saveDialogToJSON()
 {
-    //-- формируем имя диалога из его названия класса
-    //char fileNameMask[maxLineLength];
-    //memset(fileNameMask, 0x0, maxLineLength);
-    //strcat(fileNameMask, class_name);
-    //strcat(fileNameMask, ".json");
+    //-- Формируем описание в JSON
+    std::string serialized_string = DialogToJSON().dump(2);
+    //-- если диалог был загружен из файла
+    if (dlg_loaded)
+    {
+        struct _stat buf;
+        errno_t err;
+        auto res = _stat(dlg_file_name, &buf);
+        if (res != 0)
+        {
+            if (errno == ENOENT)
+            {
+                //-- такого файла не существует - сохраняем его
+                ofstream os;
+                os.open(dlg_file_name);
+                os << serialized_string;
+                os.close();
+                DialSaved = true;
+            }
+        }
+        else
+        {
+            //-- файл существует
+            auto res1 = messageBox(txt_RewriteDialogFile, mfConfirmation | mfYesNoCancel);
+            if (res1 == cmCancel) return;
+            if (res1 == cmYes)
+            {
+                ofstream os;
+                os.open(dlg_file_name);
+                os << serialized_string;
+                os.close();
+                DialSaved = true;
+            }
+            if (res1 == cmNo)
+            {
+                SaveDialogAs();
+            }
+        }
+    }
+    else
+    {
+        SaveDialogAs();
+    }
+}
+
+void TTrialDialog::SaveDialogAs()
+{
+    std::string serialized_string = DialogToJSON().dump(2);
+    //-- Диалоговое окно было создано а не загружено - сохраняем его
     auto fd = new TFileDialog("*.json", txt_dlg_SaveAsCaption, txt_dlg_SaveAsName, fdOKButton, 100);
     if (fd != 0 && owner->execView(fd) != cmCancel)
     {
-        std::string serialized_string = DialogToJSON().dump(2);
-
         char fileName[MAXPATH];
         fd->getFileName(fileName);
         ofstream os;
@@ -851,6 +890,9 @@ void TTrialDialog::saveDialogToJSON()
         os << serialized_string;
         os.close();
         DialSaved = true;
+        setDialogFileName(fileName);
+        //-- теперь этот файл "существует" и мы считаем его "загруженным"
+        setLoaded();
     }
     destroy(fd);
 }

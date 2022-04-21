@@ -74,7 +74,7 @@ class TPrg : public TApplication
     /// Загрузка диалога из JSON-файла
     /// </summary>
     /// <param name="json">JSON-объект, содержащий описание диалога</param>
-    TTrialDialog* LoadDialogJSON(nlohmann::json json);
+    TTrialDialog* LoadDialogJSON(nlohmann::json json, const char* fname = NULL);
 
 };
 

@@ -45,6 +45,7 @@ void TPrg::handleEvent(TEvent& event)
                 break;
             case cmLoadDialog:
                 {
+                    //-- (устарело) Загрузка из файла ресурсов
                     auto fd = new TFileDialog("*.dlg", txt_dlg_LoadAsCaption, txt_dlg_SaveAsName, fdOpenButton, 100);
 
                     if (fd != 0 && execView(fd) != cmCancel)
@@ -109,13 +110,10 @@ void TPrg::handleEvent(TEvent& event)
                     return;
                 }
 
-            case cmDialogSaveToRes:
-                //-- передаем команду непосредственно активному элементу
-                message(deskTop->current, evBroadcast, cmDialogSaveToRes, NULL);
-                break;
             case cmDialogSaveToJson:
+            case cmDialogSaveToJsonAs:
                 //-- передаем команду непосредственно активному элементу
-                message(deskTop->current, evBroadcast, cmDialogSaveToJson, NULL);
+                message(deskTop->current, evBroadcast, event.message.command, NULL);
                 clearEvent(event);
                 break;
             case cmDialogTest:
@@ -160,7 +158,8 @@ void TPrg::LoadFromJSON(const char* fname)
         switch (typ)
         {
             case otDialog:
-                LoadDialogJSON(json);
+                //-- при загрузке передаём имя файла, чтобы сохранять файл одним нажатием на F2
+                LoadDialogJSON(json, fname);
                 break;
             default:
                 break;
@@ -174,10 +173,17 @@ void TPrg::LoadFromJSON(const char* fname)
     }
 }
 
-TTrialDialog* TPrg::LoadDialogJSON(nlohmann::json json)
+TTrialDialog* TPrg::LoadDialogJSON(nlohmann::json json, const char* fname)
 {
     //-- загрузка диалога из JSON файла
+    //-- создаём сам диалог
     auto win = new TTrialDialog(json[str_size][str_x], json[str_size][str_y], json[str_caption]);
+    //-- устанавливаем имя файла, откуда он был загружен, чтобы при сохранении по F2
+    //-- не запрашивать путь сохранения и не выводить диалог
+    win->setDialogFileName(fname);
+    //-- устанавливаем признак того, что диалог загружен из файла
+    win->setLoaded();
+    //-- устанавливаем все переменные
     std::string tmp = json[str_class_name];
     win->setClassName(tmp.c_str());
     tmp = json[str_base_class_name];
@@ -185,11 +191,11 @@ TTrialDialog* TPrg::LoadDialogJSON(nlohmann::json json)
     win->setCentered(json[str_centered]);
     tmp = json[str_caption];
     win->setCaption(tmp.c_str());
-    //-- формирование перечня объектов
+    //-- формируем перечень объектов, которые уже вставлены в диалоговое окно
     auto obj = json[str_objects];
     for (int i = 0; i < obj.size(); i++)
         win->insert(object_fromJSON(obj[i]));
-    //-- вставляем окно
+    //-- вставляем окно на Desktop
     deskTop->insert(win);
     return win;
 }
@@ -224,18 +230,15 @@ TMenuBar* TPrg::initMenuBar(TRect r)
                         (TMenuItem&)(
                             *new TMenuItem(txt_mnu_NewDialogWindow, cmNewDialog, kbCtrlN, hcNoContext, "Ctrl-N") +
                             newLine() +
-                            *new TMenuItem(txt_mnu_LoadFromResource, cmLoadDialog, kbF3, hcNoContext, "F3") +
-                            *new TMenuItem(txt_mnu_LoadFromJSON, cmLoadJSON, kbAltF3, hcNoContext, "Alt+F3") +
+                            *new TMenuItem(txt_mnu_LoadFromJSON, cmLoadJSON, kbF3, hcNoContext, "F3") +
                             newLine() +
-                            *new TMenuItem(txt_mnu_SaveToRes, cmDialogSaveToRes, kbCtrlS, hcNoContext, "Ctrl+S") +
-                            *new TMenuItem(txt_mnu_SaveToJson, cmDialogSaveToJson, kbCtrlJ, hcNoContext, "Ctrl+J") +
+                            *new TMenuItem(txt_mnu_SaveToJson, cmDialogSaveToJson, kbF2, hcNoContext, "F2") +
+                            *new TMenuItem(txt_mnu_SaveToJsonAs, cmDialogSaveToJsonAs, kbShiftF2, hcNoContext, "Shift+F2") +
                             newLine() +
                             *new TMenuItem(txt_DialogAlignSize, cmDialogAutoSize, kbAltC, hcNoContext, "Alt+C") +
+                            *new TMenuItem(txt_DialogTest, cmDialogTest, kbF9, hcNoContext, "F9")+
                             newLine() +
-                            *new TMenuItem(txt_DialogTest, cmDialogTest, kbF9, hcNoContext, "F9")
-
-                            // +newLine()+
-                        //* new TMenuItem(txt_mnu_ComponentsPanel, cm_test_ToolWin, kbCtrlF12, hcNoContext, "Ctrl-F12")
+                            * new TMenuItem(txt_mnu_LoadFromResource, cmLoadDialog, kbNoKey) 
                             ) +
                         *new TSubMenu(txt_mnu_AlgoritmTest, kbNoKey) +
                         (TMenuItem&)(
