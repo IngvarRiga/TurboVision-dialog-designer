@@ -316,7 +316,7 @@ void TTrialDialog::handleEvent(TEvent& event)
                         else { br = true; }
                         if ((strlen(data->v9) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v9), nullptr); itsn = itsn->next; }
                         else { br = true; }
-                        if ((strlen(data->v10) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v0), nullptr); itsn = itsn->next; }
+                        if ((strlen(data->v10) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v10), nullptr); itsn = itsn->next; }
                         else { br = true; }
                         if ((strlen(data->v11) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v11), nullptr); itsn = itsn->next; }
                         else { br = true; }
@@ -427,7 +427,7 @@ void TTrialDialog::handleEvent(TEvent& event)
                         else { br = true; }
                         if ((strlen(data->v9) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v9), nullptr); itsn = itsn->next; }
                         else { br = true; }
-                        if ((strlen(data->v10) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v0), nullptr); itsn = itsn->next; }
+                        if ((strlen(data->v10) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v10), nullptr); itsn = itsn->next; }
                         else { br = true; }
                         if ((strlen(data->v11) > 0 && !br)) { itsn->next = new TSItem(TStringView(data->v11), nullptr); itsn = itsn->next; }
                         else { br = true; }

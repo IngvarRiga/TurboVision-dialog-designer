@@ -91,9 +91,11 @@ void TPrg::handleEvent(TEvent& event)
                     {
                         rect.b.x = r.b.x + 1;
                         rect.b.y = r.b.y + 1;
-
+                        char dlg_name[StringMaxLen];
                         auto jsn = dlg->DialogToJSON();
 
+                        memset(dlg_name, 0x0, StringMaxLen);
+                        memcpy(dlg_name, dlg->getDialogFileName(), strlen(dlg->getDialogFileName()));
                         int xold = jsn[str_size][str_x];
                         int yold = jsn[str_size][str_y];
 
@@ -102,7 +104,7 @@ void TPrg::handleEvent(TEvent& event)
                         jsn[str_size][str_y] = rect.b.y;
                         dlg->setSaved();
                         dlg->close();
-                        auto win = LoadDialogJSON(jsn);
+                        auto win = LoadDialogJSON(jsn, dlg_name);
                         //-- восстанавливаем положение на экране
                         win->moveTo(rect.a.x, rect.a.y);
                     }
