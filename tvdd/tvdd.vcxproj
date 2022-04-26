@@ -228,6 +228,7 @@
     <ClCompile Include="tcomponentdialog.cpp" />
     <ClCompile Include="tcustomdialog.cpp" />
     <ClCompile Include="tdialogproperties.cpp" />
+    <ClCompile Include="textrainput.cpp" />
     <ClCompile Include="tinputlineproperties.cpp" />
     <ClCompile Include="tlistboxproperties.cpp" />
     <ClCompile Include="tmemoproperties.cpp" />
@@ -264,6 +265,7 @@
     <ClInclude Include="tcomponentdialog.h" />
     <ClInclude Include="tcustomdialog.h" />
     <ClInclude Include="tdialogproperties.h" />
+    <ClInclude Include="textrainput.h" />
     <ClInclude Include="tinputlineproperties.h" />
     <ClInclude Include="tlistboxproperties.h" />
     <ClInclude Include="tmemoproperties.h" />

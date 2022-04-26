@@ -8,7 +8,6 @@
 //-- тексты меню
 #define txt_mnu_DialogDesign "Диалог"
 #define txt_mnu_NewDialogWindow "Создать новое диалоговое окно"
-#define txt_mnu_LoadFromResource "(Устарело) Загрузить из файла ресурсов..."
 #define txt_mnu_LoadFromJSON "Загрузить из файла JSON..."
 #define txt_mnu_SaveToRes "(Устарело) Сохранить в файл ресурсов..."
 #define txt_mnu_SaveToJson "Сохранить JSON ..."
@@ -53,6 +52,7 @@
 #define txt_PropertyStaticText "Свойства TStaticText"
 #define txt_PropertyInputLIne "Свойства TInputLine"        
 #define txt_PropertyButton "Свойства TButton"   
+#define txt_PropertyRadioButtons "Свойства TRadioButtons"   
 #define txt_PropertyCheckBoxes "Свойства TCheckBoxes"
 #define txt_PropertyMemo "Свойства TMemo"
 #define txt_PropertyListBox "Свойства TListBox"
@@ -95,7 +95,6 @@
 
 #define txt_mnu_DialogDesign "Dialog"
 #define txt_mnu_NewDialogWindow "Create new Dialog window"
-#define txt_mnu_LoadFromResource "(obsolete) Load from resource file..."
 #define txt_mnu_LoadFromJSON "Load from JSON..."
 #define txt_mnu_SaveToRes "(obsolete) Save to resource file..."
 #define txt_mnu_SaveToJson "Save to JSON..."
@@ -140,6 +139,7 @@
 #define txt_PropertyStaticText "TStaticText properties"
 #define txt_PropertyInputLIne "TInputLine properties"
 #define txt_PropertyButton "TButton properties"      
+#define txt_PropertyRadioButtons "TRadioButtons properties"   
 #define txt_PropertyCheckBoxes "TCheckBoxes properties"
 #define txt_PropertyMemo "TMemo properties"
 #define txt_PropertyListBox "TListBox properties"

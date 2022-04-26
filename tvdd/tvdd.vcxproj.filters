@@ -49,6 +49,12 @@
     <Filter Include="Файлы заголовков\Базовые классы">
       <UniqueIdentifier>{04b62d60-d516-4e1b-bfa0-8f80d931b2e1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Исходные файлы\TVExtra">
+      <UniqueIdentifier>{c51f5526-a748-41ce-afe5-1ca3aaab43b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\TVExtra">
+      <UniqueIdentifier>{81499c7b-af29-43c7-b135-19a0914bf3b8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="common.cpp">
@@ -153,6 +159,9 @@
     <ClCompile Include="wcluster.cpp">
       <Filter>Исходные файлы\Rework</Filter>
     </ClCompile>
+    <ClCompile Include="textrainput.cpp">
+      <Filter>Исходные файлы\TVExtra</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -256,6 +265,9 @@
     </ClInclude>
     <ClInclude Include="wcluster.h">
       <Filter>Файлы заголовков\Rework</Filter>
+    </ClInclude>
+    <ClInclude Include="textrainput.h">
+      <Filter>Файлы заголовков\TVExtra</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

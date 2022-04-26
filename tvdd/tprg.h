@@ -65,6 +65,8 @@ class TPrg : public TApplication
     /// <returns></returns>
     TDialog* AboutDialog();
 
+    TDialog* TestDialog();
+
     /// <summary>
     /// Загрузка разрабатываемого ресурса из JSON-файла
     /// </summary>

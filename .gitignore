@@ -12,3 +12,6 @@ Release
 build
 /tvdd/CMakeLists.txt
 REL_ENG
+*.json
+*.json
+*.json

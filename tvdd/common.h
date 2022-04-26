@@ -53,14 +53,14 @@ const int TextMaxLen = 65535;
 const int cmUnreleased = -1; //-- не реализованная команда
 const int cmAbout = 10001; //-- о программе
 const int cmNewDialog = 10002; //-- создание нового дизайнера диалогов
-const int cmLoadDialog = 10003; //-- загрузить диалог из ресурсного файла
+//const int cmLoadDialog = 10003; //-- загрузить диалог из ресурсного файла
 const int cmLoadJSON = 10004; //-- загрузить ресурс из файла JSON
 
 const int cmNewMenu = 10094; //-- новое меню
 const int cmNewPalette = 10095; //-- редактор палитр
 const int cmColorDialog = 10096;
 const int cmColorTest = 10097;
-
+const int cmTest = 10098;
 
 
 const int cmDialogSizeOnOff = 10101; //-- Включение / выключение отображения размеров диалога

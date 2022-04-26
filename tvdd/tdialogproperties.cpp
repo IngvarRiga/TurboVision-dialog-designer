@@ -11,9 +11,8 @@ TDialogProperties::TDialogProperties() :
 	insert(dcn);
 	dbc = new TInputLine(TRect(2, 7, 45, 8), StringMaxLen);
 	insert(dbc);
-
-	add_prop = new TCheckBoxes(TRect(2, 9, 45, 10),
-							   new TSItem(txt_pd_CenteredDialog, 0));
+	auto s1 = new TSItem(txt_pd_CenteredDialog, 0);
+	add_prop = new TCheckBoxes(TRect(2, 9, 45, 10), s1);
 	insert(add_prop);
 
 	insert(new TLabel(TRect(2, 2, 45, 3), txt_pd_DialogCaption, cpt));
@@ -24,6 +23,9 @@ TDialogProperties::TDialogProperties() :
 	insert(new TButton(TRect(25, 11, 35, 13), txt_btnCancel, cmCancel, bfDefault));
 	insert(new TButton(TRect(35, 11, 45, 13), txt_btnOk, cmOK, bfDefault));
 	selectNext(false);
+
+	//add_prop->buttonState(sfDisabled, true);
+	//add_prop->setState(sfActive, false);
 }
 
 

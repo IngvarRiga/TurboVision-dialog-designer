@@ -8,6 +8,8 @@
 #include "ttrialcheckboxes.h"
 #include "ttrialmemo.h"
 
+#include "textrainput.h"
+
 TPrg::TPrg() :
     TProgInit(&TPrg::initStatusLine,
               &TPrg::initMenuBar,
@@ -43,27 +45,6 @@ void TPrg::handleEvent(TEvent& event)
                 deskTop->insert(new TTrialDialog(50, 20, txt_DefaultNewDialogCaption));
                 clearEvent(event);
                 break;
-            case cmLoadDialog:
-                {
-                    //-- (устарело) Загрузка из файла ресурсов
-                    auto fd = new TFileDialog("*.dlg", txt_dlg_LoadAsCaption, txt_dlg_SaveAsName, fdOpenButton, 100);
-
-                    if (fd != 0 && execView(fd) != cmCancel)
-                    {
-                        char fileName[MAXPATH];
-                        fd->getFileName(fileName);
-                        TTrialDialog* loaded;
-                        ifpstream is;
-                        is.open(fileName);
-                        is >> loaded;
-                        is.close();
-                        deskTop->insert(loaded);
-                    }
-                    destroy(fd);
-
-                    clearEvent(event);
-                    break;
-                }
             case cmLoadJSON:
                 {
                     auto fd = new TFileDialog("*.json", txt_dlg_LoadAsCaption, txt_dlg_SaveAsName, fdOpenButton, 100);
@@ -135,6 +116,10 @@ void TPrg::handleEvent(TEvent& event)
                 }
             case cmColorTest:
                 deskTop->insert(new TSelectColorDialog());
+                clearEvent(event);
+                break;
+            case cmTest:
+                deskTop->insert(TestDialog());
                 clearEvent(event);
                 break;
             default:
@@ -238,13 +223,12 @@ TMenuBar* TPrg::initMenuBar(TRect r)
                             *new TMenuItem(txt_mnu_SaveToJsonAs, cmDialogSaveToJsonAs, kbShiftF2, hcNoContext, "Shift+F2") +
                             newLine() +
                             *new TMenuItem(txt_DialogAlignSize, cmDialogAutoSize, kbAltC, hcNoContext, "Alt+C") +
-                            *new TMenuItem(txt_DialogTest, cmDialogTest, kbF9, hcNoContext, "F9")+
-                            newLine() +
-                            * new TMenuItem(txt_mnu_LoadFromResource, cmLoadDialog, kbNoKey) 
+                            *new TMenuItem(txt_DialogTest, cmDialogTest, kbF9, hcNoContext, "F9")
                             ) +
                         *new TSubMenu(txt_mnu_AlgoritmTest, kbNoKey) +
                         (TMenuItem&)(
-                            *new TMenuItem(txt_mnu_ColorSelect, cmColorTest, kbNoKey)
+                            *new TMenuItem(txt_mnu_ColorSelect, cmColorTest, kbNoKey)+
+                            *new TMenuItem("Тест", cmTest, kbNoKey) 
                             )
     );
 
@@ -285,5 +269,27 @@ TDialog* TPrg::AboutDialog()
     dlg->selectNext(False);
     return dlg;
 }
+
+/// <summary>
+/// Тест диалог
+/// </summary>
+/// <returns></returns>
+TDialog* TPrg::TestDialog()
+{
+    TCustomDialog* dlg = new TCustomDialog(49, 11, winAboutCapt);
+    if (!dlg) return 0;
+
+    char c[] = "%d";
+
+    dlg->insert(new TInputInteger(TRect(3, 2, 47, 3), 255, Range(-999, 999), c , 4, Range(-999, 999)));
+    //dlg->insert(new TStaticText(TRect(3, 3, 47, 4), "\003Основано на:"));
+    //dlg->insert(new TStaticText(TRect(3, 4, 47, 5), "\003Turbo Vision by maglibot"));
+    //dlg->insert(new TStaticText(TRect(3, 5, 47, 6), "\003JSON C++ by nlohmann"));
+    //dlg->insert(new TStaticText(TRect(3, 6, 47, 7), "\003(C) Иван Рог"));
+    dlg->insert(new TButton(TRect(20, 8, 30, 10), txt_btnOk, cmOK, bfDefault));
+    dlg->selectNext(False);
+    return dlg;
+}
+
 
 
