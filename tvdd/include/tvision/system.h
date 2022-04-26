@@ -14,7 +14,9 @@
  *
  */
 
+#if defined( __BORLANDC__ )
 #pragma option -Vo-
+#endif
 #if defined( __BCOPT__ ) && !defined (__FLAT__)
 #pragma option -po-
 #endif
@@ -60,7 +62,7 @@ const int meMouseMoved = 0x01;
 const int meDoubleClick = 0x02;
 #else
 #if !defined( __WINDOWS_H )
-#include <tvision/compat/win.h>
+#include <tvision/compat/windows/windows.h>
 #endif
 const int meMouseMoved = MOUSE_MOVED;       // NT values from WINDOWS.H
 const int meDoubleClick = DOUBLE_CLICK;
@@ -481,9 +483,9 @@ private:
 
 #endif  // Uses_TSystemError
 
+#if defined( __BORLANDC__ )
 #pragma option -Vo.
+#endif
 #if defined( __BCOPT__ ) && !defined (__FLAT__)
 #pragma option -po.
 #endif
-
-

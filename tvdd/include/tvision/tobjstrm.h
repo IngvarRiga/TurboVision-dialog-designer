@@ -26,15 +26,16 @@ typedef unsigned P_id_type;
 /*                                                                         */
 /* ------------------------------------------------------------------------*/
 
-#pragma warn -nst
-
 #ifdef __DLL__
 #define _FAR   far
 #else
 #define _FAR
 #endif
 
+#if defined( __BORLANDC__ )
+#pragma warn -nst
 #pragma option -Vo-
+#endif
 #if defined( __BCOPT__ ) && !defined (__FLAT__)
 #pragma option -po-
 #endif
@@ -106,7 +107,7 @@ protected:
 #if defined( Uses_TStreamableClass ) && !defined( __TStreamableClass )
 #define __TStreamableClass
 
-#include <tvision/compat/dos.h>
+#include <tvision/compat/borland/dos.h>
 #include <limits.h>
 #include <stddef.h>
 
@@ -289,7 +290,9 @@ private:
 #if defined( Uses_pstream ) && !defined( __pstream )
 #define __pstream
 
+#if defined( __BORLANDC__ )
 #pragma option -Vo-
+#endif
 #if defined( __BCOPT__ ) && !defined (__FLAT__)
 #pragma option -po-
 #endif
@@ -356,7 +359,9 @@ protected:
 #if defined( Uses_ipstream ) && !defined( __ipstream )
 #define __ipstream
 
+#if defined( __BORLANDC__ )
 #pragma option -Vo-
+#endif
 #if defined( __BCOPT__ ) && !defined (__FLAT__)
 #pragma option -po-
 #endif
@@ -415,7 +420,9 @@ private:
 #if defined( Uses_opstream ) && !defined( __opstream )
 #define __opstream
 
+#if defined( __BORLANDC__ )
 #pragma option -Vo-
+#endif
 #if defined( __BCOPT__ ) && !defined (__FLAT__)
 #pragma option -po-
 #endif
@@ -475,7 +482,9 @@ private:
 #if defined( Uses_iopstream ) && !defined( __iopstream )
 #define __iopstream
 
+#if defined( __BORLANDC__ )
 #pragma option -Vo-
+#endif
 #if defined( __BCOPT__ ) && !defined (__FLAT__)
 #pragma option -po-
 #endif
@@ -508,10 +517,12 @@ protected:
 #define __fpbase
 
 #if !defined( __FSTREAM_H )
-#include <tvision/compat/fstream.h>
+#include <tvision/compat/borland/fstream.h>
 #endif  // __FSTREAM_H
 
+#if defined( __BORLANDC__ )
 #pragma option -Vo-
+#endif
 #if defined( __BCOPT__ ) && !defined (__FLAT__)
 #pragma option -po-
 #endif
@@ -548,7 +559,9 @@ private:
 #if defined( Uses_ifpstream ) && !defined( __ifpstream )
 #define __ifpstream
 
+#if defined( __BORLANDC__ )
 #pragma option -Vo-
+#endif
 #if defined( __BCOPT__ ) && !defined (__FLAT__)
 #pragma option -po-
 #endif
@@ -584,7 +597,9 @@ public:
 #if defined( Uses_ofpstream ) && !defined( __ofpstream )
 #define __ofpstream
 
+#if defined( __BORLANDC__ )
 #pragma option -Vo-
+#endif
 #if defined( __BCOPT__ ) && !defined (__FLAT__)
 #pragma option -po-
 #endif
@@ -622,7 +637,9 @@ public:
 #if defined( Uses_fpstream ) && !defined( __fpstream )
 #define __fpstream
 
+#if defined( __BORLANDC__ )
 #pragma option -Vo-
+#endif
 #if defined( __BCOPT__ ) && !defined (__FLAT__)
 #pragma option -po-
 #endif
@@ -644,7 +661,9 @@ public:
 
 #endif  // Uses_fpstream
 
+#if defined( __BORLANDC__ )
 #pragma option -Vo.
+#endif
 #if defined( __BCOPT__ ) && !defined (__FLAT__)
 #pragma option -po.
 #endif

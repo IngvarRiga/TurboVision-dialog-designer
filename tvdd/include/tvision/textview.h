@@ -13,7 +13,9 @@
  *
  */
 
+#if defined( __BORLANDC__ )
 #pragma option -Vo-
+#endif
 #if defined( __BCOPT__ ) && !defined (__FLAT__)
 #pragma option -po-
 #endif
@@ -21,8 +23,10 @@
 #if defined( Uses_TTextDevice ) && !defined( __TTextDevice )
 #define __TTextDevice
 
-#include <tvision/compat/iostream.h>
+#include <tvision/compat/borland/iostream.h>
+#if defined( __BORLANDC__ )
 #pragma option -Vo-
+#endif
 #if defined( __BCOPT__ ) && !defined (__FLAT__)
 #pragma option -po-
 #endif
@@ -96,8 +100,10 @@ protected:
 #if defined( Uses_otstream ) && !defined( __otstream )
 #define __otstream
 
-#include <tvision/compat/iostream.h>
+#include <tvision/compat/borland/iostream.h>
+#if defined( __BORLANDC__ )
 #pragma option -Vo-
+#endif
 #if defined( __BCOPT__ ) && !defined (__FLAT__)
 #pragma option -po-
 #endif
@@ -115,7 +121,9 @@ public:
 
 #endif
 
+#if defined( __BORLANDC__ )
 #pragma option -Vo.
+#endif
 #if defined( __BCOPT__ ) && !defined (__FLAT__)
 #pragma option -po.
 #endif

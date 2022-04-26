@@ -15,7 +15,7 @@
  */
 
 #if !defined( __DIR_H )
-#include <tvision/compat/dir.h>
+#include <tvision/compat/borland/dir.h>
 #endif  // __DIR_H
 
 #if !defined( __STRING_H )
@@ -26,7 +26,9 @@
 #include <limits.h>
 #endif  // __LIMITS_H
 
+#if defined( __BORLANDC__ )
 #pragma option -Vo-
+#endif
 #if defined( __BCOPT__ ) && !defined (__FLAT__)
 #pragma option -po-
 #endif
@@ -380,7 +382,7 @@ inline opstream& operator << ( opstream& os, TMemo* cl )
 #define __TFileEditor
 
 #if !defined( __DIR_H )
-#include <tvision/compat/dir.h>
+#include <tvision/compat/borland/dir.h>
 #endif  // __DIR_H
 
 class _FAR TRect;
@@ -539,8 +541,9 @@ struct TReplaceDialogRec
 
 #endif  // Uses_TReplaceDialogRec
 
+#if defined( __BORLANDC__ )
 #pragma option -Vo.
+#endif
 #if defined( __BCOPT__ ) && !defined (__FLAT__)
 #pragma option -po.
 #endif
-

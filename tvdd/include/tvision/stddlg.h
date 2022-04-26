@@ -15,9 +15,10 @@
  *
  */
 
+#if defined( __BORLANDC__ )
 #pragma warn -hid
-
 #pragma option -Vo-
+#endif
 #if defined( __BCOPT__ ) && !defined (__FLAT__)
 #pragma option -po-
 #endif
@@ -48,7 +49,7 @@ const int
 #define __TSearchRec
 
 #if !defined( __DIR_H )
-#include <tvision/compat/dir.h>
+#include <tvision/compat/borland/dir.h>
 #endif  // __DIR_H
 
 struct TSearchRec
@@ -387,7 +388,7 @@ const int
                                    // the dialog on a stream.
 
 #if !defined( __DIR_H )
-#include <tvision/compat/dir.h>
+#include <tvision/compat/borland/dir.h>
 #endif  // __DIR_H
 
 struct _FAR TEvent;
@@ -575,7 +576,7 @@ inline TDirEntry *TDirCollection::lastThat( ccTestFunc func, void *arg )
 #define __TDirListBox
 
 #if !defined( __DIR_H )
-#include <tvision/compat/dir.h>
+#include <tvision/compat/borland/dir.h>
 #endif  // __DIR_H
 
 class _FAR TRect;
@@ -722,8 +723,9 @@ inline opstream& operator << ( opstream& os, TChDirDialog* cl )
 
 #endif  // Uses_TChDirDialog
 
+#if defined( __BORLANDC__ )
 #pragma option -Vo.
+#endif
 #if defined( __BCOPT__ ) && !defined (__FLAT__)
 #pragma option -po.
 #endif
-

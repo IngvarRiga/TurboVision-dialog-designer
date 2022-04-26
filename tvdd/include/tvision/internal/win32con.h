@@ -6,8 +6,11 @@
 #ifdef _WIN32
 
 #include <tvision/tv.h>
-#include <tvision/compat/win.h>
+#include <tvision/compat/windows/windows.h>
 #include <internal/stdioctl.h>
+
+namespace tvision
+{
 
 class Win32Input;
 class Win32Display;
@@ -96,6 +99,8 @@ protected:
     void lowlevelCursorSize(int size) noexcept override;
     void lowlevelFlush() noexcept override;
 };
+
+} // namespace tvision
 
 #endif // _WIN32
 

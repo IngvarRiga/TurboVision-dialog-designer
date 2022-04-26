@@ -10,7 +10,7 @@
 #define TVISION_TSTRVIEW_H
 
 #include <string.h>
-#include <tvision/compat/iosfwd.h>
+#include <tvision/compat/borland/iosfwd.h>
 
 #ifdef TVISION_STL
 #include <string>
@@ -77,8 +77,6 @@ inline constexpr TStringView::TStringView() :
 {
 }
 
-#pragma warn -inl
-
 #if defined(TVISION_STL) && (__cplusplus >= 201703L || __cpp_lib_constexpr_char_traits)
 constexpr
 inline TStringView::TStringView(const char _FAR *str) :
@@ -93,8 +91,6 @@ inline TStringView::TStringView(const char _FAR *str) :
 {
 }
 #endif
-
-#pragma warn .inl
 
 inline constexpr TStringView::TStringView(const char _FAR *str, size_t len) :
     str(str),
