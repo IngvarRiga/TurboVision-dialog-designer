@@ -1,16 +1,13 @@
 #define Uses_TRect
 #define Uses_TGroup
 #define Uses_TEvent
-#define Uses_ipstream
-#define Uses_opstream
-#define Uses_ofpstream
 
 #include <tvision/tv.h>
 
 #include "twinsizeindicator.h"
 #include "common.h"
 
-const char * const TWinSizeIndicator::name = "TWinSizeIndicator";
+//const char * const TWinSizeIndicator::name = "TWinSizeIndicator";
 
 TWinSizeIndicator::TWinSizeIndicator(const TRect &rect) :
 TIndicator(rect)
@@ -130,41 +127,6 @@ void TWinSizeIndicator::handleEvent(TEvent& event)
     TView::handleEvent(event);
 }
 
-void TWinSizeIndicator::write(opstream& os)
-{
-    TIndicator::write(os);
-    os.writeBytes(&posInfo, sizeof (posInfo));
-    os.writeBytes(&sizeInfo, sizeof (sizeInfo));
-}
 
-void *TWinSizeIndicator::read(ipstream& is)
-{
-    TIndicator::read(is);
-    is.readBytes(&posInfo, sizeof (posInfo));
-    is.readBytes(&sizeInfo, sizeof (sizeInfo));
-    //-- внутренние переменные не инициализируются при потоковом чтении
-    //-- что самое главное их и сохранять в потоке не имеет смысла, поскольку они 
-    //-- являются расходным материалом формируемым в момент отрисовки окна...
-    memset(drawtext, 0x0, StringMaxLen);
-    memset(sh, 0x0, StringMaxLen);
-    memset(sw, 0x0, StringMaxLen);
-    memset(px, 0x0, StringMaxLen);
-    memset(py, 0x0, StringMaxLen);
-    return this;
-}
-
-TStreamable *TWinSizeIndicator::build()
-{
-    return new TWinSizeIndicator(streamableInit);
-}
-
-TStreamableClass RWinSizeIndicator(
-        TWinSizeIndicator::name,
-        TWinSizeIndicator::build,
-        __DELTA(TWinSizeIndicator)
-        );
-
-__link(RIndicator)
-__link(RWinSizeIndicator)
 
 

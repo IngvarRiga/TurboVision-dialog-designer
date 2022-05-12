@@ -1,7 +1,7 @@
 #include "wbutton.h"
 #include "common.h"
 
-const char* const TWrapButton::name = "TWrapButton";
+//const char* const TWrapButton::name = "TWrapButton";
 const char* TWrapButton::shadows = "\xDC\xDB\xDF";
 const char* TWrapButton::markers = "[]";
 
@@ -377,42 +377,3 @@ void TWrapButton::press()
 	}
 }
 
-#if !defined(NO_STREAMABLE)
-
-void TWrapButton::write(opstream& os)
-{
-	TView::write(os);
-	os.writeBytes((void*)title, StringMaxLen);
-	os << command << flags << (int)amDefault;
-
-}
-
-void* TWrapButton::read(ipstream& is)
-{
-	TView::read(is);
-	is.readBytes((void*)title, StringMaxLen);
-	int temp;
-	is >> command >> flags >> temp;
-	amDefault = Boolean(temp);
-	if (TWrapButton::commandEnabled(command))
-		state &= ~sfDisabled;
-	else
-		state |= sfDisabled;
-	return this;
-}
-
-TStreamable* TWrapButton::build()
-{
-	return new TWrapButton(streamableInit);
-}
-
-
-TStreamableClass RWrapButton(
-	TWrapButton::name,
-	TWrapButton::build,
-	__DELTA(TWrapButton)
-);
-
-__link(RView)
-__link(RWrapButton)
-#endif

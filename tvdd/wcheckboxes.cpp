@@ -1,7 +1,7 @@
 #include "wcheckboxes.h"
 #include <tvision/tkeys.h>
 
-const char* const TWrapCheckBoxes::name = "TWrapCheckBoxes";
+//const char* const TWrapCheckBoxes::name = "TWrapCheckBoxes";
 const char* TWrapCheckBoxes::button = " [ ] ";
 
 void TWrapCheckBoxes::draw()
@@ -86,27 +86,5 @@ void TWrapCheckBoxes::handleEvent(TEvent& event)
 			}
 		}
 	}
-
-
 	TWrapCluster::handleEvent(event);
 }
-
-#if !defined(NO_STREAMABLE)
-
-TStreamable* TWrapCheckBoxes::build()
-{
-	return new TWrapCheckBoxes(streamableInit);
-}
-
-TWrapCheckBoxes::TWrapCheckBoxes(StreamableInit) noexcept : TWrapCluster(streamableInit)
-{}
-
-TStreamableClass RWrapCheckBoxes(
-	TWrapCheckBoxes::name,
-	TWrapCheckBoxes::build,
-	__DELTA(TWrapCheckBoxes)
-);
-
-__link(RWrapCluster)
-__link(RWrapCheckBoxes)
-#endif

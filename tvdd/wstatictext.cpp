@@ -1,9 +1,8 @@
 #include "wstatictext.h"
 #include <tvision/tkeys.h>
-#include <iostream>
 #define cpStaticText "\x06"
 
-const char* const TWrapStaticText::name = "TWrapStaticText";
+//const char* const TWrapStaticText::name = "TWrapStaticText";
 
 TWrapStaticText::TWrapStaticText(const TRect& bounds, TStringView aText, bool click) noexcept :
 	TView(bounds)
@@ -195,36 +194,3 @@ void TWrapStaticText::handleEvent(TEvent& event)
 	}
 
 }
-
-#if !defined(NO_STREAMABLE)
-
-void TWrapStaticText::write(opstream& os)
-{
-	TView::write(os);
-	os.writeBytes((void*)text, StringMaxLen);
-}
-
-void* TWrapStaticText::read(ipstream& is)
-{
-	TView::read(is);
-	is.readBytes((void*)text, StringMaxLen);
-	return this;
-}
-
-TStreamable* TWrapStaticText::build()
-{
-	return new TWrapStaticText(streamableInit);
-}
-
-TWrapStaticText::TWrapStaticText(StreamableInit) noexcept : TView(streamableInit)
-{}
-
-TStreamableClass RWrapStaticText(
-	TWrapStaticText::name,
-	TWrapStaticText::build,
-	__DELTA(TWrapStaticText)
-);
-
-__link(RView)
-__link(RWrapStaticText)
-#endif

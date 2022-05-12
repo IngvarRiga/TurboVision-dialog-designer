@@ -13,26 +13,15 @@
 class TTrialDialog : public TCustomDialog
 {
 public:
-	static const char* const name;
 
 	//-- используем упрощенную форму задания размера диалога, поскольку всё равно новый диалог просто центрируется на экране
 	TTrialDialog(const int width, const int height, TStringView aTitle, bool sizeable = true);
 
-	TTrialDialog(StreamableInit) :
-		TCustomDialog(streamableInit),
-		TWindowInit(TTrialDialog::initFrame)
-	{}
-
 	virtual ~TTrialDialog();
 	virtual bool valid(ushort);
-	static TStreamable* build();
 	virtual void close();
 	virtual void handleEvent(TEvent& event);
 	virtual void setState(ushort aState, bool enable);
-	virtual const char* streamableName() const
-	{
-		return name;
-	}
 
 	void editDialogProperties();
 	void saveDialogToJSON(); //-- сохранение в JSON
@@ -71,29 +60,7 @@ private:
 	
 protected:
 	bool isDest; //-- объект находится в стадии уничтожения
-	virtual void write(opstream&);
-	virtual void* read(ipstream&);
 };
-
-inline ipstream& operator>>(ipstream& is, TTrialDialog& cl)
-{
-	return is >> (TStreamable&)cl;
-}
-
-inline ipstream& operator>>(ipstream& is, TTrialDialog*& cl)
-{
-	return is >> (void*&)cl;
-}
-
-inline opstream& operator<<(opstream& os, TTrialDialog& cl)
-{
-	return os << (TStreamable&)cl;
-}
-
-inline opstream& operator<<(opstream& os, TTrialDialog* cl)
-{
-	return os << (TStreamable*)cl;
-}
 
 #endif /* TRIALDIALOG_H */
 

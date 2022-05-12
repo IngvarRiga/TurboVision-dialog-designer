@@ -1,7 +1,7 @@
 #include "wradiobuttons.h"
 #include <tvision/tkeys.h>
 
-const char* const TWrapRadioButtons::name = "TWrapRadioButtons";
+//const char* const TWrapRadioButtons::name = "TWrapRadioButtons";
 const char* TWrapRadioButtons::button = " ( ) ";
 
 void TWrapRadioButtons::draw()
@@ -102,24 +102,5 @@ void TWrapRadioButtons::handleEvent(TEvent& event)
 	TWrapCluster::handleEvent(event);
 }
 
-#if !defined(NO_STREAMABLE)
-
-TStreamable* TWrapRadioButtons::build()
-{
-	return new TWrapRadioButtons(streamableInit);
-}
-
-TWrapRadioButtons::TWrapRadioButtons(StreamableInit) noexcept : TWrapCluster(streamableInit)
-{}
-
-TStreamableClass RWrapRadioButtons(
-	TWrapRadioButtons::name,
-	TWrapRadioButtons::build,
-	__DELTA(TWrapRadioButtons)
-);
-
-__link(RWrapCluster)
-__link(RWrapRadioButtons)
-#endif
 
 

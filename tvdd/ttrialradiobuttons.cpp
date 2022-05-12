@@ -2,7 +2,7 @@
 #include "common.h"
 #include "multilang.h"
 
-const char* const TTrialRadioButtons::name = "TTrialRadioButtons";
+//const char* const TTrialRadioButtons::name = "TTrialRadioButtons";
 
 TTrialRadioButtons::TTrialRadioButtons(const TRect& bounds, TSItem* aStrings) :
     TWrapRadioButtons(bounds, aStrings)
@@ -194,35 +194,3 @@ void TTrialRadioButtons::setVarName(const char* val)
         memcpy(var_name, val, len > StringMaxLen ? StringMaxLen : len);
 }
 
-TStreamable* TTrialRadioButtons::build()
-{
-    return new TTrialRadioButtons(streamableInit);
-}
-
-void TTrialRadioButtons::write(opstream& os)
-{
-
-    TWrapRadioButtons::write(os);
-    os.writeBytes((void*)var_name, StringMaxLen);
-    os.writeBytes((void*)class_name, StringMaxLen);
-    os << eventMask << options << dragMode;
-}
-
-void* TTrialRadioButtons::read(ipstream& is)
-{
-    TWrapRadioButtons::read(is);
-    is.readBytes((void*)var_name, StringMaxLen);
-    is.readBytes((void*)class_name, StringMaxLen);
-    is >> eventMask >> options >> dragMode;
-    return this;
-}
-
-
-TStreamableClass RTrialRadioButtons(
-    TTrialRadioButtons::name,
-    TTrialRadioButtons::build,
-    __DELTA(TTrialRadioButtons)
-);
-
-__link(RWrapRadioButtons)
-__link(RTrialRadioButtons)

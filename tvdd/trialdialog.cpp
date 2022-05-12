@@ -969,33 +969,3 @@ void TTrialDialog::GenCode(ofstream* res)
 }
 
 
-void TTrialDialog::write(opstream& os)
-{
-    TCustomDialog::write(os);
-    os.writeBytes((void*)class_name, StringMaxLen);
-    os.writeBytes((void*)base_class_name, StringMaxLen);
-}
-
-void* TTrialDialog::read(ipstream& is)
-{
-    TCustomDialog::read(is);
-    is.readBytes((void*)class_name, StringMaxLen);
-    is.readBytes((void*)base_class_name, StringMaxLen);
-    return this;
-}
-
-TStreamable* TTrialDialog::build()
-{
-    return new TTrialDialog(streamableInit);
-}
-
-TStreamableClass RTrialDialog(
-    TTrialDialog::name,
-    TTrialDialog::build,
-    __DELTA(TTrialDialog)
-);
-
-__link(RWinSizeIndicator)
-__link(RWinExtMenu)
-__link(RTrialDialog)
-__link(RTrialDialogBackground)

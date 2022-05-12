@@ -7,12 +7,10 @@
 #define Uses_TDrawBuffer
 #define Uses_TEvent
 #define Uses_TValidator
-#define Uses_opstream
-#define Uses_ipstream
 #define Uses_TText
 #include <tvision/tv.h>
 
-const char * const TWrapInputLine::name = "TWrapInputLine";
+//const char * const TWrapInputLine::name = "TWrapInputLine";
 const char TWrapInputLine::rightArrow = '\x10';
 const char TWrapInputLine::leftArrow = '\x11';
 
@@ -522,45 +520,3 @@ Boolean TWrapInputLine::valid(ushort cmd)
 }
 
 
-#if !defined(NO_STREAMABLE)
-
-void TWrapInputLine::write(opstream& os)
-{
-    TView::write(os);
-    os << maxLen << curPos << firstPos
-            << selStart << selEnd;
-    os.writeString(data);
-    os << validator;
-}
-
-void *TWrapInputLine::read(ipstream& is)
-{
-    TView::read(is);
-    is >> maxLen >> curPos >> firstPos
-            >> selStart >> selEnd;
-    data = new char[maxLen + 1];
-    oldData = new char[maxLen + 1];
-    is.readString(data, maxLen + 1);
-    state |= sfCursorVis;
-    is >> (void*&) validator;
-    return this;
-}
-
-TStreamable *TWrapInputLine::build()
-{
-    return new TWrapInputLine(streamableInit);
-}
-
-TWrapInputLine::TWrapInputLine(StreamableInit) noexcept : TView(streamableInit)
-{
-}
-
-TStreamableClass RWrapInputLine(
-        TWrapInputLine::name,
-        TWrapInputLine::build,
-        __DELTA(TWrapInputLine)
-        );
-
-__link(RView)
-__link(RWrapInputLine)
-#endif

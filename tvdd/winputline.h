@@ -16,18 +16,13 @@
 #define Uses_TDrawBuffer
 #define Uses_TEvent
 #define Uses_TValidator
-#define Uses_opstream
-#define Uses_ipstream
 #define Uses_TText
-#define Uses_TStreamable
-#define Uses_TStreamableClass
 #include <tvision/tv.h>
 
 
 class TWrapInputLine : public TView
 {
   public:
-    static const char * const name;
 
     TWrapInputLine(const TRect& bounds, uint aMaxLen, TValidator *aValid = 0, bool click = false) noexcept;
     ~TWrapInputLine();
@@ -79,11 +74,6 @@ class TWrapInputLine : public TView
     static const char rightArrow;
     static const char leftArrow;
 
-    virtual const char *streamableName() const
-    {
-        return name;
-    }
-
     TValidator* validator;
 
     int anchor;
@@ -97,36 +87,7 @@ class TWrapInputLine : public TView
     bool Selected; //-- компонент выбран пользователем
     bool eventClick; //-- специфическая реакция на клик по компоненту (только для дизайнера)
     bool eventDragged; //-- компонент находится в режиме перемещения (только для дизайнера)
-
-    TWrapInputLine(StreamableInit) noexcept;
-    virtual void write(opstream&);
-    virtual void *read(ipstream&);
-
-  public:
-    static TStreamable *build();
-
 };
-
-inline ipstream& operator>>(ipstream& is, TWrapInputLine& cl)
-{
-    return is >> (TStreamable&) cl;
-}
-
-inline ipstream& operator>>(ipstream& is, TWrapInputLine*& cl)
-{
-    return is >> (void *&) cl;
-}
-
-inline opstream& operator<<(opstream& os, TWrapInputLine& cl)
-{
-    return os << (TStreamable&) cl;
-}
-
-inline opstream& operator<<(opstream& os, TWrapInputLine* cl)
-{
-    return os << (TStreamable *) cl;
-}
-
 
 #endif /* WINPUTLINE_H */
 

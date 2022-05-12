@@ -146,37 +146,3 @@ void TTrialListBox::genCode(void* val)
 
 }
 
-TStreamable* TTrialListBox::build()
-{
-	return new TTrialListBox(streamableInit);
-}
-
-void TTrialListBox::write(opstream& os)
-{
-
-	TListBox::write(os);
-	os.writeBytes((void*)var_name, StringMaxLen);
-	os.writeBytes((void*)class_name, StringMaxLen);
-	os << eventMask << options << dragMode;
-}
-
-void* TTrialListBox::read(ipstream& is)
-{
-	TListBox::read(is);
-	is.readBytes((void*)var_name, StringMaxLen);
-	is.readBytes((void*)class_name, StringMaxLen);
-	is >> eventMask >> options >> dragMode;
-	return this;
-}
-
-
-TStreamableClass RTrialListBox(
-	TTrialListBox::name,
-	TTrialListBox::build,
-	__DELTA(TTrialListBox)
-);
-
-__link(RListBox)
-__link(RTrialListBox)
-
-

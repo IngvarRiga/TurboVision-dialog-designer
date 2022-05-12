@@ -3,7 +3,7 @@
 
 #define cpCluster "\x10\x11\x12\x12\x1f"
 
-const char* const TWrapCluster::name = "TWrapCluster";
+//const char* const TWrapCluster::name = "TWrapCluster";
 
 TWrapCluster::TWrapCluster(const TRect& bounds, TSItem* aStrings, bool click) noexcept :
 	TView(bounds),
@@ -465,45 +465,3 @@ Boolean TWrapCluster::buttonState(int item)
 		return False;
 #endif
 }
-
-
-#if !defined(NO_STREAMABLE)
-
-
-void TWrapCluster::write(opstream& os)
-{
-	TView::write(os);
-	os << value << sel << enableMask << strings;
-}
-
-void* TWrapCluster::read(ipstream& is)
-{
-	TView::read(is);
-	is >> value >> sel >> enableMask >> strings;
-
-	setCursor(2, 0);
-	showCursor();
-	setButtonState(0, True);
-	return this;
-}
-
-TStreamable* TWrapCluster::build()
-{
-	return new TWrapCluster(streamableInit);
-}
-
-TWrapCluster::TWrapCluster(StreamableInit) noexcept : TView(streamableInit)
-{}
-
-
-TStreamableClass RWrapCluster(
-	TWrapCluster::name,
-	TWrapCluster::build,
-	__DELTA(TWrapCluster)
-);
-
-__link(RView)
-__link(RStringCollection)
-__link(RWrapCluster)
-
-#endif

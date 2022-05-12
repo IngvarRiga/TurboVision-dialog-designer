@@ -2,7 +2,7 @@
 #include "common.h"
 #include "multilang.h"
 
-const char* const TTrialButton::name = "TTrialButton";
+//const char* const TTrialButton::name = "TTrialButton";
 
 TTrialButton::TTrialButton(const TRect& bounds,
                            TStringView aTitle,
@@ -224,38 +224,4 @@ void TTrialButton::genCode(void* val)
     }
 }
 
-TStreamable* TTrialButton::build()
-{
-    return new TTrialButton(streamableInit);
-}
-
-void TTrialButton::write(opstream& os)
-{
-
-    TWrapButton::write(os);
-    os.writeBytes(&usedVarName, sizeof(usedVarName));
-    os.writeBytes((void*)var_name, StringMaxLen);
-    os.writeBytes((void*)class_name, StringMaxLen);
-    os << eventMask << options << dragMode;
-}
-
-void* TTrialButton::read(ipstream& is)
-{
-    TWrapButton::read(is);
-    is.readBytes(&usedVarName, sizeof(usedVarName));
-    is.readBytes((void*)var_name, StringMaxLen);
-    is.readBytes((void*)class_name, StringMaxLen);
-    is >> eventMask >> options >> dragMode;
-    return this;
-}
-
-
-TStreamableClass RTrialButton(
-    TTrialButton::name,
-    TTrialButton::build,
-    __DELTA(TTrialButton)
-);
-
-__link(RWrapButton)
-__link(RTrialButton)
 

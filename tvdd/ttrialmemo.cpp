@@ -2,7 +2,7 @@
 #include "common.h"
 #include "multilang.h"
 
-const char* const TTrialMemo::name = "TTrialMemo";
+//const char* const TTrialMemo::name = "TTrialMemo";
 
 TTrialMemo::TTrialMemo(const TRect& bounds,
                        TScrollBar* aHScrollBar,
@@ -190,10 +190,6 @@ void TTrialMemo::genCode(void* val)
 
 }
 
-TStreamable* TTrialMemo::build()
-{
-    return new TTrialMemo(streamableInit);
-}
 
 char* TTrialMemo::getVarName()
 {
@@ -221,34 +217,4 @@ void TTrialMemo::setVarName(const char* val)
         memcpy(var_name, val, len > StringMaxLen ? StringMaxLen : len);
 }
 
-
-void TTrialMemo::write(opstream& os)
-{
-
-    TMemo::write(os);
-    os.writeBytes((void*)var_name, StringMaxLen);
-    os.writeBytes((void*)class_name, StringMaxLen);
-    os << eventMask << options << dragMode;
-
-}
-
-void* TTrialMemo::read(ipstream& is)
-{
-    TMemo::read(is);
-    is.readBytes((void*)var_name, StringMaxLen);
-    is.readBytes((void*)class_name, StringMaxLen);
-    is >> eventMask >> options >> dragMode;
-    return this;
-}
-
-
-TStreamableClass RTrialMemo(
-    TTrialMemo::name,
-    TTrialMemo::build,
-    __DELTA(TTrialMemo)
-);
-
-__link(RScrollBar)
-__link(RMemo)
-__link(RTrialMemo)
 

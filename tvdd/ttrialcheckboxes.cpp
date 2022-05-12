@@ -2,7 +2,7 @@
 #include "common.h"
 #include "multilang.h"
 
-const char* const TTrialCheckBoxes::name = "TTrialCheckBoxes";
+//const char* const TTrialCheckBoxes::name = "TTrialCheckBoxes";
 
 TTrialCheckBoxes::TTrialCheckBoxes(const TRect& bounds, TSItem* aStrings) :
     TWrapCheckBoxes(bounds, aStrings)
@@ -192,36 +192,3 @@ void TTrialCheckBoxes::setVarName(const char* val)
         memcpy(var_name, val, len > StringMaxLen ? StringMaxLen : len);
 }
 
-
-TStreamable* TTrialCheckBoxes::build()
-{
-    return new TTrialCheckBoxes(streamableInit);
-}
-
-void TTrialCheckBoxes::write(opstream& os)
-{
-
-    TWrapCheckBoxes::write(os);
-    os.writeBytes((void*)var_name, StringMaxLen);
-    os.writeBytes((void*)class_name, StringMaxLen);
-    os << eventMask << options << dragMode;
-}
-
-void* TTrialCheckBoxes::read(ipstream& is)
-{
-    TWrapCheckBoxes::read(is);
-    is.readBytes((void*)var_name, StringMaxLen);
-    is.readBytes((void*)class_name, StringMaxLen);
-    is >> eventMask >> options >> dragMode;
-    return this;
-}
-
-
-TStreamableClass RTrialCheckBoxes(
-    TTrialCheckBoxes::name,
-    TTrialCheckBoxes::build,
-    __DELTA(TTrialCheckBoxes)
-);
-
-__link(RWrapCheckBoxes)
-__link(RTrialCheckBoxes)

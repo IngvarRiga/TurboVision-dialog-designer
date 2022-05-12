@@ -16,7 +16,6 @@
 class TTrialInputLine : public TWrapInputLine
 {
   public:
-    static const char * const name;
 
     TTrialInputLine(const TRect& bounds, uint aMaxLen, TValidator *aValid = 0);
 
@@ -24,17 +23,7 @@ class TTrialInputLine : public TWrapInputLine
     {
     }
 
-    TTrialInputLine(StreamableInit) :
-    TWrapInputLine(streamableInit)
-    {
-    }
 
-    static TStreamable *build();
-
-    virtual const char *streamableName() const
-    {
-        return name;
-    }
     virtual void setState(ushort aState, Boolean enable);
 
     virtual void sizeLimits(TPoint& min, TPoint& max);
@@ -55,35 +44,11 @@ class TTrialInputLine : public TWrapInputLine
     nlohmann::json genJSON();
 
 
-  protected:
-    virtual void write(opstream&);
-    virtual void *read(ipstream&);
-
   private:
     char var_name[StringMaxLen]; //-- имя переменной для создания строки ввода
     char class_name[StringMaxLen]; //-- имя переменной для создания текста
 
  };
-
-inline ipstream& operator>>(ipstream& is, TTrialInputLine& cl)
-{
-    return is >> (TStreamable&) cl;
-}
-
-inline ipstream& operator>>(ipstream& is, TTrialInputLine*& cl)
-{
-    return is >> (void *&) cl;
-}
-
-inline opstream& operator<<(opstream& os, TTrialInputLine& cl)
-{
-    return os << (TStreamable&) cl;
-}
-
-inline opstream& operator<<(opstream& os, TTrialInputLine* cl)
-{
-    return os << (TStreamable *) cl;
-}
 
 #endif /* TTRIALINPUTLINE_H */
 

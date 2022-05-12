@@ -2,7 +2,7 @@
 #include "multilang.h"
 
 
-const char* const TTrialStaticText::name = "TTrialStaticText";
+//const char* const TTrialStaticText::name = "TTrialStaticText";
 
 TTrialStaticText::TTrialStaticText(const TRect& bounds, TStringView aText) :
     TWrapStaticText(bounds, aText)
@@ -242,40 +242,4 @@ void TTrialStaticText::genCode(void* val)
         *res << "\n insert(new " << class_name << "(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), \"" << text << "\"));";
     }
 }
-
-TStreamable* TTrialStaticText::build()
-{
-    return new TTrialStaticText(streamableInit);
-}
-
-void TTrialStaticText::write(opstream& os)
-{
-
-    TWrapStaticText::write(os);
-    os.writeBytes(&usedVarName, sizeof(usedVarName));
-    os.writeBytes((void*)var_name, StringMaxLen);
-    os.writeBytes((void*)class_name, StringMaxLen);
-    os << eventMask << options << dragMode;
-}
-
-void* TTrialStaticText::read(ipstream& is)
-{
-    TWrapStaticText::read(is);
-    is.readBytes(&usedVarName, sizeof(usedVarName));
-    is.readBytes((void*)var_name, StringMaxLen);
-    is.readBytes((void*)class_name, StringMaxLen);
-    is >> eventMask >> options >> dragMode;
-    return this;
-}
-
-
-TStreamableClass RTrialStaticText(
-    TTrialStaticText::name,
-    TTrialStaticText::build,
-    __DELTA(TTrialStaticText)
-);
-
-__link(RWrapStaticText)
-__link(RTrialStaticText)
-
 

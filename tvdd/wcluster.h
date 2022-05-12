@@ -7,11 +7,7 @@
 #define Uses_TEvent
 #define Uses_TPalette
 #define Uses_TDrawBuffer
-#define Uses_opstream
-#define Uses_ipstream
 #define Uses_TText
-#define Uses_TStreamable
-#define Uses_TStreamableClass
 #define Uses_TSItem
 #define Uses_TStringCollection
 
@@ -67,45 +63,13 @@ private:
     int row(int item);
     void moveSel(int, int);
 
-    virtual const char* streamableName() const
-    {
-        return name;
-    }
-
 protected:
     bool Selected; //-- компонент выбран пользователем
     bool eventClick; //-- специфическая реакция на клик по компоненту (только для дизайнера)
     bool eventDragged; //-- компонент находится в режиме перемещения (только для дизайнера)
 
-    TWrapCluster(StreamableInit) noexcept;
-    virtual void write(opstream&);
-    virtual void* read(ipstream&);
-
 public:
     Boolean buttonState(int);
-
-    static const char* const _NEAR name;
-    static TStreamable* build();
-
 };
-
-inline ipstream& operator >> (ipstream& is, TWrapCluster& cl)
-{
-    return is >> (TStreamable&)cl;
-}
-inline ipstream& operator >> (ipstream& is, TWrapCluster*& cl)
-{
-    return is >> (void*&)cl;
-}
-
-inline opstream& operator << (opstream& os, TWrapCluster& cl)
-{
-    return os << (TStreamable&)cl;
-}
-inline opstream& operator << (opstream& os, TWrapCluster* cl)
-{
-    return os << (TStreamable*)cl;
-}
-
 
 #endif

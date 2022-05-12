@@ -12,8 +12,6 @@
 #define Uses_TMenuItem
 #define Uses_MsgBox
 #define Uses_TSubMenu
-#define Uses_TStreamable
-#define Uses_TStreamableClass
 #define Uses_TEvent
 #define Uses_TFileDialog
 #define Uses_TFrame

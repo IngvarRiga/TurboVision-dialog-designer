@@ -152,11 +152,6 @@ void TTrialInputLine::genCode(void* val)
 
 }
 
-TStreamable* TTrialInputLine::build()
-{
-    return new TTrialInputLine(streamableInit);
-}
-
 char* TTrialInputLine::getVarName()
 {
     return var_name;
@@ -209,34 +204,3 @@ void TTrialInputLine::setVarLen(uint val)
 {
     maxLen = val;
 }
-
-void TTrialInputLine::write(opstream& os)
-{
-
-    TWrapInputLine::write(os);
-    os.writeBytes((void*)var_name, StringMaxLen);
-    os.writeBytes((void*)class_name, StringMaxLen);
-    os << eventMask << options << dragMode;
-
-}
-
-void* TTrialInputLine::read(ipstream& is)
-{
-    TWrapInputLine::read(is);
-    is.readBytes((void*)var_name, StringMaxLen);
-    is.readBytes((void*)class_name, StringMaxLen);
-    is >> eventMask >> options >> dragMode;
-    return this;
-}
-
-
-TStreamableClass RTrialInputLine(
-    TTrialInputLine::name,
-    TTrialInputLine::build,
-    __DELTA(TTrialInputLine)
-);
-
-__link(RWrapInputLine)
-__link(RTrialInputLine)
-
-

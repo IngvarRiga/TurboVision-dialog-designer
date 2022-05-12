@@ -1,5 +1,5 @@
 #include "tcustomdialog.h"
-const char * const TCustomDialog::name = "TCustomDialog";
+//const char * const TCustomDialog::name = "TCustomDialog";
 
 TCustomDialog::TCustomDialog(const TRect& bounds, TStringView aTitle, bool sizeable, bool centered, bool restrictSize) :
 TDialog(bounds, aTitle),
@@ -48,28 +48,4 @@ void TCustomDialog::handleEvent(TEvent& event)
 {
     TDialog::handleEvent(event);
 }
-
-void TCustomDialog::write(opstream& os)
-{
-    TDialog::write(os);
-}
-
-void *TCustomDialog::read(ipstream& is)
-{
-    TDialog::read(is);
-    return this;
-}
-
-TStreamable *TCustomDialog::build()
-{
-    return new TCustomDialog(streamableInit);
-}
-
-TStreamableClass RCustomDialog(TCustomDialog::name,
-        TCustomDialog::build,
-        __DELTA(TCustomDialog)
-        );
-
-__link(RDialog)
-__link(RCustomDialog)
 

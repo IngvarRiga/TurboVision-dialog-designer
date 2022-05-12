@@ -96,31 +96,4 @@ void TColorField::handleEvent(TEvent & event)
     TView::handleEvent(event);
 }
 
-TStreamable * TColorField::build()
-{
-    return new TColorField(streamableInit);
-}
-
-void TColorField::write(opstream & os)
-{
-
-    TView::write(os);
-    os << eventMask << options;
-}
-
-void *TColorField::read(ipstream & is)
-{
-    TView::read(is);
-    is >> eventMask >> options;
-    return this;
-}
-
-
-TStreamableClass RColorField(TColorField::name,
-        TColorField::build,
-        __DELTA(TColorField)
-        );
-
-__link(RStaticText)
-__link(RColorField)
 

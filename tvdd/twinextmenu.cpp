@@ -11,7 +11,7 @@
 #include "multilang.h"
 #include "common.h"
 
-const char* const TWinExtMenu::name = "TWinExtMenu";
+//const char* const TWinExtMenu::name = "TWinExtMenu";
 
 TWinExtMenu::TWinExtMenu(const TRect& rect) :
 	TView(rect)
@@ -64,30 +64,4 @@ void TWinExtMenu::handleEvent(TEvent& event)
 	}
 	TView::handleEvent(event);
 }
-
-void TWinExtMenu::write(opstream& os)
-{
-	TView::write(os);
-	os << eventMask << options;
-}
-
-void* TWinExtMenu::read(ipstream& is)
-{
-	TView::read(is);
-	is >> eventMask >> options;
-	return this;
-}
-
-TStreamable* TWinExtMenu::build()
-{
-	return new TWinExtMenu(streamableInit);
-}
-
-TStreamableClass RWinExtMenu(TWinExtMenu::name,
-							 TWinExtMenu::build,
-							 __DELTA(TWinExtMenu)
-);
-
-__link(RView)
-__link(RWinExtMenu)
 

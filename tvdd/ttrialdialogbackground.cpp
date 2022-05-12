@@ -3,7 +3,7 @@
 
 #include <math.h>
 
-const char* const TTrialDialogBackground::name = "TTrialDialogBackground";
+//const char* const TTrialDialogBackground::name = "TTrialDialogBackground";
 
 TTrialDialogBackground::TTrialDialogBackground(TRect& Bounds) :
 	TView(Bounds)
@@ -89,30 +89,3 @@ Boolean TTrialDialogBackground::valid(ushort command)
 	return rslt;
 }
 
-void TTrialDialogBackground::write(opstream& os)
-{
-	TView::write(os);
-	os.writeBytes(&Patterned, sizeof(Patterned));
-}
-
-void* TTrialDialogBackground::read(ipstream& is)
-{
-	TView::read(is);
-	is.readBytes(&Patterned, sizeof(Patterned));
-	currPos.y = -1;
-	return this;
-}
-
-TStreamable* TTrialDialogBackground::build()
-{
-	return new TTrialDialogBackground(streamableInit);
-}
-
-TStreamableClass RTrialDialogBackground(
-	TTrialDialogBackground::name,
-	TTrialDialogBackground::build,
-	__DELTA(TTrialDialogBackground)
-);
-
-__link(RView)
-__link(RTrialDialogBackground)
