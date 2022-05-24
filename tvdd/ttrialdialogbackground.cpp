@@ -67,6 +67,7 @@ void TTrialDialogBackground::handleEvent(TEvent& event)
 		}
 
 		if (event.what == evMouseUp)
+		//if (event.what == evMouseDown)
 		{
 			//-- вызов контекстного меню для диалога
 			if (event.mouse.buttons == mbRightButton)

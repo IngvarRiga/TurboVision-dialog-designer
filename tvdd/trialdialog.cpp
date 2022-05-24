@@ -183,19 +183,20 @@ void TTrialDialog::handleEvent(TEvent& event)
                     tmp.y = ((TPoint*)event.message.infoPtr)->y;
                     clearEvent(event);
 
-                    auto contextMenu = dialogMenu();
-                    //-- смещаем левую верхнюю точку меню в точку клика мышкой на экране
-                    auto b = contextMenu->getBounds();
-                    auto dx = b.b.x - b.a.x;
-                    auto dy = b.b.y - b.a.y;
-                    b.a.x = tmp.x;
-                    b.a.y = tmp.y - 1;
-                    b.b.x = b.a.x + dx;
-                    b.b.y = b.a.y + dy;
-                    contextMenu->setBounds(b);
-                    //---------------------------------------------------------------------
-                    auto res = this->owner->execView(contextMenu);
-                    destroy(contextMenu);
+                    //auto contextMenu = dialogMenu();
+                    ////-- смещаем левую верхнюю точку меню в точку клика мышкой на экране
+                    //auto b = contextMenu->getBounds();
+                    //auto dx = b.b.x - b.a.x;
+                    //auto dy = b.b.y - b.a.y;
+                    //b.a.x = tmp.x;
+                    //b.a.y = tmp.y - 1;
+                    //b.b.x = b.a.x + dx;
+                    //b.b.y = b.a.y + dy;
+                    //contextMenu->setBounds(b);
+                    ////---------------------------------------------------------------------
+                    //auto res = this->owner->execView(contextMenu);
+                    //destroy(contextMenu);
+                    auto res = popupMenu(tmp, dialogMenu());
                     //-- рассылаем команды
                     if (res != 0)
                         //-- в качестве параметра передаем точку клика мышки, так можно будет указывать точное место вставки компонента

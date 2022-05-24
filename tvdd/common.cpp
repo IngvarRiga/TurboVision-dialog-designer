@@ -392,24 +392,42 @@ TView* object_fromJSON(nlohmann::json object, bool test)
 
 }
 
-TMenuBox* dialogMenu()
+//TMenuBox* dialogMenu()
+//{
+//    //-- создание контекстного меню диалога
+//    TMenuBox* contextMenu = new TMenuBox(TRect(0, 0, 0, 0),
+//                                         new TMenu(
+//                                             *new TMenuItem(txt_PropertyDialogCaption, cmOption_Dialog, kbCtrlEnter, hcNoContext, "Ctrl+Enter") +
+//                                             newLine() +
+//                                             *new TMenuItem(txt_mnu_StaticText, cm_ed_InsertStaticText, kbNoKey) +
+//                                             *new TMenuItem(txt_mnu_Button, cm_ed_InsertButton, kbNoKey) +
+//                                             *new TMenuItem(txt_mnu_InputLine, cm_ed_InsertInputLine, kbNoKey) +
+//                                             *new TMenuItem(txt_mnu_RadioButtons, cm_ed_InsertRadioButtons, kbNoKey) +
+//                                             *new TMenuItem(txt_mnu_CheckBoxes, cm_ed_InsertCheckBoxes, kbNoKey) +
+//                                             *new TMenuItem(txt_mnu_ListBox, cm_ed_InsertListBox, kbNoKey) +
+//                                             *new TMenuItem(txt_mnu_Memo, cm_ed_InsertMemo, kbNoKey)
+//                                             + newLine() +
+//                                             //*new TMenuItem(txt_mnu_Copy, cm_ed_Copy, kbNoKey) +
+//                                             *new TMenuItem(txt_mnu_Paste, cm_ed_Paste, kbShiftIns, -1, "Shift+Ins")
+//                                         ), nullptr);
+//    return contextMenu;
+//}
+
+TMenuItem& dialogMenu()
 {
     //-- создание контекстного меню диалога
-    TMenuBox* contextMenu = new TMenuBox(TRect(0, 0, 0, 0),
-                                         new TMenu(
-                                             *new TMenuItem(txt_PropertyDialogCaption, cmOption_Dialog, kbCtrlEnter, hcNoContext, "Ctrl+Enter") +
-                                             newLine() +
-                                             *new TMenuItem(txt_mnu_StaticText, cm_ed_InsertStaticText, kbNoKey) +
-                                             *new TMenuItem(txt_mnu_Button, cm_ed_InsertButton, kbNoKey) +
-                                             *new TMenuItem(txt_mnu_InputLine, cm_ed_InsertInputLine, kbNoKey) +
-                                             *new TMenuItem(txt_mnu_RadioButtons, cm_ed_InsertRadioButtons, kbNoKey) +
-                                             *new TMenuItem(txt_mnu_CheckBoxes, cm_ed_InsertCheckBoxes, kbNoKey) +
-                                             *new TMenuItem(txt_mnu_ListBox, cm_ed_InsertListBox, kbNoKey) +
-                                             *new TMenuItem(txt_mnu_Memo, cm_ed_InsertMemo, kbNoKey)
-                                             + newLine() +
-                                             //*new TMenuItem(txt_mnu_Copy, cm_ed_Copy, kbNoKey) +
-                                             *new TMenuItem(txt_mnu_Paste, cm_ed_Paste, kbShiftIns, -1, "Shift+Ins")
-                                         ), nullptr);
-    return contextMenu;
+    return
+        *new TMenuItem(txt_PropertyDialogCaption, cmOption_Dialog, kbCtrlEnter, hcNoContext, "Ctrl+Enter") +
+        newLine() +
+        *new TMenuItem(txt_mnu_StaticText, cm_ed_InsertStaticText, kbNoKey) +
+        *new TMenuItem(txt_mnu_Button, cm_ed_InsertButton, kbNoKey) +
+        *new TMenuItem(txt_mnu_InputLine, cm_ed_InsertInputLine, kbNoKey) +
+        *new TMenuItem(txt_mnu_RadioButtons, cm_ed_InsertRadioButtons, kbNoKey) +
+        *new TMenuItem(txt_mnu_CheckBoxes, cm_ed_InsertCheckBoxes, kbNoKey) +
+        *new TMenuItem(txt_mnu_ListBox, cm_ed_InsertListBox, kbNoKey) +
+        *new TMenuItem(txt_mnu_Memo, cm_ed_InsertMemo, kbNoKey) +
+        newLine() +
+        //*new TMenuItem(txt_mnu_Copy, cm_ed_Copy, kbNoKey) +
+        *new TMenuItem(txt_mnu_Paste, cm_ed_Paste, kbNoKey);
 }
 

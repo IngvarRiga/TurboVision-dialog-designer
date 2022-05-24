@@ -159,7 +159,8 @@ void scanComponentsSize(TView* obj, void* val);
 /// Создание контекстного меню редактируемого диалогового окна
 /// </summary>
 /// <returns></returns>
-TMenuBox* dialogMenu();
+//TMenuBox* dialogMenu();
+TMenuItem& dialogMenu();
 /// <summary>
 /// Перечень типов объектов, которые могут сохраняться в JSON
 /// </summary>
