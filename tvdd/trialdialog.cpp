@@ -143,7 +143,7 @@ void TTrialDialog::close()
         auto res = messageBox(txt_SaveDialogQuest, mfConfirmation | mfYesNoCancel);
         if (res == cmYes)
         {
-            editDialogProperties();
+            saveDialogToJSON();
         }
         if (res == cmCancel)
             return;
@@ -801,31 +801,6 @@ void TTrialDialog::handleEvent(TEvent& event)
     TCustomDialog::handleEvent(event);
 }
 
-//-- (УСТАРЕЛО) код оставлен для истории...
-//void TTrialDialog::saveDialogToRes()
-//{
-//    //-- формируем имя диалога из его названия класса
-//    //char fileNameMask[maxLineLength];
-//    //memset(fileNameMask, 0x0, maxLineLength);
-//    //strcat(fileNameMask, class_name);
-//    //strcat(fileNameMask, ".dlg");
-//    auto fd = new TFileDialog("*.dlg", txt_dlg_SaveAsCaption, txt_dlg_SaveAsName, fdOKButton, 100);
-//    if (fd != 0)
-//    {
-//        auto res = owner->execView(fd);
-//        if (res != cmCancel)
-//        {
-//            char fileName[MAXPATH];
-//            fd->getFileName(fileName);
-//            ofpstream os;
-//            os.open(fileName);
-//            os << this;
-//            os.close();
-//            DialSaved = true;
-//        }
-//        destroy(fd);
-//    }
-//}
 
 /// <summary>
 /// Сохранение текущего диалога в JSON-файле

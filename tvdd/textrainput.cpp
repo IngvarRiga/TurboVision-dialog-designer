@@ -8,8 +8,6 @@
 **
 *************************************************************************/
 
-//const char* const TInputInteger::name = "TInputInteger";
-
 TInputInteger::TInputInteger
 (
     const TRect& bounds,		// rectangle for integer's input-line
@@ -21,7 +19,6 @@ TInputInteger::TInputInteger
 ) :
     TExtended(bounds, imaxLen, code, mapped, user)
 {
-    //memset()
     format = formatstring;
 }
 
@@ -44,7 +41,6 @@ void TInputInteger::updateValue()
 {
     setData(&Value);
 }
-
 
 void TInputInteger::getData
 (
@@ -119,46 +115,69 @@ TInputInteger::valid
         return False;
 }
 
+void TInputInteger::handleEvent (TEvent& event)
+{
 
-//void
-//TInputInteger::write
-//(
-//    opstream& os
-//)
-//{
-//    TInputLine::write(os);
-//    os << userMin;
-//    os << userMax;
-//
-//}
-//
-//void*
-//TInputInteger::read
-//(
-//    ipstream& is
-//)
-//{
-//    TInputLine::read(is);
-//    is >> userMin;
-//    is >> userMax;
-//    return this;
-//}
-//
-//TStreamable*
-//TInputInteger::build()
-//{
-//    return new TInputInteger(streamableInit);
-//}
-//
-//
-//TStreamableClass
-//RInputInteger
-//(
-//    TInputInteger::name,
-//    TInputInteger::build,
-//    __DELTA(TInputInteger)
-//);
 
+    /********************************************************************
+    ** Handling of the Up and Down arrow keys
+    **
+    **	At present, there is a problem here for integers, that is not
+    ** present for the mouse handler above.  The problem is that we're
+    ** re-entering the handleKeyControl() function after every arrow
+    ** keystroke.  That routine retrieves the last value as shown on
+    ** the screen.  If the mapping is such that the last value doesn't
+    ** change appearance, the value is rounded down to the original
+    ** value... so we can never change it.
+    **
+    **	Two solutions:  (1) implement a floating-point accumulator
+    ** to store a more precise representation of the integer; (2) make
+    ** handleKeyControl() handle the looping, so that another special
+    ** keystroke would be required to exit it.  However, then you can't
+    ** tab out of the field (as for the mouse code above) without
+    ** specifically handling that yourself (yuk)!
+    **
+    *********************************************************************/
+
+    if (event.what == evKeyDown)
+    {
+        switch (event.keyDown.keyCode)
+        {
+            case kbLeft:
+            case kbRight:
+            case kbCtrlRight:
+            case kbCtrlLeft:
+            case kbDel:
+            case kbCtrlDel:
+            case kbShiftDel:
+            case kbAltDel:
+            case kbBack:
+                TInputLine::handleEvent(event);
+                clearEvent(event);
+                break;
+            default:
+                break;
+        }
+        switch (event.keyDown.charScan.charCode)
+        {
+            case 48:
+            case 49:
+            case 50:
+            case 51:
+            case 52:
+            case 53:
+            case 54:
+            case 55:
+            case 56:
+            case 57:
+                TInputLine::handleEvent(event);
+                clearEvent(event);
+                break;
+            default:
+                break;
+        }
+    }
+}
 
 /************************************************************************
 ** TInputFloat
@@ -283,36 +302,6 @@ TInputFloat::valid
 }
 */
 
-//void
-//TInputFloat::write
-//(
-//    opstream& os
-//)
-//{
-//    TInputLine::write(os);
-//    os << userMin;
-//    os << userMax;
-//}
-//
-//void*
-//TInputFloat::read
-//(
-//    ipstream& is
-//)
-//{
-//    TInputLine::read(is);
-//    is >> userMin;
-//    is >> userMax;
-//    return this;
-//}
-//
-//TStreamable*
-//TInputFloat::build()
-//{
-//    return new TInputFloat(streamableInit);
-//}
-
-
 
 /************************************************************************
 ** TInputLong
@@ -322,7 +311,6 @@ TInputFloat::valid
 **
 *************************************************************************/
 
-//const char* const TInputLong::name = "TInputLong";
 /*
 TInputLong::TInputLong
 (
@@ -442,45 +430,7 @@ TInputLong::valid
         return False;
 }
 */
-//void
-//TInputLong::write
-//(
-//    opstream& os
-//)
-//{
-//    TInputLine::write(os);
-//    os << userMin;
-//    os << userMax;
-//
-//}
-//
-//void*
-//TInputLong::read
-//(
-//    ipstream& is
-//)
-//{
-//    TInputLine::read(is);
-//    is >> userMin;
-//    is >> userMax;
-//    return this;
-//}
-//
-//TStreamable*
-//TInputLong::build()
-//{
-//    return new TInputLong(streamableInit);
-//}
-//
-//
-//TStreamableClass
-//RInputLong
-//(
-//    TInputLong::name,
-//    TInputLong::build,
-//    __DELTA(TInputLong)
-//);
-//
+
 
 
 /************************************************************************
@@ -496,9 +446,6 @@ TInputLong::valid
 ** worry about mapping functions.
 **
 *************************************************************************/
-
-//const char* const TExtended::name = "TExtended";
-
 
 TExtended::TExtended
 (
@@ -702,15 +649,6 @@ TExtended::handleEvent
         }
     }
 }
-
-//
-//TStreamableClass
-//RExtended
-//(
-//    TExtended::name,
-//    TExtended::build,
-//    __DELTA(TExtended)
-//);
 
 
 /************************************************************************

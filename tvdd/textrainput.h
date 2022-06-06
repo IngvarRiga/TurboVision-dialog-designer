@@ -167,6 +167,7 @@ public:
     TInputInteger(const TRect& bounds,int aMaxLen,const Range& code,char* formatstring,int mapped, const Range& user);
     ~TInputInteger() {};
 
+    virtual void handleEvent(TEvent& event);	// перегрузка для блокирования нецифровых клавиш
     virtual ushort dataSize();
     virtual void getData(void* rec);
     virtual void setData(void* rec);
@@ -178,47 +179,9 @@ public:
     int Value;				// current value of the integer
     char* format;			// pointer to desired integer format
 
-//protected:
-//
-//    TInputInteger(StreamableInit) : TExtended(streamableInit) {};
-//    virtual void write(opstream&);
-//    virtual void* read(ipstream&);
-//
-//private:
-//
-//    virtual const char* streamableName() const
-//    {
-//        return name;
-//    }
-//
-//public:
-
-    //static const char* const name;
-    //static TStreamable* build();
-
 };
 #define intBufSize	18		// maximum number of characters allowed
 #define intDatSize	 6		// default databox size
-
-//inline ipstream& operator >> (ipstream& is, TInputInteger& cl)
-//{
-//    return is >> (TStreamable&)cl;
-//}
-//
-//inline ipstream& operator >> (ipstream& is, TInputInteger*& cl)
-//{
-//    return is >> (void*&)cl;
-//}
-//
-//inline opstream& operator << (opstream& os, TInputInteger& cl)
-//{
-//    return os << (TStreamable&)cl;
-//}
-//
-//inline opstream& operator << (opstream& os, TInputInteger* cl)
-//{
-//    return os << (TStreamable*)cl;
-//}
 
 
 /***********************************************************************
