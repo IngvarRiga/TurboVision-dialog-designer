@@ -119,7 +119,7 @@ void TPrg::handleEvent(TEvent& event)
                 clearEvent(event);
                 break;
             case cmTest:
-                deskTop->insert(TestDialog());
+                deskTop->execView(TestDialog());
                 clearEvent(event);
                 break;
             default:
@@ -281,11 +281,7 @@ TDialog* TPrg::TestDialog()
 
     char c[] = "%d";
 
-    dlg->insert(new TInputInteger(TRect(3, 2, 47, 3), 255, Range(-999, 999), c , 4, Range(-999, 999)));
-    //dlg->insert(new TStaticText(TRect(3, 3, 47, 4), "\003Основано на:"));
-    //dlg->insert(new TStaticText(TRect(3, 4, 47, 5), "\003Turbo Vision by maglibot"));
-    //dlg->insert(new TStaticText(TRect(3, 5, 47, 6), "\003JSON C++ by nlohmann"));
-    //dlg->insert(new TStaticText(TRect(3, 6, 47, 7), "\003(C) Иван Рог"));
+    dlg->insert(new TInputInteger(TRect(3, 2, 47, 3), 0));
     dlg->insert(new TButton(TRect(20, 8, 30, 10), txt_btnOk, cmOK, bfDefault));
     dlg->selectNext(False);
     return dlg;
