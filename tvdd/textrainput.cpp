@@ -2,16 +2,13 @@
 #include <strstream>
 #include <string>
 using namespace std;
-/************************************************************************
-** TInputInteger
-**
-**	Accepts signed integer inputs.  Also accepts hexadecimal numbers
-** if expressed in the format "0x000..."
-**
-*************************************************************************/
+/*
+ TInputInteger - ввод целого положительного или отрицательного числа с ограничением вода по диапазону
+
+*/
 
 TInputInteger::TInputInteger(const TRect& bounds, long vDef, long vMin, long vMax)
-    :TInputLine(bounds, 11)
+    :TInputLine(bounds, 12)
 {
     if (vMin < vMax)
     {
@@ -52,6 +49,18 @@ void TInputInteger::setValue(long val)
     }
 }
 
+bool TInputInteger::convertl(const char* tmp, long* out)
+{
+    char* ptr;
+    errno = 0;
+    auto res = strtol(tmp, &ptr, 10);
+    if (ptr == tmp)return false;
+    if (strlen(tmp) == 0)return false;
+    if (errno == ERANGE)  return false;
+    *out = res;
+    return true;
+}
+
 bool TInputInteger::valid(ushort command)
 {
     /*   int value;
@@ -80,17 +89,70 @@ bool TInputInteger::valid(ushort command)
            return TInputLine::valid(command);
        else
            return False;*/
-    return false;
+    return true;
 }
 
+//void TInputInteger::handleEvent(TEvent& event)
+//{
+//    long vl = 0;
+//    size_t len = 0;
+//    long tst = 0;
+//    int ocp = 0;
+//    char tmp[100];
+//    char tmp1[100];
+//    char* pt;
+//    memset(tmp, 0x0, 100);
+//    memset(tmp1, 0x0, 100);
+//
+//    //-- берём текущее значение
+//    TInputLine::getData(tmp);
+//    ocp = curPos;
+//    TInputLine::handleEvent(event);
+//    //-- берём обновлённое значение
+//    TInputLine::getData(tmp1);
+//    if (convertl(tmp1, &tst))
+//    {
+//        if (CheckValue(tst))
+//        {
+//            //ocp = curPos;
+//            //TInputLine::getData(tmp);
+//            //vl = strtol(tmp, &pt, 10);
+//            //if (*pt)
+//            //    setValue(Value);
+//            //else
+//            //    setValue(vl);
+//            //selectAll(false);
+//            //setCursor(ocp + 1, 0);
+//            //curPos = ocp;
+//        }
+//        else
+//        {
+//            TInputLine::setData(tmp);
+//            selectAll(false);
+//            setCursor(ocp, 0);
+//            curPos = ocp;
+//        }
+//    }
+//    else
+//    {
+//        TInputLine::setData(tmp);
+//        selectAll(false);
+//        setCursor(ocp, 0);
+//        curPos = ocp;
+//    }
+//    clearEvent(event);
+//}
 void TInputInteger::handleEvent(TEvent& event)
 {
     long vl = 0;
-    int len = 0;
+    size_t len = 0;
+    long tst = 0;
     int ocp = 0;
     char tmp[100];
+    char tmp_old[100];
     char* pt;
     memset(tmp, 0x0, 100);
+    memset(tmp_old, 0x0, 100);
 
     if (event.what == evKeyDown)
     {
@@ -111,19 +173,16 @@ void TInputInteger::handleEvent(TEvent& event)
             case kbAltBack:
             case kbBack:
                 TInputLine::handleEvent(event);
+                ocp = curPos;
                 TInputLine::getData(tmp);
-                len = strlen(tmp);
-                len = len == 0 ? 1 : len;
                 vl = strtol(tmp, &pt, 10);
                 if (*pt)
                     setValue(Value);
                 else
-                {
                     setValue(vl);
-                    selectAll(false);
-                    setCursor(len + 1, 0);
-                    curPos = len;
-                }
+                selectAll(false);
+                setCursor(ocp + 1, 0);
+                curPos = ocp;
                 clearEvent(event);
                 break;
             default:
@@ -141,21 +200,25 @@ void TInputInteger::handleEvent(TEvent& event)
             case 55:
             case 56:
             case 57:
-                TInputLine::handleEvent(event);
+                //-- берём текущее значение
+                TInputLine::getData(tmp_old);
                 ocp = curPos;
+                TInputLine::handleEvent(event);
                 TInputLine::getData(tmp);
-                len = strlen(tmp);
-                vl = strtol(tmp, &pt, 10);
-                if (vl > 0 && vl < 10)
-                    len = 1;
-                if (*pt)
-                    setValue(Value);
-                else
+                if (convertl(tmp, &vl) && CheckValue(vl))
                 {
+                    ocp = curPos;
                     setValue(vl);
                     selectAll(false);
-                    setCursor(len + 1, 0);
-                    curPos = len ;
+                    setCursor(ocp+1, 0);
+                    curPos = ocp;
+                }
+                else
+                {
+                    setValue(Value);
+                    selectAll(false);
+                    setCursor(ocp + 1, 0);
+                    curPos = ocp;
                 }
                 clearEvent(event);
                 break;
@@ -175,17 +238,23 @@ void TInputInteger::handleEvent(TEvent& event)
                 break;
             case 45:
                 //-- нажатие знака "-"
-                ocp = (Value < 0 ? 1 : 0) + curPos;
+                ocp = curPos;
                 TInputLine::getData(tmp);
-                len = strlen(tmp);
                 vl = strtol(tmp, &pt, 10);
-                if (vl > 0 && vl < 10)
-                    len = 1;
                 setValue(-Value);
                 selectAll(false);
-                ocp = (Value < 0 ? 1 : 0) + ocp;
-                setCursor(ocp + 1, 0);
-                curPos = ocp;
+                if (Value < 0)
+                {
+                    ocp += 1;
+                    setCursor(ocp + 1, 0);
+                    curPos = ocp;
+                }
+                else
+                {
+                    ocp -= 1;
+                    setCursor(ocp + 1, 0);
+                    curPos = ocp;
+                }
                 clearEvent(event);
                 break;
             default:
@@ -194,6 +263,5 @@ void TInputInteger::handleEvent(TEvent& event)
         return;
     }
     TInputLine::handleEvent(event);
-
 }
 

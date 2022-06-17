@@ -7,7 +7,7 @@
 #include "ttrialradiobuttons.h"
 #include "ttrialcheckboxes.h"
 #include "ttrialmemo.h"
-
+#include "tcustomwindow.h"
 #include "textrainput.h"
 
 TPrg::TPrg() :
@@ -122,6 +122,10 @@ void TPrg::handleEvent(TEvent& event)
                 deskTop->execView(TestDialog());
                 clearEvent(event);
                 break;
+            case cmTestWin:
+                deskTop->insert(TestEditWindow());
+                clearEvent(event);
+                break;
             default:
                 break;
         }
@@ -176,6 +180,14 @@ TTrialDialog* TPrg::LoadDialogJSON(nlohmann::json json, const char* fname)
     tmp = json[str_base_class_name];
     win->setBaseClassName(tmp.c_str());
     win->setCentered(json[str_centered]);
+    //-- окно может...
+    //-- значения указаны для диалога по умолчанию
+    win->set_wfDef(json.contains(str_wfDef) ? (bool)json[str_wfDef] : true); //-- перемещаться
+    win->set_wfMove(json.contains(str_wfMove) ? (bool)json[str_wfMove] : false); //-- перемещаться
+    win->set_wfGrow(json.contains(str_wfGrow) ? (bool)json[str_wfGrow] : false); //-- изменять размеры
+    win->set_wfClose(json.contains(str_wfClose) ? (bool)json[str_wfClose] : false); //-- иметь кнопку закрытия
+    win->set_wfZoom(json.contains(str_wfZoom) ? (bool)json[str_wfZoom] : false); //-- изменять размеры
+
     tmp = json[str_caption];
     win->setCaption(tmp.c_str());
     //-- формируем перечень объектов, которые уже вставлены в диалоговое окно
@@ -189,10 +201,23 @@ TTrialDialog* TPrg::LoadDialogJSON(nlohmann::json json, const char* fname)
 
 void TPrg::doTestDialog(nlohmann::json json)
 {
+    std::string serialized_string = json.dump(2);
+
     //-- загрузка диалога из JSON файла
     auto win = new TDialog(TRect(0, 0, json[str_size][str_x], json[str_size][str_y]), json[str_caption]);
     win->options |= ofCentered;
-
+    if (!json[str_wfDef])
+    {
+        win->flags = 0x0;
+        if (json[str_wfMove])
+            win->flags |= wfMove;
+        if (json[str_wfGrow])
+            win->flags |= wfGrow;
+        if (json[str_wfClose])
+            win->flags |= wfClose;
+        if (json[str_wfZoom])
+            win->flags |= wfZoom;
+    }
     std::string tmp;
     auto obj = json[str_objects];
     for (int i = 0; i < obj.size(); i++)
@@ -228,7 +253,8 @@ TMenuBar* TPrg::initMenuBar(TRect r)
                         *new TSubMenu(txt_mnu_AlgoritmTest, kbNoKey) +
                         (TMenuItem&)(
                             *new TMenuItem(txt_mnu_ColorSelect, cmColorTest, kbNoKey)+
-                            *new TMenuItem("Тест", cmTest, kbNoKey) 
+                            *new TMenuItem("Тест редакторов ввода", cmTest, kbNoKey) +
+                            *new TMenuItem("Тест окна редактирования", cmTestWin, kbNoKey) 
                             )
     );
 
@@ -278,14 +304,19 @@ TDialog* TPrg::TestDialog()
 {
     TCustomDialog* dlg = new TCustomDialog(49, 11, winAboutCapt);
     if (!dlg) return 0;
-
-    char c[] = "%d";
-
     dlg->insert(new TInputInteger(TRect(3, 2, 47, 3), 0));
     dlg->insert(new TButton(TRect(20, 8, 30, 10), txt_btnOk, cmOK, bfDefault));
     dlg->selectNext(False);
     return dlg;
 }
+
+TWindow* TPrg::TestEditWindow()
+{
+    auto win = new TCustomWindow(60, 40, "test");
+    if (!win) return 0;
+    return win;
+}
+
 
 
 

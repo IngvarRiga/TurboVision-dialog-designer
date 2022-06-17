@@ -227,6 +227,7 @@
     <ClCompile Include="tcolorfield.cpp" />
     <ClCompile Include="tcomponentdialog.cpp" />
     <ClCompile Include="tcustomdialog.cpp" />
+    <ClCompile Include="tcustomwindow.cpp" />
     <ClCompile Include="tdialogproperties.cpp" />
     <ClCompile Include="textrainput.cpp" />
     <ClCompile Include="tinputlineproperties.cpp" />
@@ -264,6 +265,7 @@
     <ClInclude Include="tcolorfield.h" />
     <ClInclude Include="tcomponentdialog.h" />
     <ClInclude Include="tcustomdialog.h" />
+    <ClInclude Include="tcustomwindow.h" />
     <ClInclude Include="tdialogproperties.h" />
     <ClInclude Include="textrainput.h" />
     <ClInclude Include="tinputlineproperties.h" />

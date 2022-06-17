@@ -18,6 +18,18 @@ class dataTDP
     char dlgBaseClass[StringMaxLen]; //-- имя класса - предка
     char dlgCaption[StringMaxLen]; //-- Заголовок окна
     bool dlgOpt_Centered; //-- Окно должно центрироваться на экране при вызове
+    //-- окно может...
+    bool wfDef;
+    bool wfMove; //-- перемещаться
+    bool wfGrow; //-- изменять размеры
+    bool wfClose; //-- иметь кнопку закрытия
+    bool wfZoom; //-- изменять размеры
+
+    ////-- при генерации кода создавать: 
+    //bool gcConstructor; //-- конструктор
+    //bool ghHeader; //-- заголовочный файл
+    //bool gcDataStruct; //-- структура данных окна
+    //bool gcReadWriteFunc; //-- функции чтения и записи данных окна
 };
 
 class TDialogProperties : public TCustomDialog
@@ -32,10 +44,13 @@ class TDialogProperties : public TCustomDialog
     char dlgBaseClass[StringMaxLen]; //-- Имя класса - предка
     char dlgCaption[StringMaxLen]; //-- Заголовок окна
     
-    TInputLine *dcn;
-    TInputLine *dbc;
-    TInputLine *cpt;
+    TInputLine *class_name;
+    TInputLine * base_name;
+    TInputLine *caption;
     TCheckBoxes* add_prop;
+    TCheckBoxes* dlg_WinFlags;
+    TCheckBoxes* dlg_WinFlagDef;
+    TCheckBoxes* gen_code;
 };
 
 #endif /* TDIALOGPROPERTIES_H */

@@ -5,20 +5,6 @@
   "class_name": "TDialog_Properties",
   "objects": [
     {
-      "class_name": "TInputLine",
-      "max_len": 249,
-      "pos": {
-        "x": 2,
-        "y": 3
-      },
-      "size": {
-        "x": 43,
-        "y": 1
-      },
-      "type": 1000,
-      "var_name": "caption"
-    },
-    {
       "pos": {
         "x": 2,
         "y": 2
@@ -51,20 +37,6 @@
       }
     },
     {
-      "class_name": "TInputLine",
-      "max_len": 249,
-      "pos": {
-        "x": 2,
-        "y": 5
-      },
-      "size": {
-        "x": 43,
-        "y": 1
-      },
-      "type": 1000,
-      "var_name": "class_name"
-    },
-    {
       "pos": {
         "x": 2,
         "y": 6
@@ -81,14 +53,74 @@
       }
     },
     {
+      "pos": {
+        "x": 2,
+        "y": 8
+      },
+      "size": {
+        "x": 43,
+        "y": 1
+      },
+      "text": "Дополнительные свойства:",
+      "type": 1001,
+      "variable": {
+        "use_var_name": false,
+        "var_name": "control"
+      }
+    },
+    {
+      "pos": {
+        "x": 7,
+        "y": 10
+      },
+      "size": {
+        "x": 38,
+        "y": 1
+      },
+      "text": "Флаги окна",
+      "type": 1001,
+      "variable": {
+        "use_var_name": false,
+        "var_name": "control"
+      }
+    },
+    {
       "class_name": "TInputLine",
-      "max_len": 249,
+      "max_len": 241,
+      "pos": {
+        "x": 2,
+        "y": 3
+      },
+      "size": {
+        "x": 57,
+        "y": 1
+      },
+      "type": 1000,
+      "var_name": "caption"
+    },
+    {
+      "class_name": "TInputLine",
+      "max_len": 241,
+      "pos": {
+        "x": 2,
+        "y": 5
+      },
+      "size": {
+        "x": 57,
+        "y": 1
+      },
+      "type": 1000,
+      "var_name": "class_name"
+    },
+    {
+      "class_name": "TInputLine",
+      "max_len": 241,
       "pos": {
         "x": 2,
         "y": 7
       },
       "size": {
-        "x": 43,
+        "x": 57,
         "y": 1
       },
       "type": 1000,
@@ -110,52 +142,19 @@
       "var_name": "add_prop"
     },
     {
+      "items": [
+        "+"
+      ],
       "pos": {
         "x": 2,
-        "y": 8
+        "y": 10
       },
       "size": {
-        "x": 43,
+        "x": 5,
         "y": 1
       },
-      "text": "Дополнительные свойства:",
-      "type": 1001,
-      "variable": {
-        "use_var_name": false,
-        "var_name": "control"
-      }
-    },
-    {
-      "pos": {
-        "x": 11,
-        "y": 17
-      },
-      "size": {
-        "x": 10,
-        "y": 2
-      },
-      "text": "O~K~",
-      "type": 1002,
-      "variable": {
-        "use_var_name": false,
-        "var_name": "control"
-      }
-    },
-    {
-      "pos": {
-        "x": 1,
-        "y": 17
-      },
-      "size": {
-        "x": 10,
-        "y": 2
-      },
-      "text": "Отмена",
-      "type": 1002,
-      "variable": {
-        "use_var_name": false,
-        "var_name": "control"
-      }
+      "type": 1004,
+      "var_name": "dlg_WinFlagDef"
     },
     {
       "items": [
@@ -177,55 +176,7 @@
     },
     {
       "pos": {
-        "x": 2,
-        "y": 10
-      },
-      "size": {
-        "x": 25,
-        "y": 1
-      },
-      "text": "Флаги окна",
-      "type": 1001,
-      "variable": {
-        "use_var_name": false,
-        "var_name": "control"
-      }
-    },
-    {
-      "pos": {
-        "x": 2,
-        "y": 13
-      },
-      "size": {
-        "x": 22,
-        "y": 1
-      },
-      "text": "Вид генерации",
-      "type": 1001,
-      "variable": {
-        "use_var_name": false,
-        "var_name": "control"
-      }
-    },
-    {
-      "items": [
-        "Конструктор окна",
-        "Структура данных окна"
-      ],
-      "pos": {
-        "x": 2,
-        "y": 14
-      },
-      "size": {
-        "x": 27,
-        "y": 2
-      },
-      "type": 1004,
-      "var_name": "control"
-    },
-    {
-      "pos": {
-        "x": 34,
+        "x": 47,
         "y": 11
       },
       "size": {
@@ -236,13 +187,49 @@
       "type": 1002,
       "variable": {
         "use_var_name": false,
-        "var_name": "control"
+        "var_name": "btnKeys"
+      }
+    },
+    {
+      "pos": {
+        "x": 1,
+        "y": 14
+      },
+      "size": {
+        "x": 10,
+        "y": 2
+      },
+      "text": "Отмена",
+      "type": 1002,
+      "variable": {
+        "use_var_name": false,
+        "var_name": "btnCancel"
+      }
+    },
+    {
+      "pos": {
+        "x": 11,
+        "y": 14
+      },
+      "size": {
+        "x": 10,
+        "y": 2
+      },
+      "text": "O~K~",
+      "type": 1002,
+      "variable": {
+        "use_var_name": false,
+        "var_name": "btnOk"
       }
     }
   ],
   "size": {
-    "x": 47,
-    "y": 20
+    "x": 61,
+    "y": 17
   },
-  "type": 0
+  "type": 0,
+  "wfClose": true,
+  "wfGrow": false,
+  "wfMove": true,
+  "wfZoom": false
 }

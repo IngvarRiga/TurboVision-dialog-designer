@@ -29,13 +29,13 @@ void TWrapStaticText::draw()
 {
 	TColorAttr color;
 	Boolean center;
-	int i, j, l, p, y;
+	size_t i, j, p, y;
 	TDrawBuffer b;
 	char s[256];
 
 	color = getColor(1);
 	getText(s);
-	l = strlen(s);
+	auto l = strlen(s);
 	p = 0;
 	y = 0;
 	center = False;
@@ -50,7 +50,7 @@ void TWrapStaticText::draw()
 				++p;
 			}
 			i = p;
-			int last = i + TText::scroll(TStringView(&s[i], l - i), size.x, False);
+			auto last = i + TText::scroll(TStringView(&s[i], l - i), size.x, False);
 			do
 			{
 				j = p;

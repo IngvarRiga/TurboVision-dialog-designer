@@ -27,6 +27,12 @@ const char* str_text = "text";
 const char* str_variable = "variable";
 const char* str_use_var_name = "use_var_name";
 const char* str_max_len = "max_len";
+//-- окно может...
+const char* str_wfDef = "wfDef"; //-- все значения по умолчанию
+const char* str_wfMove = "wfMove"; //-- перемещаться
+const char* str_wfGrow = "wfGrow"; //-- изменять размеры
+const char* str_wfClose = "wfClose"; //-- иметь кнопку закрытия
+const char* str_wfZoom = "wfZoom"; //-- изменять размеры
 
 
 
@@ -110,8 +116,9 @@ void generateDialogCode(TView* obj, void* res)
         if (it.length() > 0)
             elem.push_back(it);
     }
-
-    for (int i = elem.size() - 1; i > -1; i--)
+    auto cnt = elem.size() - 1;
+    //-- cnt - is size_t! для нормальной работы цикла указываем тип int!
+    for (int i = cnt; i > -1; i--)
     {
         iter = src->begin();
         src->insert(iter, elem[i]);
@@ -392,27 +399,6 @@ TView* object_fromJSON(nlohmann::json object, bool test)
 
 }
 
-//TMenuBox* dialogMenu()
-//{
-//    //-- создание контекстного меню диалога
-//    TMenuBox* contextMenu = new TMenuBox(TRect(0, 0, 0, 0),
-//                                         new TMenu(
-//                                             *new TMenuItem(txt_PropertyDialogCaption, cmOption_Dialog, kbCtrlEnter, hcNoContext, "Ctrl+Enter") +
-//                                             newLine() +
-//                                             *new TMenuItem(txt_mnu_StaticText, cm_ed_InsertStaticText, kbNoKey) +
-//                                             *new TMenuItem(txt_mnu_Button, cm_ed_InsertButton, kbNoKey) +
-//                                             *new TMenuItem(txt_mnu_InputLine, cm_ed_InsertInputLine, kbNoKey) +
-//                                             *new TMenuItem(txt_mnu_RadioButtons, cm_ed_InsertRadioButtons, kbNoKey) +
-//                                             *new TMenuItem(txt_mnu_CheckBoxes, cm_ed_InsertCheckBoxes, kbNoKey) +
-//                                             *new TMenuItem(txt_mnu_ListBox, cm_ed_InsertListBox, kbNoKey) +
-//                                             *new TMenuItem(txt_mnu_Memo, cm_ed_InsertMemo, kbNoKey)
-//                                             + newLine() +
-//                                             //*new TMenuItem(txt_mnu_Copy, cm_ed_Copy, kbNoKey) +
-//                                             *new TMenuItem(txt_mnu_Paste, cm_ed_Paste, kbShiftIns, -1, "Shift+Ins")
-//                                         ), nullptr);
-//    return contextMenu;
-//}
-
 TMenuItem& dialogMenu()
 {
     //-- создание контекстного меню диалога
@@ -427,7 +413,6 @@ TMenuItem& dialogMenu()
         *new TMenuItem(txt_mnu_ListBox, cm_ed_InsertListBox, kbNoKey) +
         *new TMenuItem(txt_mnu_Memo, cm_ed_InsertMemo, kbNoKey) +
         newLine() +
-        //*new TMenuItem(txt_mnu_Copy, cm_ed_Copy, kbNoKey) +
         *new TMenuItem(txt_mnu_Paste, cm_ed_Paste, kbNoKey);
 }
 

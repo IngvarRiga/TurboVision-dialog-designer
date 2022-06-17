@@ -36,6 +36,8 @@ public:
     virtual Boolean valid(ushort command);
     virtual long getValue();
     virtual void setValue(long val);
+    bool convertl(const char* tmp, long* out);
+
 };
 
 

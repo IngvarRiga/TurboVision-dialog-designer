@@ -13,17 +13,17 @@ TView(TRect(deltax, deltay, deltax + 36, deltay + 20))
 
 void TColorField::draw()
 {
-    char luc = 0xda;
-    char ruc = 0xbf;
-    char ldc = 0xc0;
-    char rdc = 0xd9;
-    char hl = 0xc4;
-    char vl = 0xb3;
-    char lx = 0xc3;
-    char rx = 0xb4;
-    char ux = 0xc2;
-    char dx = 0xc1;
-    char xx = 0xc5;
+    uchar luc = 0xda;
+    uchar ruc = 0xbf;
+    uchar ldc = 0xc0;
+    uchar rdc = 0xd9;
+    uchar hl = 0xc4;
+    uchar vl = 0xb3;
+    uchar lx = 0xc3;
+    uchar rx = 0xb4;
+    uchar ux = 0xc2;
+    uchar dx = 0xc1;
+    uchar xx = 0xc5;
     //-- оптимизированная отрисовка
     TDrawBuffer b[256]; //-- размер буфера отрисовки по вертикальному размеру
     uchar cl = 0x00; //-- цвет отрисовки

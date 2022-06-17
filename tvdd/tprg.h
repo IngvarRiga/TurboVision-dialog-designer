@@ -66,6 +66,7 @@ class TPrg : public TApplication
     TDialog* AboutDialog();
 
     TDialog* TestDialog();
+    TWindow* TestEditWindow();
 
     /// <summary>
     /// Загрузка разрабатываемого ресурса из JSON-файла

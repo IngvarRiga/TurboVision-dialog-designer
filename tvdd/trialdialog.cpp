@@ -25,7 +25,6 @@ TTrialDialog::TTrialDialog(const int width, const int height, TStringView aTitle
     TWindowInit(&TCustomDialog::initFrame)
 {
     isDest = false;
-    //flags |= wfZoom;
     //----- ШТРИХОВКА ----------------------------------------------------------
     //-- задаем внутреннюю штриховку разрабатываемого окна так,
     //-- чтобы она НЕ перекрывала границу окна
@@ -52,14 +51,17 @@ TTrialDialog::TTrialDialog(const int width, const int height, TStringView aTitle
     memcpy(class_name, _class_name, strlen(_class_name) + 1);
     memcpy(base_class_name, _base_class_name, strlen(_base_class_name) + 1);
     prp_Centered = true;
-
+    wfDef = true;
+    wfClose = false;
+    wfMove = false;
+    wfGrow = false;
+    wfZoom = false;
     //-- Дополнительное меню в заголовке
     emnu = new TWinExtMenu(TRect(10, size.y - 1, 20, size.y));
     insert(emnu);
     //-- индикатор размеров окна
     ind = new TWinSizeIndicator(TRect(10, size.y - 1, 20, size.y));
     insert(ind);
-
 }
 
 TTrialDialog::~TTrialDialog()
@@ -85,6 +87,11 @@ void TTrialDialog::editDialogProperties()
     memcpy(data->dlgBaseClass, base_class_name, strlen(base_class_name));
     memcpy(data->dlgCaption, title, strlen(title));
     data->dlgOpt_Centered = prp_Centered;
+    data->wfDef = wfDef;
+    data->wfMove = wfMove;
+    data->wfGrow = wfGrow;
+    data->wfClose = wfClose;
+    data->wfZoom = wfZoom;
     TDialogProperties* win = new TDialogProperties();
     win->setData(data);
     if (owner->execView(win) == cmOK)
@@ -94,6 +101,11 @@ void TTrialDialog::editDialogProperties()
         setBaseClassName(data->dlgClassName);
         setCentered(data->dlgOpt_Centered);
         setCaption(data->dlgCaption);
+        set_wfDef(data->wfDef);
+        set_wfMove(data->wfMove);
+        set_wfGrow(data->wfGrow);
+        set_wfClose(data->wfClose);
+        set_wfZoom(data->wfZoom);
         drawView();
         frame->drawView();
         DialSaved = false;
@@ -891,6 +903,11 @@ nlohmann::json TTrialDialog::DialogToJSON()
     sav[str_caption] = title;
     sav[str_centered] = prp_Centered;
     //-- перечень объектов в окне
+    sav[str_wfDef] = wfDef;
+    sav[str_wfClose] = wfClose;
+    sav[str_wfGrow] = wfGrow;
+    sav[str_wfMove] = wfMove;
+    sav[str_wfZoom] = wfZoom;
 
     forEach(&generateDialogJSON, &src);
 
@@ -901,7 +918,7 @@ nlohmann::json TTrialDialog::DialogToJSON()
 
 void TTrialDialog::saveDialogToSrc()
 {
-    auto fd = new TFileDialog("*.cpp", txt_dlg_SaveCodeAsCaption, txt_dlg_SaveAsName, fdOKButton, 100);
+    auto fd = new TFileDialog("*.src", txt_dlg_SaveCodeAsCaption, txt_dlg_SaveAsName, fdOKButton, 100);
 
     if (fd != 0 && owner->execView(fd) != cmCancel)
     {
@@ -914,8 +931,6 @@ void TTrialDialog::saveDialogToSrc()
     }
     destroy(fd);
 }
-
-
 
 bool TTrialDialog::valid(ushort command)
 {
@@ -937,6 +952,18 @@ void TTrialDialog::GenCode(ofstream* res)
     //-- если установлен признак центрирования диалога
     if (prp_Centered)
         *res << " options |= ofCentered;\n";
+    //-- проверяем и прописываем в исходный код флаги окна
+    if (!wfDef)
+    {
+        if (wfMove)
+            *res << " flags |= wfMove;\n";
+        if (wfGrow)
+            *res << " flags |= wfGrow;\n";
+        if (wfClose)
+            *res << " flags |= wfClose;\n";
+        if (wfZoom)
+            *res << " flags |= wfZoom;\n";
+    }
     forEach(&generateDialogCode, &elem);
     for (int i = 0; i < elem.size(); i++)
         *res << elem[i] << "\n";

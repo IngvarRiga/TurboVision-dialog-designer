@@ -37,6 +37,11 @@ public:
 	void setLoaded() { dlg_loaded = true; } //-- установка признака, что диалог загружен из файла
 	void SaveDialogAs(); //-- Сохранить диалог как...
 	bool getSaved() { return DialSaved; }
+	void set_wfDef(bool val) { wfDef = val; } //-- все значения по умолчанию
+	void set_wfMove(bool val) { wfMove = val; } //-- перемещаться
+	void set_wfGrow(bool val) { wfGrow = val; } //-- изменять размеры
+	void set_wfClose(bool val) { wfClose = val; } //-- иметь кнопку закрытия
+	void set_wfZoom(bool val) { wfZoom = val; } //-- изменять размеры
 
 	void setSaved(bool val = true) { DialSaved = val; }
 	const char * getDialogFileName();
@@ -44,6 +49,14 @@ public:
 private:
 	bool DialSaved; //-- признак сохранённости диалога
 	bool dlg_loaded; //-- признак того, что  диалог был загружен из файла
+	//-- окно может...
+	bool wfDef; //-- все значения по умолчанию
+	bool wfMove; //-- перемещаться
+	bool wfGrow; //-- изменять размеры
+	bool wfClose; //-- иметь кнопку закрытия
+	bool wfZoom; //-- изменять размеры
+
+
 	char dlg_file_name[StringMaxLen]; //-- имя файла диалога (при загрузке устанавливается из имени, при создании в имя класса)
 	char class_name[StringMaxLen]; //-- название класса диалога
 	char base_class_name[StringMaxLen]; //-- название базового класса диалога

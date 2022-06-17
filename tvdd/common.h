@@ -51,7 +51,7 @@ const int TextMaxLen = 65535;
 const int cmUnreleased = -1; //-- не реализованная команда
 const int cmAbout = 10001; //-- о программе
 const int cmNewDialog = 10002; //-- создание нового дизайнера диалогов
-//const int cmLoadDialog = 10003; //-- загрузить диалог из ресурсного файла
+const int cmKeys = 10003; //-- диалог вызова дополнительных ключей объекта
 const int cmLoadJSON = 10004; //-- загрузить ресурс из файла JSON
 
 const int cmNewMenu = 10094; //-- новое меню
@@ -59,6 +59,7 @@ const int cmNewPalette = 10095; //-- редактор палитр
 const int cmColorDialog = 10096;
 const int cmColorTest = 10097;
 const int cmTest = 10098;
+const int cmTestWin = 10099;
 
 
 const int cmDialogSizeOnOff = 10101; //-- Включение / выключение отображения размеров диалога
@@ -199,6 +200,12 @@ extern const char* str_text;
 extern const char* str_variable;
 extern const char* str_use_var_name;
 extern const char* str_max_len;
+//-- окно может...
+extern const char* str_wfDef; //-- все значения по умолчанию
+extern const char* str_wfMove; //-- перемещаться
+extern const char* str_wfGrow; //-- изменять размеры
+extern const char* str_wfClose; //-- иметь кнопку закрытия
+extern const char* str_wfZoom; //-- изменять размеры
 
 /// <summary>
 /// Создание объекта из JSON-описания.
