@@ -5,6 +5,11 @@
 #define winAboutText1 "\003Дизайнер диалоговых форм TurboVision 2.0 C++"
 #define winAboutCapt "О программе..."
 
+#define txt_Range_error1 "\003Значение должно быть между "
+#define txt_Range_error2 " и "
+#define txt_Range_error3 "\003Задаваемое значение должно быть между "
+
+
 //-- тексты меню
 #define txt_mnu_DialogDesign "Диалог"
 #define txt_mnu_NewDialogWindow "Создать новое диалоговое окно"
@@ -99,6 +104,11 @@
 #ifdef ENG
 #define winAboutText1 "\003Dialog forms designer for TurboVision 2.0 C++"
 #define winAboutCapt "About..."
+
+#define txt_Range_error1 "\003Value must be in range "
+#define txt_Range_error2 " и "
+#define txt_Range_error3 "\003Default value must be in range "
+
 
 #define txt_mnu_DialogDesign "Dialog"
 #define txt_mnu_NewDialogWindow "Create new Dialog window"

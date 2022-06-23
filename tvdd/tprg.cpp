@@ -10,6 +10,8 @@
 #include "tcustomwindow.h"
 #include "textrainput.h"
 
+
+
 TPrg::TPrg() :
     TProgInit(&TPrg::initStatusLine,
               &TPrg::initMenuBar,
@@ -252,9 +254,9 @@ TMenuBar* TPrg::initMenuBar(TRect r)
                             ) +
                         *new TSubMenu(txt_mnu_AlgoritmTest, kbNoKey) +
                         (TMenuItem&)(
-                            *new TMenuItem(txt_mnu_ColorSelect, cmColorTest, kbNoKey)+
+                            *new TMenuItem(txt_mnu_ColorSelect, cmColorTest, kbNoKey) +
                             *new TMenuItem("Тест редакторов ввода", cmTest, kbNoKey) +
-                            *new TMenuItem("Тест окна редактирования", cmTestWin, kbNoKey) 
+                            *new TMenuItem("Тест окна редактирования", cmTestWin, kbNoKey)
                             )
     );
 
@@ -288,7 +290,7 @@ TDialog* TPrg::AboutDialog()
     if (!dlg) return 0;
     dlg->insert(new TStaticText(TRect(3, 2, 47, 3), winAboutText1));
     dlg->insert(new TStaticText(TRect(3, 3, 47, 4), "\003Основано на:"));
-    dlg->insert(new TStaticText(TRect(3, 4, 47, 5), "\003Turbo Vision by maglibot"));
+    dlg->insert(new TStaticText(TRect(3, 4, 47, 5), "\003Turbo Vision by magiblot"));
     dlg->insert(new TStaticText(TRect(3, 5, 47, 6), "\003JSON C++ by nlohmann"));
     dlg->insert(new TStaticText(TRect(3, 6, 47, 7), "\003(C) Иван Рог"));
     dlg->insert(new TButton(TRect(20, 8, 30, 10), txt_btnOk, cmOK, bfDefault));
@@ -304,7 +306,8 @@ TDialog* TPrg::TestDialog()
 {
     TCustomDialog* dlg = new TCustomDialog(49, 11, winAboutCapt);
     if (!dlg) return 0;
-    dlg->insert(new TInputInteger(TRect(3, 2, 47, 3), 0));
+    dlg->insert(new TInputLong(TRect(3, 2, 47, 3), -33333, 4444, 0));
+//    dlg->insert(new TInputDouble(TRect(3, 6, 47, 7), 15, -3456.55, 86757865.34));
     dlg->insert(new TButton(TRect(20, 8, 30, 10), txt_btnOk, cmOK, bfDefault));
     dlg->selectNext(False);
     return dlg;

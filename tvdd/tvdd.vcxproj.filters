@@ -275,5 +275,8 @@
     <ClInclude Include="tcustomwindow.h">
       <Filter>Файлы заголовков\Базовые классы</Filter>
     </ClInclude>
+    <ClInclude Include="input.h">
+      <Filter>Файлы заголовков\TVExtra</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
