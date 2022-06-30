@@ -12,17 +12,17 @@
 #include "multilang.h"
 
 
-//-- определение класса TInputLong
+//-- РѕРїСЂРµРґРµР»РµРЅРёРµ РєР»Р°СЃСЃР° TInputLong
 
 class TInputLong : public TInputLine
 {
 private:
     /// <summary>
-    /// Редактируемое значение
+    /// Р РµРґР°РєС‚РёСЂСѓРµРјРѕРµ Р·РЅР°С‡РµРЅРёРµ
     /// </summary>
     long value;
     /// <summary>
-    /// Допустимый диапазон изменения значения
+    /// Р”РѕРїСѓСЃС‚РёРјС‹Р№ РґРёР°РїР°Р·РѕРЅ РёР·РјРµРЅРµРЅРёВ¤ Р·РЅР°С‡РµРЅРёВ¤
     /// </summary>
     long minv, maxv;
     /// <summary>
@@ -40,19 +40,19 @@ public:
 
     virtual void handleEvent(TEvent& event);
     /// <summary>
-    /// Нормализованное получение данных 
+    /// РќРѕСЂРјР°Р»РёР·РѕРІР°РЅРЅРѕРµ РїРѕР»СѓС‡РµРЅРёРµ РґР°РЅРЅС‹С… 
     /// </summary>
     /// <returns></returns>
     long getValue() { return value; }
     /// <summary>
-    /// Нормализованная установка данных
+    /// РќРѕСЂРјР°Р»РёР·РѕРІР°РЅРЅР°СЏ СѓСЃС‚Р°РЅРѕРІРєР° РґР°РЅРЅС‹С…
     /// </summary>
     /// <param name="val"></param>
     void setValue(long val);
     /// <summary>
-    /// Проверка попадания в диапазон допустимых значений
+    /// РџСЂРѕРІРµСЂРєР° РїРѕРїР°РґР°РЅРёСЏ РІ РґРёР°РїР°Р·РѕРЅ РґРѕРїСѓСЃС‚РёРјС‹С… Р·РЅР°С‡РµРЅРёР№
     /// </summary>
-    /// <param name="val"> - проверяемое значение</param>
+    /// <param name="val"> - РїСЂРѕРІРµСЂСЏРµРјРѕРµ Р·РЅР°С‡РµРЅРёРµ</param>
     /// <returns></returns>
     bool CheckValue(long val);
 };
