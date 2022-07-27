@@ -25,6 +25,7 @@ file(GLOB SOURCES
 
 set(PROJECT_SOURCES ${SOURCES})
 
+include_directories(tvdd/include)
 include_directories(tvdd/include/nlohmann)
 include_directories(tvdd/include/tvision)
 
