@@ -1,5 +1,4 @@
 #include "tcustomdialog.h"
-//const char * const TCustomDialog::name = "TCustomDialog";
 
 TCustomDialog::TCustomDialog(const TRect& bounds, TStringView aTitle, bool sizeable, bool centered, bool restrictSize) :
 TDialog(bounds, aTitle),

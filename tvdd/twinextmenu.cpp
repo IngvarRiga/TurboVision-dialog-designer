@@ -11,7 +11,6 @@
 #include "multilang.h"
 #include "common.h"
 
-//const char* const TWinExtMenu::name = "TWinExtMenu";
 
 TWinExtMenu::TWinExtMenu(const TRect& rect) :
 	TView(rect)

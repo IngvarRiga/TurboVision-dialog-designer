@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <sys/stat.h>
 
 #include "trialdialog.h"
 #include "multilang.h"
@@ -18,7 +19,6 @@
 const char* _class_name = "TNewDialog";
 const char* _base_class_name = "TDialog";
 
-const char* const TTrialDialog::name = "TTrialDialog";
 
 TTrialDialog::TTrialDialog(const int width, const int height, TStringView aTitle, bool sizeable) :
     TCustomDialog(width, height, aTitle, sizeable),
@@ -824,9 +824,9 @@ void TTrialDialog::saveDialogToJSON()
     //-- если диалог был загружен из файла
     if (dlg_loaded)
     {
-        struct _stat buf;
+        struct stat buf;
         errno_t err;
-        auto res = _stat(dlg_file_name, &buf);
+        auto res = stat(dlg_file_name, &buf);
         if (res != 0)
         {
             if (errno == ENOENT)

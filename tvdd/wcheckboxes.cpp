@@ -1,7 +1,8 @@
 #include "wcheckboxes.h"
+#include "common.h"
 #include <tvision/tkeys.h>
 
-//const char* const TWrapCheckBoxes::name = "TWrapCheckBoxes";
+
 const char* TWrapCheckBoxes::button = " [ ] ";
 
 void TWrapCheckBoxes::draw()

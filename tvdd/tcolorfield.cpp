@@ -8,7 +8,6 @@ TView(TRect(deltax, deltay, deltax + 36, deltay + 20))
     options |= ofPreProcess;
     DrawChar = 0x58; //-- > 'X'
     selectedColor = 0x00;
-    //setState(sfShadow, true);
 }
 
 void TColorField::draw()

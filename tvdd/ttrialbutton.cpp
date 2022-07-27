@@ -1,8 +1,6 @@
 #include "ttrialbutton.h"
-#include "common.h"
 #include "multilang.h"
-
-//const char* const TTrialButton::name = "TTrialButton";
+#include "common.h"
 
 TTrialButton::TTrialButton(const TRect& bounds,
                            TStringView aTitle,

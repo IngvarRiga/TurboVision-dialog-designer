@@ -12,7 +12,6 @@
 #define Uses_TStringCollection
 
 #include <tvision/tv.h>
-#include "../common.h"
 
 class TWrapCluster : public TView
 {

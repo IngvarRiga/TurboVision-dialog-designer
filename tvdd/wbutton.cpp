@@ -1,7 +1,6 @@
 #include "wbutton.h"
-#include "common.h"
 
-//const char* const TWrapButton::name = "TWrapButton";
+
 const char* TWrapButton::shadows = "\xDC\xDB\xDF";
 const char* TWrapButton::markers = "[]";
 

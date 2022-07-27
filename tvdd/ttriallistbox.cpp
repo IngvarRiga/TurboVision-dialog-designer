@@ -1,8 +1,5 @@
 #include "ttriallistbox.h"
-#include "common.h"
 #include "multilang.h"
-
-const char* const TTrialListBox::name = "TTrialListBox";
 
 TTrialListBox::TTrialListBox(const TRect& bounds, ushort aNumCols, TScrollBar* aScrollBar) :
 	TListBox(bounds, aNumCols, aScrollBar)

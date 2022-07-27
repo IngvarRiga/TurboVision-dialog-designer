@@ -1,9 +1,6 @@
 #include "ttrialstatictext.h"
 #include "multilang.h"
 
-
-//const char* const TTrialStaticText::name = "TTrialStaticText";
-
 TTrialStaticText::TTrialStaticText(const TRect& bounds, TStringView aText) :
     TWrapStaticText(bounds, aText)
 {

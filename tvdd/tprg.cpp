@@ -1,6 +1,5 @@
 #include "multilang.h"
 #include "tprg.h"
-#include "common.h"
 #include "ttrialinputline.h"
 #include "ttrialstatictext.h"
 #include "ttrialbutton.h"

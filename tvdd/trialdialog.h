@@ -1,7 +1,5 @@
 #ifndef TRIALDIALOG_H
 #define TRIALDIALOG_H
-#include "common.h"
-
 #include "tcustomdialog.h"
 #include "ttrialdialogbackground.h"
 #include "twinsizeindicator.h"

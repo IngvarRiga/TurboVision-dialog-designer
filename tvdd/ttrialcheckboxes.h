@@ -10,6 +10,7 @@
 #define Uses_TKeys
 #include <tvision/tv.h>
 #include "wcheckboxes.h"
+#include "common.h"
 
 class TTrialCheckBoxes : public TWrapCheckBoxes
 {

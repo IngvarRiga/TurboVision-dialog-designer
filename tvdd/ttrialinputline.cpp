@@ -1,7 +1,6 @@
 #include "ttrialinputline.h"
 #include "multilang.h"
-
-const char* const TTrialInputLine::name = "TTrialInputLine";
+#include "common.h"
 
 TTrialInputLine::TTrialInputLine(const TRect& bounds, uint aMaxLen, TValidator* aValid) :
     TWrapInputLine(bounds, aMaxLen, aValid)

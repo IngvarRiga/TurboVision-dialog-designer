@@ -1,5 +1,5 @@
 #include "winputline.h"
-#include "../common.h"
+#include "common.h"
 
 #define Uses_TGroup
 #define Uses_TKeys
@@ -10,7 +10,6 @@
 #define Uses_TText
 #include <tvision/tv.h>
 
-//const char * const TWrapInputLine::name = "TWrapInputLine";
 const char TWrapInputLine::rightArrow = '\x10';
 const char TWrapInputLine::leftArrow = '\x11';
 

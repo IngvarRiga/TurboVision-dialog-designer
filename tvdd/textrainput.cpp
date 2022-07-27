@@ -1,5 +1,5 @@
 #include "textrainput.h"
-#include <strstream>
+//#include <strstream>
 #include <string>
 using namespace std;
 

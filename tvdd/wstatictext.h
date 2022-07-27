@@ -10,7 +10,7 @@
 #define Uses_TText
 
 #include <tvision/tv.h>
-#include "../common.h"
+#include "common.h"
 
 /* Переопределение */
 

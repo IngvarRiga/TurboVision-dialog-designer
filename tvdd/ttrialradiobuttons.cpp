@@ -1,8 +1,5 @@
 #include "ttrialradiobuttons.h"
-#include "common.h"
 #include "multilang.h"
-
-//const char* const TTrialRadioButtons::name = "TTrialRadioButtons";
 
 TTrialRadioButtons::TTrialRadioButtons(const TRect& bounds, TSItem* aStrings) :
     TWrapRadioButtons(bounds, aStrings)

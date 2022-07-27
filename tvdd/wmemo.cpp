@@ -1,9 +1,7 @@
 /*
 #include "wmemo.h"
-#include "common.h"
 
 #define cpMemo      "\x1A\x1B"
-const char* const TWrapMemo::name = "TWrapMemo";
 
 TWrapMemo::TWrapMemo(const TRect& bounds,
              TScrollBar* aHScrollBar,

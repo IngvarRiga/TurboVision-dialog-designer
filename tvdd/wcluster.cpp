@@ -1,9 +1,9 @@
 #include "wcluster.h"
+#include "common.h"
 #include <tvision/tkeys.h>
 
 #define cpCluster "\x10\x11\x12\x12\x1f"
 
-//const char* const TWrapCluster::name = "TWrapCluster";
 
 TWrapCluster::TWrapCluster(const TRect& bounds, TSItem* aStrings, bool click) noexcept :
 	TView(bounds),

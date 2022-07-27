@@ -1,8 +1,7 @@
 #include "ttrialcheckboxes.h"
-#include "common.h"
 #include "multilang.h"
+#include "common.h"
 
-//const char* const TTrialCheckBoxes::name = "TTrialCheckBoxes";
 
 TTrialCheckBoxes::TTrialCheckBoxes(const TRect& bounds, TSItem* aStrings) :
     TWrapCheckBoxes(bounds, aStrings)

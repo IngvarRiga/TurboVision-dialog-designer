@@ -46,7 +46,7 @@ void TInterior::draw()
         if (sz > j)
         {
             auto src = text.at(j).c_str();
-            auto len = std::strlen(src);
+            auto len = strlen(src);
             //-- определяем реальную длину строки с учетом UTF
             int st = 0;
             int ut = 0;

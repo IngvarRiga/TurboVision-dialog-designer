@@ -1,8 +1,5 @@
 #include "ttrialmemo.h"
-#include "common.h"
 #include "multilang.h"
-
-//const char* const TTrialMemo::name = "TTrialMemo";
 
 TTrialMemo::TTrialMemo(const TRect& bounds,
                        TScrollBar* aHScrollBar,

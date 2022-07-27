@@ -32,7 +32,7 @@ void TSelectColorDialog::handleEvent(TEvent& event)
             memset(res,0x0, StringMaxLen);
             _itoa(cf->getColor(), valp, 16);
             strncat(res, pref, strlen(pref));
-            strncat(res,valp, strlen(valp));
+            strncat(res, valp, strlen(valp));
             val->setData(res);
         }
         clearEvent(event);
