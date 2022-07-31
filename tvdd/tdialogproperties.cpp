@@ -54,7 +54,7 @@ void TDialogProperties::setData(dataTDP* val)
             dlg_WinFlags->press(2);
         if (val->wfZoom)
             dlg_WinFlags->press(3);
-
+        //dlg_WinFlags->setState( sfDisabled,true);
     }
 }
 

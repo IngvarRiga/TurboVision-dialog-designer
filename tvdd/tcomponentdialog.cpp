@@ -1,6 +1,6 @@
 #include "tcomponentdialog.h"
 #include "multilang.h"
-
+#include "common.h"
 
 #define memTxt "Memo"
 struct memInfo

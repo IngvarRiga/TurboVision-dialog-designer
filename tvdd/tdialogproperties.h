@@ -44,9 +44,9 @@ class TDialogProperties : public TCustomDialog
     char dlgBaseClass[StringMaxLen]; //-- Имя класса - предка
     char dlgCaption[StringMaxLen]; //-- Заголовок окна
     
-    TInputLine *class_name;
-    TInputLine * base_name;
-    TInputLine *caption;
+    TInputLine* class_name;
+    TInputLine* base_name;
+    TInputLine* caption;
     TCheckBoxes* add_prop;
     TCheckBoxes* dlg_WinFlags;
     TCheckBoxes* dlg_WinFlagDef;

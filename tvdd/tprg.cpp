@@ -1,6 +1,5 @@
 #include "multilang.h"
 #include "tprg.h"
-#include "common.h"
 #include "ttrialinputline.h"
 #include "ttrialstatictext.h"
 #include "ttrialbutton.h"
@@ -208,7 +207,7 @@ void TPrg::doTestDialog(nlohmann::json json)
     //-- загрузка диалога из JSON файла
     auto win = new TDialog(TRect(0, 0, json[str_size][str_x], json[str_size][str_y]), json[str_caption]);
     win->options |= ofCentered;
-    if (!json[str_wfDef])
+    if (json[str_wfDef])
     {
         win->flags = 0x0;
         if (json[str_wfMove])
@@ -225,6 +224,7 @@ void TPrg::doTestDialog(nlohmann::json json)
     for (int i = 0; i < obj.size(); i++)
         win->insert(object_fromJSON(obj[i], true));
     //-- вставляем окно
+    win->selectNext(false);
     deskTop->execView(win);
 }
 
@@ -251,13 +251,16 @@ TMenuBar* TPrg::initMenuBar(TRect r)
                             newLine() +
                             *new TMenuItem(txt_DialogAlignSize, cmDialogAutoSize, kbAltC, hcNoContext, "Alt+C") +
                             *new TMenuItem(txt_DialogTest, cmDialogTest, kbF9, hcNoContext, "F9")
-                            ) +
+                            ) 
+#if _DEBUG
+                        +
                         *new TSubMenu(txt_mnu_AlgoritmTest, kbNoKey) +
                         (TMenuItem&)(
                             *new TMenuItem(txt_mnu_ColorSelect, cmColorTest, kbNoKey) +
                             *new TMenuItem("Тест редакторов ввода", cmTest, kbNoKey) +
                             *new TMenuItem("Тест окна редактирования", cmTestWin, kbNoKey)
                             )
+#endif
     );
 
 }
@@ -306,8 +309,9 @@ TDialog* TPrg::TestDialog()
 {
     TCustomDialog* dlg = new TCustomDialog(49, 11, winAboutCapt);
     if (!dlg) return 0;
-    dlg->insert(new TInputLong(TRect(3, 2, 47, 3), -33333, 4444, 0));
-//    dlg->insert(new TInputDouble(TRect(3, 6, 47, 7), 15, -3456.55, 86757865.34));
+    dlg->insert(new TInputLong(TRect(3, 2, 47, 3), -33, 445, 0));
+    dlg->insert(new TInputLong(TRect(3, 4, 47, 5), -33, 44, 0));
+    //    dlg->insert(new TInputDouble(TRect(3, 6, 47, 7), 15, -3456.55, 86757865.34));
     dlg->insert(new TButton(TRect(20, 8, 30, 10), txt_btnOk, cmOK, bfDefault));
     dlg->selectNext(False);
     return dlg;

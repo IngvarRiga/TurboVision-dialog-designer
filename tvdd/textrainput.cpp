@@ -1,5 +1,5 @@
 #include "textrainput.h"
-#include <strstream>
+//#include <strstream>
 #include <string>
 using namespace std;
 
@@ -54,6 +54,7 @@ void TInputLong::setValue(long val)
         if (val < minv)
             value = minv;
         TInputLine::setData((void*)to_string(value).c_str());
+        drawView();
     }
 }
 
@@ -71,7 +72,9 @@ bool TInputLong::convertl(const char* tmp, long* out)
 
 void  TInputLong::handleEvent(TEvent& event)
 {
+    std::string vals;
     long vl = 0;
+    long vl_old = 0;
     int ocp = 0;
     char tmp[100];
     char* pt;
@@ -125,18 +128,28 @@ void  TInputLong::handleEvent(TEvent& event)
             case 56:
             case 57:
                 ocp = curPos; //-- старая позиция курсора
-                TInputLine::handleEvent(event);//-- обрабатываем событие ввода данных
+                vl_old = value;
+
                 TInputLine::getData(tmp);
-                if (convertl(tmp, &vl) && CheckValue(vl))
+                vals = tmp;
+                vals.insert(curPos, 1, char(event.keyDown.charScan.charCode));
+                convertl(vals.c_str(), &vl);
+                if (CheckValue(vl))
                 {
+                    TInputLine::handleEvent(event);//-- обрабатываем событие ввода данных
                     value = vl;
+                    ocp = curPos;
+                    //setValue(vl);
+                    selectAll(false);
+                    setCursor(ocp,0);
+                    //drawView();
                 }
                 else
                 {
-                    setValue(value);
-                    selectAll(false);
-                    setCursor(ocp + 1, 0);
-                    curPos = ocp;
+                    //setValue(vl_old);
+                    //selectAll(false);
+                    //setCursor(ocp + 1, 0);
+                    //curPos = ocp;
                     std::string str = txt_Range_error1 + std::to_string(minv) + txt_Range_error2 + std::to_string(maxv);
                     messageBox(str.c_str(), mfError | mfOKButton);
                 }

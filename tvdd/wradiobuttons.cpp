@@ -1,7 +1,7 @@
 #include "wradiobuttons.h"
+#include "common.h"
 #include <tvision/tkeys.h>
 
-//const char* const TWrapRadioButtons::name = "TWrapRadioButtons";
 const char* TWrapRadioButtons::button = " ( ) ";
 
 void TWrapRadioButtons::draw()

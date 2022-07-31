@@ -7,6 +7,7 @@
 
 #include <tvision/tv.h>
 #include "wbutton.h"
+#include "common.h"
 
 class TTrialButton : public TWrapButton
 {

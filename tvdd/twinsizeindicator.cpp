@@ -5,9 +5,6 @@
 #include <tvision/tv.h>
 
 #include "twinsizeindicator.h"
-#include "common.h"
-
-//const char * const TWinSizeIndicator::name = "TWinSizeIndicator";
 
 TWinSizeIndicator::TWinSizeIndicator(const TRect &rect) :
 TIndicator(rect)

@@ -2,8 +2,6 @@
 #include <tvision/tkeys.h>
 #define cpStaticText "\x06"
 
-//const char* const TWrapStaticText::name = "TWrapStaticText";
-
 TWrapStaticText::TWrapStaticText(const TRect& bounds, TStringView aText, bool click) noexcept :
 	TView(bounds)
 {

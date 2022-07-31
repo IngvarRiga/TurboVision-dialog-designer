@@ -14,6 +14,7 @@
 #define Uses_TKeys
 #include <tvision/tv.h>
 #include "wradiobuttons.h"
+#include "common.h"
 
 class TTrialRadioButtons : public TWrapRadioButtons
 {

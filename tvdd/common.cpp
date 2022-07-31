@@ -118,7 +118,7 @@ void generateDialogCode(TView* obj, void* res)
     }
     auto cnt = elem.size() - 1;
     //-- cnt - is size_t! для нормальной работы цикла указываем тип int!
-    for (int i = cnt; i > -1; i--)
+    for (int i = (int)cnt; i > -1; i--)
     {
         iter = src->begin();
         src->insert(iter, elem[i]);
@@ -247,8 +247,8 @@ TView* object_fromJSON(nlohmann::json object, bool test)
             {
                 int ax = object[str_pos][str_x];
                 int ay = object[str_pos][str_y];
-                int ax1 = object[str_pos][str_x]; ax1 += object[str_size][str_x];
-                int ay1 = object[str_pos][str_y]; ay1 += object[str_size][str_y];
+                int ax1 = object[str_pos][str_x]; ax1 += (int)object[str_size][str_x];
+                int ay1 = object[str_pos][str_y]; ay1 += (int)object[str_size][str_y];
                 if (test)
                 {
                     auto cmp = new TInputLine(TRect(ax, ay, ax1, ay1), object[str_max_len]);
@@ -267,8 +267,8 @@ TView* object_fromJSON(nlohmann::json object, bool test)
             {
                 int ax = object[str_pos][str_x];
                 int ay = object[str_pos][str_y];
-                int ax1 = object[str_pos][str_x]; ax1 += object[str_size][str_x];
-                int ay1 = object[str_pos][str_y]; ay1 += object[str_size][str_y];
+                int ax1 = object[str_pos][str_x]; ax1 += (int)object[str_size][str_x];
+                int ay1 = object[str_pos][str_y]; ay1 += (int)object[str_size][str_y];
                 tmp = object[str_text];
                 if (test)
                 {
@@ -289,8 +289,8 @@ TView* object_fromJSON(nlohmann::json object, bool test)
             {
                 int ax = object[str_pos][str_x];
                 int ay = object[str_pos][str_y];
-                int ax1 = object[str_pos][str_x]; ax1 += object[str_size][str_x];
-                int ay1 = object[str_pos][str_y]; ay1 += object[str_size][str_y];
+                int ax1 = object[str_pos][str_x]; ax1 += (int)object[str_size][str_x];
+                int ay1 = object[str_pos][str_y]; ay1 += (int)object[str_size][str_y];
                 tmp = object[str_text];
                 if (test)
                 {
@@ -311,8 +311,8 @@ TView* object_fromJSON(nlohmann::json object, bool test)
             {
                 int ax = object[str_pos][str_x];
                 int ay = object[str_pos][str_y];
-                int ax1 = object[str_pos][str_x]; ax1 += object[str_size][str_x];
-                int ay1 = object[str_pos][str_y]; ay1 += object[str_size][str_y];
+                int ax1 = object[str_pos][str_x]; ax1 += (int)object[str_size][str_x];
+                int ay1 = object[str_pos][str_y]; ay1 += (int)object[str_size][str_y];
                 auto cnt = object[str_items].size();
                 tmp = object[str_items][0];
                 auto its = new TSItem(TStringView(tmp.c_str()), nullptr);
@@ -341,8 +341,8 @@ TView* object_fromJSON(nlohmann::json object, bool test)
             {
                 int ax = object[str_pos][str_x];
                 int ay = object[str_pos][str_y];
-                int ax1 = object[str_pos][str_x]; ax1 += object[str_size][str_x];
-                int ay1 = object[str_pos][str_y]; ay1 += object[str_size][str_y];
+                int ax1 = object[str_pos][str_x]; ax1 += (int)object[str_size][str_x];
+                int ay1 = object[str_pos][str_y]; ay1 += (int)object[str_size][str_y];
                 auto cnt = object[str_items].size();
                 tmp = object[str_items][0];
                 auto its = new TSItem(TStringView(tmp.c_str()), nullptr);
@@ -371,8 +371,8 @@ TView* object_fromJSON(nlohmann::json object, bool test)
             {
                 int ax = object[str_pos][str_x];
                 int ay = object[str_pos][str_y];
-                int ax1 = object[str_pos][str_x]; ax1 += object[str_size][str_x];
-                int ay1 = object[str_pos][str_y]; ay1 += object[str_size][str_y];
+                int ax1 = object[str_pos][str_x]; ax1 += (int)object[str_size][str_x];
+                int ay1 = object[str_pos][str_y]; ay1 += (int)object[str_size][str_y];
                 if (test)
                 {
                     auto cmp = new TMemo(TRect(ax, ay, ax1, ay1), nullptr, nullptr, nullptr, 0);
@@ -396,7 +396,7 @@ TView* object_fromJSON(nlohmann::json object, bool test)
         default:
             break;
     }
-
+    return nullptr;
 }
 
 TMenuItem& dialogMenu()

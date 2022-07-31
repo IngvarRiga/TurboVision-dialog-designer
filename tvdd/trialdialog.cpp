@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <sys/stat.h>
 
 #include "trialdialog.h"
 #include "multilang.h"
@@ -18,7 +19,6 @@
 const char* _class_name = "TNewDialog";
 const char* _base_class_name = "TDialog";
 
-const char* const TTrialDialog::name = "TTrialDialog";
 
 TTrialDialog::TTrialDialog(const int width, const int height, TStringView aTitle, bool sizeable) :
     TCustomDialog(width, height, aTitle, sizeable),
@@ -51,11 +51,12 @@ TTrialDialog::TTrialDialog(const int width, const int height, TStringView aTitle
     memcpy(class_name, _class_name, strlen(_class_name) + 1);
     memcpy(base_class_name, _base_class_name, strlen(_base_class_name) + 1);
     prp_Centered = true;
-    wfDef = true;
-    wfClose = false;
-    wfMove = false;
-    wfGrow = false;
-    wfZoom = false;
+    //-- по умолчанию все флаги такие как заданы библиотекой
+    wfDef = false;
+    tr_wfClose = false;
+    tr_wfMove = false;
+    tr_wfGrow = false;
+    tr_wfZoom = false;
     //-- Дополнительное меню в заголовке
     emnu = new TWinExtMenu(TRect(10, size.y - 1, 20, size.y));
     insert(emnu);
@@ -88,10 +89,12 @@ void TTrialDialog::editDialogProperties()
     memcpy(data->dlgCaption, title, strlen(title));
     data->dlgOpt_Centered = prp_Centered;
     data->wfDef = wfDef;
-    data->wfMove = wfMove;
-    data->wfGrow = wfGrow;
-    data->wfClose = wfClose;
-    data->wfZoom = wfZoom;
+    data->wfMove = tr_wfMove;
+    data->wfGrow = tr_wfGrow;
+
+
+    data->wfClose = tr_wfClose;
+    data->wfZoom = tr_wfZoom;
     TDialogProperties* win = new TDialogProperties();
     win->setData(data);
     if (owner->execView(win) == cmOK)
@@ -824,9 +827,9 @@ void TTrialDialog::saveDialogToJSON()
     //-- если диалог был загружен из файла
     if (dlg_loaded)
     {
-        struct _stat buf;
+        struct stat buf;
         errno_t err;
-        auto res = _stat(dlg_file_name, &buf);
+        auto res = stat(dlg_file_name, &buf);
         if (res != 0)
         {
             if (errno == ENOENT)
@@ -868,7 +871,10 @@ void TTrialDialog::SaveDialogAs()
 {
     std::string serialized_string = DialogToJSON().dump(2);
     //-- Диалоговое окно было создано а не загружено - сохраняем его
-    auto fd = new TFileDialog("*.json", txt_dlg_SaveAsCaption, txt_dlg_SaveAsName, fdOKButton, 100);
+    //-- первоначально формируем имя файла из имени класса
+    std::string fn(class_name);
+    fn+=".json";
+    auto fd = new TFileDialog(fn, txt_dlg_SaveAsCaption, txt_dlg_SaveAsName, fdOKButton, 100);
     if (fd != 0 && owner->execView(fd) != cmCancel)
     {
         char fileName[MAXPATH];
@@ -904,11 +910,12 @@ nlohmann::json TTrialDialog::DialogToJSON()
     sav[str_centered] = prp_Centered;
     //-- перечень объектов в окне
     sav[str_wfDef] = wfDef;
-    sav[str_wfClose] = wfClose;
-    sav[str_wfGrow] = wfGrow;
-    sav[str_wfMove] = wfMove;
-    sav[str_wfZoom] = wfZoom;
+    sav[str_wfClose] = tr_wfClose;
+    sav[str_wfGrow] = tr_wfGrow;
+    sav[str_wfMove] = tr_wfMove;
+    sav[str_wfZoom] = tr_wfZoom;
 
+    //-- перечень объектов в окне
     forEach(&generateDialogJSON, &src);
 
     for (int i = src.size() - 1; i > -1; i--)
@@ -953,15 +960,15 @@ void TTrialDialog::GenCode(ofstream* res)
     if (prp_Centered)
         *res << " options |= ofCentered;\n";
     //-- проверяем и прописываем в исходный код флаги окна
-    if (!wfDef)
+    if (wfDef)
     {
-        if (wfMove)
+        if (tr_wfMove)
             *res << " flags |= wfMove;\n";
-        if (wfGrow)
+        if (tr_wfGrow)
             *res << " flags |= wfGrow;\n";
-        if (wfClose)
+        if (tr_wfClose)
             *res << " flags |= wfClose;\n";
-        if (wfZoom)
+        if (tr_wfZoom)
             *res << " flags |= wfZoom;\n";
     }
     forEach(&generateDialogCode, &elem);

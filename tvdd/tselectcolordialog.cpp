@@ -20,7 +20,7 @@ TWindowInit(&TCustomDialog::initFrame)
 
 void TSelectColorDialog::handleEvent(TEvent& event)
 {
-    const char *pref ="0x";
+    const char *pref ="0x ";
     //-- двойной клик на неиспользуемом пространстве - вызов редактора
     if (event.what == evBroadcast)
     {
@@ -31,8 +31,8 @@ void TSelectColorDialog::handleEvent(TEvent& event)
             memset(valp,0x0, StringMaxLen);
             memset(res,0x0, StringMaxLen);
             _itoa(cf->getColor(), valp, 16);
-            strncat(res, pref, strlen(pref));
-            strncat(res,valp, strlen(valp));
+            strncat(res, pref, 2);//strlen(pref));
+            strncat(res, valp, strlen(valp));
             val->setData(res);
         }
         clearEvent(event);

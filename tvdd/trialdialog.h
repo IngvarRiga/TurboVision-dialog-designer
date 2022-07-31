@@ -1,7 +1,5 @@
 #ifndef TRIALDIALOG_H
 #define TRIALDIALOG_H
-#include "common.h"
-
 #include "tcustomdialog.h"
 #include "ttrialdialogbackground.h"
 #include "twinsizeindicator.h"
@@ -38,23 +36,23 @@ public:
 	void SaveDialogAs(); //-- Сохранить диалог как...
 	bool getSaved() { return DialSaved; }
 	void set_wfDef(bool val) { wfDef = val; } //-- все значения по умолчанию
-	void set_wfMove(bool val) { wfMove = val; } //-- перемещаться
-	void set_wfGrow(bool val) { wfGrow = val; } //-- изменять размеры
-	void set_wfClose(bool val) { wfClose = val; } //-- иметь кнопку закрытия
-	void set_wfZoom(bool val) { wfZoom = val; } //-- изменять размеры
+	void set_wfMove(bool val) { tr_wfMove = val; } //-- перемещаться
+	void set_wfGrow(bool val) { tr_wfGrow = val; } //-- изменять размеры
+	void set_wfClose(bool val) { tr_wfClose = val; } //-- иметь кнопку закрытия
+	void set_wfZoom(bool val) { tr_wfZoom = val; } //-- изменять размеры
 
 	void setSaved(bool val = true) { DialSaved = val; }
 	const char * getDialogFileName();
 
 private:
 	bool DialSaved; //-- признак сохранённости диалога
-	bool dlg_loaded; //-- признак того, что  диалог был загружен из файла
+	bool dlg_loaded; //-- признак того, что диалог был загружен из файла
 	//-- окно может...
 	bool wfDef; //-- все значения по умолчанию
-	bool wfMove; //-- перемещаться
-	bool wfGrow; //-- изменять размеры
-	bool wfClose; //-- иметь кнопку закрытия
-	bool wfZoom; //-- изменять размеры
+	bool tr_wfMove; //-- перемещаться
+	bool tr_wfGrow; //-- изменять размеры
+	bool tr_wfClose; //-- иметь кнопку закрытия
+	bool tr_wfZoom; //-- изменять размеры
 
 
 	char dlg_file_name[StringMaxLen]; //-- имя файла диалога (при загрузке устанавливается из имени, при создании в имя класса)

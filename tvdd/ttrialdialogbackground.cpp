@@ -1,9 +1,7 @@
 #include "ttrialdialogbackground.h"
 #include "common.h"
-
 #include <math.h>
 
-//const char* const TTrialDialogBackground::name = "TTrialDialogBackground";
 
 TTrialDialogBackground::TTrialDialogBackground(TRect& Bounds) :
 	TView(Bounds)
