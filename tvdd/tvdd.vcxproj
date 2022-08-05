@@ -242,6 +242,7 @@
     <ClCompile Include="ttrialcheckboxes.cpp" />
     <ClCompile Include="ttrialdialogbackground.cpp" />
     <ClCompile Include="ttrialinputline.cpp" />
+    <ClCompile Include="ttrialinputlong.cpp" />
     <ClCompile Include="ttriallistbox.cpp" />
     <ClCompile Include="ttrialmemo.cpp" />
     <ClCompile Include="ttrialradiobuttons.cpp" />
@@ -281,6 +282,7 @@
     <ClInclude Include="ttrialcheckboxes.h" />
     <ClInclude Include="ttrialdialogbackground.h" />
     <ClInclude Include="ttrialinputline.h" />
+    <ClInclude Include="ttrialinputlong.h" />
     <ClInclude Include="ttriallistbox.h" />
     <ClInclude Include="ttrialmemo.h" />
     <ClInclude Include="ttrialradiobuttons.h" />

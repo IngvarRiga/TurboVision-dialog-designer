@@ -2,6 +2,8 @@
 #include "multilang.h"
 #include "ttrialstatictext.h"
 #include "ttrialinputline.h"
+#include "ttrialinputlong.h"
+#include "textrainput.h"
 #include "ttrialbutton.h"
 #include "ttrialcheckboxes.h"
 #include "ttrialradiobuttons.h"
@@ -13,6 +15,10 @@ nlohmann::json copy_buffer;
 //-- определение перечня строковых констант для чтения/записи JSON объектов
 const char* str_pos = "pos";
 const char* str_size = "size";
+const char* str_values = "values";
+const char* str_values_min = "min";
+const char* str_values_max = "max";
+const char* str_values_def = "def";
 const char* str_x = "x";
 const char* str_y = "y";
 const char* str_type = "type";
@@ -82,6 +88,16 @@ void generateDialogCode(TView* obj, void* res)
         TTrialButton* to = dynamic_cast<TTrialButton*> (obj);
         to->genCode(&ss);
     }
+    if (dynamic_cast<TTrialInputLong*> (obj))
+    {
+        TTrialInputLong* to = dynamic_cast<TTrialInputLong*> (obj);
+        to->genCode(&ss);
+    }
+    //if (dynamic_cast<TTrialInputDouble*> (obj))
+    //{
+    //    TTrialInputDouble* to = dynamic_cast<TTrialInputDouble*> (obj);
+    //    to->genCode(&ss);
+    //}
     if (dynamic_cast<TTrialInputLine*> (obj))
     {
         TTrialInputLine* to = dynamic_cast<TTrialInputLine*> (obj);
@@ -131,6 +147,7 @@ void scanComponentsSize(TView* obj, void* val)
 
     if (dynamic_cast<TTrialStaticText*> (obj))
     {
+        //-- используется одновременно для всех наследников TInputLong / TInputDouble
         TTrialStaticText* to = dynamic_cast<TTrialStaticText*> (obj);
         auto rect = to->getBounds();
         if (rect.b.x > r->b.x)
@@ -220,6 +237,11 @@ void generateDialogJSON(TView* obj, void* _src)
         TTrialCheckBoxes* to = dynamic_cast<TTrialCheckBoxes*> (obj);
         sav->push_back(to->genJSON());
     }
+    if (dynamic_cast<TTrialInputLong*> (obj))
+    {
+        TTrialInputLong* to = dynamic_cast<TTrialInputLong*> (obj);
+        sav->push_back(to->genJSON());
+    }
     //if (dynamic_cast<TTrialListBox*> (obj))
     //{
     //	TTrialListBox* to = dynamic_cast<TTrialListBox*> (obj);
@@ -257,8 +279,36 @@ TView* object_fromJSON(nlohmann::json object, bool test)
                 else
                 {
                     auto cmp = new TTrialInputLine(TRect(ax, ay, ax1, ay1), object[str_max_len]);
+                    cmp->setData((void*)txt_dlg_InputLine);
                     tmp = object[str_var_name];
                     cmp->setVarName(tmp.c_str());
+                    return cmp;
+                }
+                break;
+            }
+        case otInputLong:
+            {
+                int ax = object[str_pos][str_x];
+                int ay = object[str_pos][str_y];
+                int ax1 = object[str_pos][str_x]; ax1 += (int)object[str_size][str_x];
+                int ay1 = object[str_pos][str_y]; ay1 += (int)object[str_size][str_y];
+                long minv = object[str_values][str_values_min]; 
+                long maxv = object[str_values][str_values_max];
+                long defv = object[str_values][str_values_def];
+                if (test)
+                {
+                    auto cmp = new TInputLong(TRect(ax, ay, ax1, ay1), minv, maxv, defv);
+                    return cmp;
+                }
+                else
+                {
+                    auto cmp = new TTrialInputLong(TRect(ax, ay, ax1, ay1), object[str_max_len]);
+                    cmp->setData((void*)txt_dlg_InputLong);
+                    tmp = object[str_var_name];
+                    cmp->setVarName(tmp.c_str());
+                    cmp->setMaxValue(maxv);
+                    cmp->setMinValue(minv);
+                    cmp->setDefValue(defv);
                     return cmp;
                 }
                 break;
@@ -408,6 +458,8 @@ TMenuItem& dialogMenu()
         *new TMenuItem(txt_mnu_StaticText, cm_ed_InsertStaticText, kbNoKey) +
         *new TMenuItem(txt_mnu_Button, cm_ed_InsertButton, kbNoKey) +
         *new TMenuItem(txt_mnu_InputLine, cm_ed_InsertInputLine, kbNoKey) +
+        *new TMenuItem(txt_mnu_InputLong, cm_ed_InsertInputLong, kbNoKey) +
+        *new TMenuItem(txt_mnu_InputDouble, cm_ed_InsertInputDouble, kbNoKey) +
         *new TMenuItem(txt_mnu_RadioButtons, cm_ed_InsertRadioButtons, kbNoKey) +
         *new TMenuItem(txt_mnu_CheckBoxes, cm_ed_InsertCheckBoxes, kbNoKey) +
         *new TMenuItem(txt_mnu_ListBox, cm_ed_InsertListBox, kbNoKey) +

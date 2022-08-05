@@ -22,7 +22,7 @@ private:
     /// </summary>
     long value;
     /// <summary>
-    /// Допустимый диапазон изменени¤ значени¤
+    /// Допустимый диапазон изменений значения
     /// </summary>
     long minv, maxv;
     /// <summary>

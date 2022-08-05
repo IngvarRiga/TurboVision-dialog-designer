@@ -27,6 +27,8 @@
 //-- значение имен классов по умолчанию
 #define txt_TStaticText "TStaticText"
 #define txt_TInputLine "TInputLine"
+#define txt_TInputLong "TInputLong"
+#define txt_TInputDouble "TInputDouble"
 #define txt_TButton "TButton"
 #define txt_TCheckBoxes "TCheckBoxes"
 #define txt_TRadioButtons "TRadioButtons"
@@ -82,6 +84,8 @@ const int cmOption_CheckBoxes = 10205; //-- Вызов окна свойств �
 const int cmOption_RadioButtons = 10206; //-- Вызов окна свойств списка RadioButtons
 const int cmOption_ListBox = 10207; //-- Вызов окна свойств списка ListBox
 const int cmOption_Memo = 10208; //-- Вызов окна свойств TMemo
+const int cmOption_InputLong = 10209; //-- Вызов окна свойств строки ввода Long чисел
+const int cmOption_InputDouble = 10210; //-- Вызов окна свойств строки ввода Long Double чисел
 
 
 const int cmPopupMenu_Dialog = 10301; //-- Вызов контекстного меню диалога
@@ -95,8 +99,10 @@ const int cm_ed_InsertCheckBoxes = 20004; //-- вставка TCheckBoxes
 const int cm_ed_InsertRadioButtons = 20005; //-- вставка TCheckBoxes
 const int cm_ed_InsertListBox = 20006; //-- вставка TListBox
 const int cm_ed_InsertMemo = 20007; //-- вставка TMemo
-const int cm_ed_Copy = 20008; //-- Копировать текущий объект
-const int cm_ed_Paste = 20009; //-- Вставить скопированный объект
+const int cm_ed_InsertInputLong = 20008; //-- вставка TInputLong
+const int cm_ed_InsertInputDouble = 20009; //-- вставка TInputDouble
+const int cm_ed_Copy = 20010; //-- Копировать текущий объект
+const int cm_ed_Paste = 20011; //-- Вставить скопированный объект
 
 
 const int cm_ed_DestroyStaticText = 20201; //-- удаление TStaticText
@@ -106,6 +112,8 @@ const int cm_ed_DestroyCheckBoxes = 20204; //-- удаление TCheckBoxes
 const int cm_ed_DestroyRadioButtons = 20205; //-- удаление TCheckBoxes
 const int cm_ed_DestroyListBox = 20206; //-- удаление TListBox
 const int cm_ed_DestroyMemo = 20207; //-- удаление TMemo
+const int cm_ed_DestroyInputLong = 20208; //-- удаление TInputLong
+const int cm_ed_DestroyInputDouble = 20209; //-- удаление TInputDouble
 
 //-- "бросание компонентов при переносе"
 const int cm_drp_DropStaticText = 20101; //-- вставка TStaticText
@@ -115,6 +123,8 @@ const int cm_drp_DropCheckBoxes = 20104; //-- вставка TCheckBoxes
 const int cm_drp_DropRadioButtons = 20105; //-- вставка TCheckBoxes
 const int cm_drp_DropListBox = 20106; //-- вставка TListBox
 const int cm_drp_DropMemo = 20107; //-- вставка TMemo
+const int cm_drp_DropInputLong = 20108; //-- вставка TInputLong
+const int cm_drp_DropInputDouble = 20109; //-- вставка TInputDouble
 
 //-- Команды "тулбару" на создание компонентов
 const int cm_cmp_BeginDragMode = 30000;
@@ -125,6 +135,8 @@ const int cm_cmp_CreateCheckBoxes = 30004;
 const int cm_cmp_CreateRadioButtons = 30005;
 const int cm_cmp_CreateListBox = 30006;
 const int cm_cmp_CreateMemo = 30007;
+const int cm_cmp_CreateInputLong = 30008;
+const int cm_cmp_CreateInputDouble = 30009;
 
 //-- служебные команды
 const int cm_ColorFieldClicked = 60001; //-- произошел клик по цветовому полю
@@ -175,7 +187,16 @@ enum objType
 	otRadioButton,
 	otCheckBox,
 	otMemo,
-	otListBox
+	otListBox,
+	otInputLong,
+	otInputDouble
+};
+
+enum TLineType
+{
+	lt_InputLine = 0,
+	lt_InputLong,
+	lt_InputDouble
 };
 
 /// <summary>
@@ -186,6 +207,10 @@ extern nlohmann::json copy_buffer;
 
 extern const char* str_pos;
 extern const char* str_size;
+extern const char* str_values;
+extern const char* str_values_min;
+extern const char* str_values_max;
+extern const char* str_values_def;
 extern const char* str_x;
 extern const char* str_y;
 extern const char* str_type;

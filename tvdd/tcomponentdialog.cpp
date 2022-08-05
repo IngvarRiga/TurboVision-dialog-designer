@@ -11,7 +11,7 @@ struct memInfo
 
 
 TComponentDialog::TComponentDialog() :
-	TCustomDialog(TRect(2, 1, 17, 12), txt_dlg_GadgetsPanel, false, false),
+	TCustomDialog(TRect(2, 1, 17, 14), txt_dlg_GadgetsPanel, false, false),
 	TWindowInit(&TCustomDialog::initFrame)
 {
 	//-- удаляем кнопку закрытия окна
@@ -20,20 +20,30 @@ TComponentDialog::TComponentDialog() :
 	insert(new TWrapStaticText(TRect(2, 2, 6, 3), txt_dlg_StaticText, true));
 
 	//-- InputLine
-	auto il = new TWrapInputLine(TRect(8, 2, 13, 3), 11, 0, true);
+	auto il = new TWrapInputLine(TRect(8, 2, 13, 3), 11, 0, lt_InputLine, true);
 	il->setData((void*)txt_dlg_InputLine);
 	insert(il);
+
+	//-- InputLong
+	auto ilong = new TWrapInputLine(TRect(8, 4, 13, 5), 11, 0, lt_InputLong, true);
+	ilong->setData((void*)txt_dlg_InputLong);
+	insert(ilong);
+
+	//-- InputDouble
+	auto idouble = new TWrapInputLine(TRect(8, 6, 13, 7), 11, 0, lt_InputDouble, true);
+	idouble->setData((void*)txt_dlg_InputDouble);
+	insert(idouble);
 
 	//--TButton
 	insert(new TWrapButton(TRect(1, 4, 7, 6), txt_dlg_Buton, -1, bfDefault, true));
 
 	//-- TCheckBoxes
-	auto cb = new TWrapCheckBoxes(TRect(8, 4, 13, 5), new TSItem("", 0), true);
+	auto cb = new TWrapCheckBoxes(TRect(8, 8, 13, 9), new TSItem("", 0), true);
 	cb->press(0);
 	insert(cb);
 
 	//-- TRadioButtons
-	auto rb = new TWrapRadioButtons(TRect(8, 6, 13, 7), new TSItem("", 0), true);
+	auto rb = new TWrapRadioButtons(TRect(8, 10, 13, 11), new TSItem("", 0), true);
 	rb->press(0);
 	insert(rb);
 
@@ -97,7 +107,7 @@ void TComponentDialog::handleEvent(TEvent& event)
 				{
 					//-- очистка события должна быть именно здесь иначе сообщение о Drop  не доходит до диалогового окна
 					clearEvent(event);
-					auto v = new TWrapInputLine(TRect(pt->x, pt->y - 1, pt->x + 10, pt->y), 11, nullptr, false);
+					auto v = new TWrapInputLine(TRect(pt->x, pt->y - 1, pt->x + 10, pt->y), 11, nullptr, lt_InputLine, false);
 					v->setData((void*)txt_dlg_InputLine);
 					v->setDragged();
 					v->options |= ofPreProcess | ofPostProcess;
@@ -106,6 +116,38 @@ void TComponentDialog::handleEvent(TEvent& event)
 					v->drawView();
 					owner->insert(v);
 					message(v, evMouseDown, -1, 0);
+					break;
+				}
+			case cm_cmp_CreateInputLong:
+				{
+					//-- очистка события должна быть именно здесь иначе сообщение о Drop не доходит до диалогового окна
+					clearEvent(event);
+					auto v = new TWrapInputLine(TRect(pt->x, pt->y - 1, pt->x + 10, pt->y), 11, nullptr, lt_InputLong, false);
+					v->setData((void*)txt_dlg_InputLong);
+					v->setDragged();
+					v->options |= ofPreProcess | ofPostProcess;
+					//-- прикручиваем тень к объекту, чтобы он "парил"
+					v->setState(sfShadow, true);
+					v->drawView();
+					owner->insert(v);
+					message(v, evMouseDown, -1, 0);
+					break;
+				}
+			case cm_cmp_CreateInputDouble:
+				{
+					//-- очистка события должна быть именно здесь иначе сообщение о Drop не доходит до диалогового окна
+					clearEvent(event);
+					messageBox(txt_error_Unreleased, mfInformation | mfOKButton);
+
+					//auto v = new TWrapInputLine(TRect(pt->x, pt->y - 1, pt->x + 10, pt->y), 11, nullptr, lt_InputDouble, false);
+					//v->setData((void*)txt_dlg_InputDouble);
+					//v->setDragged();
+					//v->options |= ofPreProcess | ofPostProcess;
+					////-- прикручиваем тень к объекту, чтобы он "парил"
+					//v->setState(sfShadow, true);
+					//v->drawView();
+					//owner->insert(v);
+					//message(v, evMouseDown, -1, 0);
 					break;
 				}
 			case cm_cmp_CreateButton:

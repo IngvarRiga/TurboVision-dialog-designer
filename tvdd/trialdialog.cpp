@@ -6,6 +6,7 @@
 #include "tdialogproperties.h"
 #include "ttrialstatictext.h"
 #include "ttrialinputline.h"
+#include "ttrialinputlong.h"
 #include "ttrialbutton.h"
 #include "ttrialcheckboxes.h"
 #include "ttrialradiobuttons.h"
@@ -378,6 +379,29 @@ void TTrialDialog::handleEvent(TEvent& event)
                     clearEvent(event);
                     break;
                 }
+            case cmOption_InputLong:
+                {
+                    ////-- вызов настройки статического текста
+                    //auto data = new dataTILP();
+                    //strncpy(data->var_name, ((TTrialInputLine*)event.message.infoPtr)->getVarName(), StringMaxLen);
+                    //data->var_len = ((TTrialInputLine*)event.message.infoPtr)->getVarLen();
+
+                    //TInputLineProperties* win = new TInputLineProperties();
+                    //win->setData(data);
+                    //if (owner->execView(win) == cmOK)
+                    //{
+                    //    win->getData(data);
+                    //    ((TTrialInputLine*)event.message.infoPtr)->setVarName(data->var_name);
+                    //    ((TTrialInputLine*)event.message.infoPtr)->setVarLen(data->var_len);
+                    //    drawView();
+                    //    DialSaved = false;
+                    //}
+                    //delete data;
+                    //destroy(win);
+                    clearEvent(event);
+                    messageBox(txt_error_Unreleased, mfInformation | mfOKButton);
+                    break;
+                }
             case cmOption_ListBox:
                 {
                     //-- вызов настройки
@@ -544,6 +568,7 @@ void TTrialDialog::handleEvent(TEvent& event)
                     auto lc = makeLocal(tmp);
                     //-- добавление нового TInputLine
                     auto v = new TTrialInputLine(TRect(lc.x, lc.y, lc.x + 12, lc.y + 1), 255);
+                    v->setData((void*)txt_dlg_InputLine);
                     forEach(&unselected, 0);
                     v->setSelected(true);
                     insert(v);
@@ -562,8 +587,50 @@ void TTrialDialog::handleEvent(TEvent& event)
                     if ((lc.x >= 1) && (lc.y >= 1) && (lc.x < b.b.x - 1) && (lc.y < b.b.y - 1))
                     {
                         clearEvent(event);
-                        //-- добавление нового TStaticText
+                        //-- добавление нового TInputLine
                         auto v = new TTrialInputLine(TRect(lc.x, lc.y, lc.x + 12, lc.y + 1), 255);
+                        v->setData((void*)txt_dlg_InputLine);
+                        forEach(&unselected, 0);
+                        v->setSelected(true);
+                        insert(v);
+                        DialSaved = false;
+                        this->focus();
+                    }
+                    break;
+                }
+            case cm_ed_InsertInputLong:
+                {
+                    TPoint tmp;
+                    tmp.x = ((TPoint*)event.message.infoPtr)->x;
+                    tmp.y = ((TPoint*)event.message.infoPtr)->y;
+                    clearEvent(event);
+                    auto lc = makeLocal(tmp);
+                    //-- добавление нового TInputLine
+                    auto v = new TTrialInputLong(TRect(lc.x, lc.y, lc.x + 12, lc.y + 1), 255);
+                    v->setData((void*)txt_dlg_InputLong);
+                    forEach(&unselected, 0);
+                    v->setSelected(true);
+                    insert(v);
+                    DialSaved = false;
+                    break;
+                }
+            case cm_drp_DropInputLong:
+                {
+                    //-- для упрощения кода в режиме дизайна используется клон TInputLine
+
+                    TPoint tmp;
+                    tmp.x = ((TPoint*)event.message.infoPtr)->x;
+                    tmp.y = ((TPoint*)event.message.infoPtr)->y;
+                    auto lc = makeLocal(tmp);
+                    auto b = getExtent();
+                    //-- если Drop происходит ВНЕ границ окна - просто игнорируем событие и все
+                    //-- чтобы не вставлять то, что не увидится
+                    if ((lc.x >= 1) && (lc.y >= 1) && (lc.x < b.b.x - 1) && (lc.y < b.b.y - 1))
+                    {
+                        clearEvent(event);
+                        //-- добавление нового TInputLong
+                        auto v = new TTrialInputLong(TRect(lc.x, lc.y, lc.x + 12, lc.y + 1), 255);
+                        v->setData((void*)txt_dlg_InputLong);
                         forEach(&unselected, 0);
                         v->setSelected(true);
                         insert(v);
@@ -925,6 +992,9 @@ nlohmann::json TTrialDialog::DialogToJSON()
 
 void TTrialDialog::saveDialogToSrc()
 {
+    //std::string fn(class_name);
+    //fn += "*.src";
+
     auto fd = new TFileDialog("*.src", txt_dlg_SaveCodeAsCaption, txt_dlg_SaveAsName, fdOKButton, 100);
 
     if (fd != 0 && owner->execView(fd) != cmCancel)

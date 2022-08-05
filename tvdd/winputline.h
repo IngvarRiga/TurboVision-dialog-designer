@@ -18,13 +18,13 @@
 #define Uses_TValidator
 #define Uses_TText
 #include <tvision/tv.h>
-
+#include "common.h"
 
 class TWrapInputLine : public TView
 {
   public:
 
-    TWrapInputLine(const TRect& bounds, uint aMaxLen, TValidator *aValid = 0, bool click = false) noexcept;
+    TWrapInputLine(const TRect& bounds, uint aMaxLen, TValidator *aValid = 0, TLineType type=lt_InputLine, bool click = false) noexcept;
     ~TWrapInputLine();
 
     virtual ushort dataSize();
@@ -57,7 +57,7 @@ class TWrapInputLine : public TView
     int firstPos;
     int selStart;
     int selEnd;
-
+    TLineType edType;
   private:
 
     Boolean canScroll(int delta);

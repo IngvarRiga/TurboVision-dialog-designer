@@ -17,7 +17,7 @@ const int CONTROL_Y = 25;
 
 #define cpInputLine "\x13\x13\x14\x15"
 
-TWrapInputLine::TWrapInputLine(const TRect& bounds, uint aMaxLen, TValidator *aValid, bool click) noexcept :
+TWrapInputLine::TWrapInputLine(const TRect& bounds, uint aMaxLen, TValidator *aValid, TLineType type, bool click) noexcept :
 TView(bounds),
 data(new char[aMaxLen]),
 maxLen(aMaxLen - 1),
@@ -28,6 +28,7 @@ selEnd(0),
 validator(aValid),
 oldData(new char[aMaxLen])
 {
+    edType = type;
     eventMask = 0xFF; //-- установлен флаг получения ВСЕХ сообщений от мыши
     state |= sfCursorVis;
     options |= ofSelectable | ofFirstClick;
@@ -260,7 +261,21 @@ void TWrapInputLine::handleEvent(TEvent& event)
                 //-- берем координаты клика мышкой в глобальных координатах
                 auto pt = event.mouse.where;
                 //-- обязательно отсылаем ссылку на редактируемый компонент
-                message(owner, evBroadcast, cm_cmp_CreateInputLine, &pt);
+                //-- отсылаем сообщение в зависимости от типа компонента
+                switch (edType)
+                {
+                    case lt_InputLine:
+                        message(owner, evBroadcast, cm_cmp_CreateInputLine, &pt);
+                        break;
+                    case lt_InputLong:
+                        message(owner, evBroadcast, cm_cmp_CreateInputLong, &pt);
+                        break;
+                    case lt_InputDouble:
+                        message(owner, evBroadcast, cm_cmp_CreateInputDouble, &pt);
+                        break;
+                    default:
+                        break;
+                }
                 clearEvent(event);
             }
         }
@@ -287,7 +302,20 @@ void TWrapInputLine::handleEvent(TEvent& event)
 
                 TEvent evDrop;
                 evDrop.what = evBroadcast;
-                evDrop.message.command = cm_drp_DropInputLine;
+                switch (edType)
+                {
+                    case lt_InputLine:
+                        evDrop.message.command = cm_drp_DropInputLine;
+                        break;
+                    case lt_InputLong:
+                        evDrop.message.command = cm_drp_DropInputLong;
+                        break;
+                    case lt_InputDouble:
+                        evDrop.message.command = cm_drp_DropInputDouble;
+                        break;
+                    default:
+                        break;
+                }
                 TPoint *pt = new TPoint();
                 pt->x = event.mouse.where.x;
                 pt->y = event.mouse.where.y;

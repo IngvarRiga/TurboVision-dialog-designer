@@ -138,18 +138,11 @@ void  TInputLong::handleEvent(TEvent& event)
                 {
                     TInputLine::handleEvent(event);//-- обрабатываем событие ввода данных
                     value = vl;
-                    ocp = curPos;
-                    //setValue(vl);
-                    selectAll(false);
+                    ocp = curPos+1;
                     setCursor(ocp,0);
-                    //drawView();
                 }
                 else
                 {
-                    //setValue(vl_old);
-                    //selectAll(false);
-                    //setCursor(ocp + 1, 0);
-                    //curPos = ocp;
                     std::string str = txt_Range_error1 + std::to_string(minv) + txt_Range_error2 + std::to_string(maxv);
                     messageBox(str.c_str(), mfError | mfOKButton);
                 }

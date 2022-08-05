@@ -29,8 +29,8 @@ include_directories(tvdd/include/tvision)
 
 add_executable(tvdd ${PROJECT_SOURCES})
 target_link_libraries(tvdd PUBLIC tvision)
-target_compile_options(${PROJECT_NAME} PRIVATE -fdata-sections -ffunction-sections)
-target_link_options(${PROJECT_NAME} PUBLIC -Wl,--gc-sections)
+#target_compile_options(${PROJECT_NAME} PRIVATE -fdata-sections -ffunction-sections)
+#target_link_options(${PROJECT_NAME} PUBLIC -Wl,--gc-sections)
 
 # if (WIN32)
     # #сборка под Windows

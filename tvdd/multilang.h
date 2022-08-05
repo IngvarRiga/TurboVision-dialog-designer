@@ -21,6 +21,8 @@
 #define txt_mnu_StaticText "Статический текст"
 #define txt_mnu_Button "Кнопка"
 #define txt_mnu_InputLine "Строка ввода"
+#define txt_mnu_InputLong "Строка ввода long integer"
+#define txt_mnu_InputDouble "Строка ввода long double"
 #define txt_mnu_CheckBoxes "Check Box - список"
 #define txt_mnu_RadioButtons "Radio Buttons - список"
 #define txt_mnu_ListBox "ListBox"
@@ -94,10 +96,13 @@
 #define txt_dlg_GadgetsPanel "D&D"
 #define txt_dlg_StaticText "Text"
 #define txt_dlg_InputLine "ABC"
+#define txt_dlg_InputLong "123"
+#define txt_dlg_InputDouble "1.2"
 #define txt_dlg_Buton "OK"
 
 //-- Сообщения об ошибках
-#define txt_error_NotJSON "Ошибка чтения JSON-файла, возможно он содержит ошибки в структуре?"
+#define txt_error_NotJSON "\003Ошибка чтения JSON-файла, возможно он содержит ошибки в структуре?"
+#define txt_error_Unreleased "\003Данная функция всё ещё не реализована. :("
 
 #endif
 
@@ -120,6 +125,8 @@
 #define txt_mnu_StaticText "Static text"
 #define txt_mnu_Button "Button"
 #define txt_mnu_InputLine "Input line"
+#define txt_mnu_InputLong "Input long integer"
+#define txt_mnu_InputDouble "Input long double"
 #define txt_mnu_CheckBoxes "Check Boxes"
 #define txt_mnu_RadioButtons "Radio Buttons"
 #define txt_mnu_ListBox "ListBox"
@@ -195,6 +202,7 @@
 #define txt_dlg_Buton "~O~K"
 
 #define txt_error_NotJSON "Error reading JSON, probably consist structure errors?"
+#define txt_error_Unreleased "\003Unreleased. :("
 
 #endif
 

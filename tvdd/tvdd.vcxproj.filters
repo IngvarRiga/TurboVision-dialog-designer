@@ -165,6 +165,9 @@
     <ClCompile Include="tcustomwindow.cpp">
       <Filter>Исходные файлы\Базовые классы</Filter>
     </ClCompile>
+    <ClCompile Include="ttrialinputlong.cpp">
+      <Filter>Исходные файлы\Классы дизайнера</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -277,6 +280,9 @@
     </ClInclude>
     <ClInclude Include="input.h">
       <Filter>Файлы заголовков\TVExtra</Filter>
+    </ClInclude>
+    <ClInclude Include="ttrialinputlong.h">
+      <Filter>Файлы заголовков\Классы дизайнера</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
