@@ -1,7 +1,9 @@
 #include "textrainput.h"
-//#include <strstream>
 #include <string>
 using namespace std;
+
+const int ev_FocusChanged = 1000001; //-- событие смены фокуса
+
 
 TInputLong::TInputLong(const TRect& bounds, long MinValue, long MaxValue, long DefValue) :
     TInputLine(bounds, 12)
@@ -23,8 +25,7 @@ TInputLong::TInputLong(const TRect& bounds, long MinValue, long MaxValue, long D
         value = DefValue;
     else
     {
-        std::string str = txt_Range_error3 + std::to_string(minv) + txt_Range_error2 + std::to_string(maxv);
-        messageBox(str.c_str(), mfError | mfOKButton);
+        ShowError();
         if (CheckValue(0))
             value = DefValue;
         else
@@ -32,6 +33,12 @@ TInputLong::TInputLong(const TRect& bounds, long MinValue, long MaxValue, long D
             value = (maxv + minv) / 2L;
     }
     TInputLine::setData((void*)to_string(value).c_str());
+}
+
+void TInputLong::ShowError()
+{
+    std::string str = txt_Range_error3 + std::to_string(minv) + txt_Range_error2 + std::to_string(maxv);
+    messageBox(str.c_str(), mfError | mfOKButton);
 }
 
 bool TInputLong::CheckValue(long val)
@@ -76,10 +83,10 @@ void  TInputLong::handleEvent(TEvent& event)
     long vl = 0;
     long vl_old = 0;
     int ocp = 0;
-    char tmp[100];
+    char tmp[12]; //-- 12 символов максимальная длина  целого со знаком '-'
     char* pt;
-    memset(tmp, 0x0, 100);
-
+    bool res = false;
+    memset(tmp, 0x0, 12);
     if (event.what == evKeyDown)
     {
         switch (event.keyDown.keyCode)
@@ -89,14 +96,21 @@ void  TInputLong::handleEvent(TEvent& event)
             case kbRight:
             case kbCtrlRight:
             case kbCtrlLeft:
+            case kbEnd:
+            case kbHome:
+            case kbTab:
+            case kbShiftTab:
+            case kbCtrlTab:
+            case kbAltTab:
                 TInputLine::handleEvent(event);
                 clearEvent(event);
                 break;
             case kbDel:
             case kbCtrlDel:
             case kbShiftDel:
-            case kbCtrlBack:
             case kbAltDel:
+
+            case kbCtrlBack:
             case kbAltBack:
             case kbBack:
                 TInputLine::handleEvent(event);
@@ -127,44 +141,60 @@ void  TInputLong::handleEvent(TEvent& event)
             case 55:
             case 56:
             case 57:
-                ocp = curPos; //-- старая позиция курсора
-                vl_old = value;
+                {
+                    if (selStart == selEnd)
+                    {
+                        ocp = curPos; //-- старая позиция курсора
+                        vl_old = value;
 
-                TInputLine::getData(tmp);
-                vals = tmp;
-                vals.insert(curPos, 1, char(event.keyDown.charScan.charCode));
-                convertl(vals.c_str(), &vl);
-                if (CheckValue(vl))
-                {
-                    TInputLine::handleEvent(event);//-- обрабатываем событие ввода данных
-                    value = vl;
-                    ocp = curPos+1;
-                    setCursor(ocp,0);
+                        TInputLine::getData(tmp);
+                        vals = tmp;
+                        vals.insert(curPos, 1, char(event.keyDown.charScan.charCode));
+                        res = convertl(vals.c_str(), &vl);
+                        if (res && CheckValue(vl))
+                        {
+                            TInputLine::handleEvent(event);//-- обрабатываем событие ввода данных
+                            value = vl;
+                            ocp = curPos + 1;
+                            setCursor(ocp, 0);
+                        }
+                        else
+                            ShowError();
+                    }
+                    else
+                    {
+                        TInputLine::handleEvent(event);
+                    }
+                    clearEvent(event);
+                    break;
                 }
-                else
-                {
-                    std::string str = txt_Range_error1 + std::to_string(minv) + txt_Range_error2 + std::to_string(maxv);
-                    messageBox(str.c_str(), mfError | mfOKButton);
-                }
-                clearEvent(event);
-                break;
             case 43:
                 //-- "+" 
                 if (value < 0)
                 {
-                    ocp = curPos;
-                    long tm = fabsl(value);
-                    if (CheckValue(tm))
+                    //-- берём текстовые данные
+                    memset(tmp, 0x0, 12); //-- очистка
+                    TInputLine::getData(tmp);
+                    vals = tmp;
+                    //-- если предыдущее значение отрицательное - убираем '-'
+                    vals = vals.substr(1, vals.length());
+                    //-- пытаемся конвертировать получившийся результат в число
+                    res = convertl(vals.c_str(), &vl);
+                    //-- невозможность конвертации числа может быть обусловлена тем, что результат превышает максимальное / минимальное
+                    //-- допустимое значение для данного типа LONG_MAX / LONG_MIN
+                    if (res)
                     {
-                        setValue(tm);
-                        selectAll(false);
-                        setCursor(ocp, 0);
-                        curPos = ocp - 1;
-                    }
-                    else
-                    {
-                        std::string str = txt_Range_error1 + std::to_string(minv) + txt_Range_error2 + std::to_string(maxv);
-                        messageBox(str.c_str(), mfError | mfOKButton);
+                        ocp = curPos;
+                        long tm = fabsl(value);
+                        if (CheckValue(tm))
+                        {
+                            setValue(tm);
+                            selectAll(false);
+                            setCursor(ocp, 0);
+                            curPos = ocp - 1;
+                        }
+                        else
+                            ShowError();
                     }
                 }
                 clearEvent(event);
@@ -172,29 +202,50 @@ void  TInputLong::handleEvent(TEvent& event)
             case 45:
                 //-- "-"
                 {
-                    ocp = curPos;
-                    long tm = -value;
-                    if (CheckValue(tm))
+                    //-- берём текстовые данные
+                    memset(tmp, 0x0, 12); //-- очистка
+                    TInputLine::getData(tmp);
+                    vals = tmp;
+                    if (vals == "0")
                     {
-                        setValue(tm);
-                        selectAll(false);
-                        if (value > 0)
+                        //TInputLine::handleEvent(event);
+                        return;
+                    }
+                    if (value > 0)
+                        //-- если предыдущее значение положительно - добавляем '-'
+                        vals.insert(0, 1, '-');
+                    else
+                        //-- если предыдущее значение отрицательное - убираем -
+                        vals = vals.substr(1, vals.length());
+                    //-- пытаемся конвертировать получившийся результат в число
+                    res = convertl(vals.c_str(), &vl);
+                    //-- невозможность конвертации числа может быть обусловлена тем, что результат превышает максимальное / минимальное
+                    //-- допустимое значение для данного типа LONG_MAX / LONG_MIN
+                    if (res)
+                    {
+                        ocp = curPos; //-- сохраняем позицию курсора
+                        //-- если успешно....
+                        long tm = -value; //-- проверяем на не превышение заданных пользователем ограничений
+                        if (CheckValue(tm))
                         {
-                            setCursor(ocp, 0);
-                            curPos = ocp - 1;
+                            setValue(tm);
+                            selectAll(false);
+                            if (value > 0)
+                            {
+                                setCursor(ocp, 0);
+                                curPos = ocp - 1;
+                            }
+                            if (value < 0)
+                            {
+                                setCursor(ocp + 2, 0);
+                                curPos = ocp + 1;
+                            }
                         }
-                        if (value < 0)
-                        {
-                            ocp += 1;
-                            setCursor(ocp + 1, 0);
-                            curPos = ocp;
-                        }
+                        else
+                            ShowError();
                     }
                     else
-                    {
-                        std::string str = txt_Range_error1 + std::to_string(minv) + txt_Range_error2 + std::to_string(maxv);
-                        messageBox(str.c_str(), mfError | mfOKButton);
-                    }
+                        ShowError();
                 }
                 clearEvent(event);
                 break;
@@ -206,3 +257,15 @@ void  TInputLong::handleEvent(TEvent& event)
     TInputLine::handleEvent(event);
 }
 
+void TInputLong::setState(ushort aState, Boolean enable)
+{
+    char tmp[12]; //-- 12 символов максимальная длина  целого со знаком '-'
+    memset(tmp, 0x0, 12);
+    if (!enable)
+    {
+        //-- потеря фокуса ввода
+        getData(tmp);
+        int stop = 0;
+    }
+    TInputLine::setState(aState, enable);
+}

@@ -35,7 +35,7 @@ void TTrialInputLine::handleEvent(TEvent& event)
                 //-- создание контекстного меню диалога
                 TMenuBox* contextMenu = new TMenuBox(TRect(0, 0, 0, 0),
                                                      new TMenu(
-                                                         *new TMenuItem(txt_PropertyInputLIne, cmOption_InputLine, -1, hcNoContext) +
+                                                         *new TMenuItem(txt_PropertyInputLine, cmOption_InputLine, -1, hcNoContext) +
                                                          newLine() +
                                                          *new TMenuItem(txt_mnu_cmDelete, cm_ed_DestroyInputLine, kbCtrlDel, hcNoContext) +
                                                          newLine() +

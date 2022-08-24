@@ -2,7 +2,7 @@
 #include "multilang.h"
 
 TInputLineProperties::TInputLineProperties() :
-TCustomDialog(37, 8, txt_PropertyInputLIne),
+TCustomDialog(37, 8, txt_PropertyInputLine),
 TWindowInit(&TDialog::initFrame)
 {
     insert(new TStaticText(TRect(2, 2, 16, 3), txt_pd_StringLen));
@@ -13,9 +13,7 @@ TWindowInit(&TDialog::initFrame)
     insert(var_name);
     insert(new TButton(TRect(25, 5, 35, 7), txt_btnOk, cmOK, bfDefault));
     insert(new TButton(TRect(15, 5, 25, 7), txt_btnCancel, cmCancel, bfDefault));
-
     selectNext(False);
-
 }
 
 
@@ -46,7 +44,6 @@ dataTILP::dataTILP()
     //-- очистка строковых массивов
     memset(var_name, 0x0, StringMaxLen);
     var_len = 255;
-
 }
 
 

@@ -168,6 +168,12 @@
     <ClCompile Include="ttrialinputlong.cpp">
       <Filter>Исходные файлы\Классы дизайнера</Filter>
     </ClCompile>
+    <ClCompile Include="tinputlongproperties.cpp">
+      <Filter>Исходные файлы\Редакторы свойств</Filter>
+    </ClCompile>
+    <ClCompile Include="textinputline.cpp">
+      <Filter>Исходные файлы\TVExtra</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -283,6 +289,9 @@
     </ClInclude>
     <ClInclude Include="ttrialinputlong.h">
       <Filter>Файлы заголовков\Классы дизайнера</Filter>
+    </ClInclude>
+    <ClInclude Include="tinputlongproperties.h">
+      <Filter>Файлы заголовков\Редакторы свойств</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

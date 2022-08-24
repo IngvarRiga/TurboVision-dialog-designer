@@ -14,6 +14,7 @@
 #include "ttrialmemo.h"
 #include "tstatictextproperties.h"
 #include "tinputlineproperties.h"
+#include "tinputlongproperties.h"
 #include "tbuttonproperties.h"
 #include "tcheckboxesproperties.h"
 
@@ -381,25 +382,29 @@ void TTrialDialog::handleEvent(TEvent& event)
                 }
             case cmOption_InputLong:
                 {
-                    ////-- вызов настройки статического текста
-                    //auto data = new dataTILP();
-                    //strncpy(data->var_name, ((TTrialInputLine*)event.message.infoPtr)->getVarName(), StringMaxLen);
-                    //data->var_len = ((TTrialInputLine*)event.message.infoPtr)->getVarLen();
+                    //-- вызов настройки статического текста
+                    auto data = new dataTInputLong();
+                    auto ed_ptr = ((TTrialInputLong*)event.message.infoPtr);
+                    strncpy(data->var_name, ed_ptr->getVarName(), StringMaxLen);
+                    data->minv = ed_ptr->getMinValue();
+                    data->maxv = ed_ptr->getMaxValue();
+                    data->defv = ed_ptr->getDefValue();
 
-                    //TInputLineProperties* win = new TInputLineProperties();
-                    //win->setData(data);
-                    //if (owner->execView(win) == cmOK)
-                    //{
-                    //    win->getData(data);
-                    //    ((TTrialInputLine*)event.message.infoPtr)->setVarName(data->var_name);
-                    //    ((TTrialInputLine*)event.message.infoPtr)->setVarLen(data->var_len);
-                    //    drawView();
-                    //    DialSaved = false;
-                    //}
-                    //delete data;
-                    //destroy(win);
+                    auto win = new TInputLongProperties();
+                    win->setData(data);
+                    if (owner->execView(win) == cmOK)
+                    {
+                        win->getData(data);
+                        ed_ptr->setVarName(data->var_name);
+                        ed_ptr->setMinValue(data->minv);
+                        ed_ptr->setMaxValue(data->maxv);
+                        ed_ptr->setDefValue(data->defv);
+                        drawView();
+                        DialSaved = false;
+                    }
+                    delete data;
+                    destroy(win);
                     clearEvent(event);
-                    messageBox(txt_error_Unreleased, mfInformation | mfOKButton);
                     break;
                 }
             case cmOption_ListBox:
