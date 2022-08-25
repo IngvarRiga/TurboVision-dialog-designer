@@ -307,7 +307,7 @@ TDialog* TPrg::AboutDialog()
 /// <returns></returns>
 TDialog* TPrg::TestDialog()
 {
-    TCustomDialog* dlg = new TCustomDialog(49, 11, winAboutCapt);
+    TCustomDialog* dlg = new TCustomDialog(49, 11, "Integer test");
     if (!dlg) return 0;
     dlg->insert(new TInputLong(TRect(3, 2, 47, 3), -33, 445, 0));
     dlg->insert(new TInputLong(TRect(3, 4, 47, 5), -33, 44, 0));

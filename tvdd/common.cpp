@@ -141,6 +141,75 @@ void generateDialogCode(TView* obj, void* res)
     }
 }
 
+void generateDialogHeader(TView* obj, void* res)
+{
+    const char* tab = "    ";
+    std::vector<std::string>* src = (std::vector<std::string>*) res;
+    std::stringstream ss;
+
+    //if (dynamic_cast<TTrialStaticText*> (obj))
+    //{
+    //    TTrialStaticText* to = dynamic_cast<TTrialStaticText*> (obj);
+    //    to->genCode(&ss);
+    //}
+    //if (dynamic_cast<TTrialButton*> (obj))
+    //{
+    //    TTrialButton* to = dynamic_cast<TTrialButton*> (obj);
+    //    to->genCode(&ss);
+    //}
+    if (dynamic_cast<TTrialInputLong*> (obj))
+    {
+        TTrialInputLong* to = dynamic_cast<TTrialInputLong*> (obj);
+        ss << tab << to->getClassName() << "* " << to->getVarName() << ";";
+    }
+    //if (dynamic_cast<TTrialInputDouble*> (obj))
+    //{
+    //    TTrialInputDouble* to = dynamic_cast<TTrialInputDouble*> (obj);
+    //    to->genCode(&ss);
+    //}
+    if (dynamic_cast<TTrialInputLine*> (obj))
+    {
+        TTrialInputLine* to = dynamic_cast<TTrialInputLine*> (obj);
+        ss << tab << to->getClassName() << "* " << to->getVarName() << ";";
+    }
+    if (dynamic_cast<TTrialCheckBoxes*> (obj))
+    {
+        TTrialCheckBoxes* to = dynamic_cast<TTrialCheckBoxes*> (obj);
+        ss << tab << to->getClassName() << "* " << to->getVarName() << ";";
+    }
+    if (dynamic_cast<TTrialListBox*> (obj))
+    {
+    //    TTrialListBox* to = dynamic_cast<TTrialListBox*> (obj);
+//        ss << tab << to->getClassName() << "* " << to->getVarName() << ";";
+    }
+    if (dynamic_cast<TTrialRadioButtons*> (obj))
+    {
+        TTrialRadioButtons* to = dynamic_cast<TTrialRadioButtons*> (obj);
+        ss << tab << to->getClassName() << "* " << to->getVarName() << ";";
+    }
+    if (dynamic_cast<TTrialMemo*> (obj))
+    {
+        TTrialMemo* to = dynamic_cast<TTrialMemo*> (obj);
+        ss << tab << to->getClassName() << "* " << to->getVarName() << ";";
+    }
+
+    std::vector<std::string> elem;
+    std::vector<std::string>::iterator iter;
+    std::string it;
+    while (std::getline(ss, it))
+    {
+        if (it.length() > 0)
+            elem.push_back(it);
+    }
+    auto cnt = elem.size() - 1;
+    //-- cnt - is size_t! для нормальной работы цикла указываем тип int!
+    for (int i = (int)cnt; i > -1; i--)
+    {
+        iter = src->begin();
+        src->insert(iter, elem[i]);
+    }
+}
+
 void scanComponentsSize(TView* obj, void* val)
 {
     TRect* r = (TRect*)val;

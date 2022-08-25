@@ -1025,8 +1025,37 @@ bool TTrialDialog::valid(ushort command)
 
 void TTrialDialog::GenCode(ofstream* res)
 {
+    const char* tab = "    ";
     std::vector<std::string> elem;
     auto r = getBounds();
+    //-- генерируем заголовок для кода
+    *res << "#ifndef " << class_name << "_H\n";
+    *res << "#define " << class_name << "_H\n";
+    *res << "#define Uses_TDialog\n";
+    *res << "#define Uses_TEvent\n";
+    *res << "#define Uses_TInputLine\n";
+    *res << "#define Uses_TRadioButtons\n";
+    *res << "#define Uses_TCheckBoxes\n";
+    *res << "#define Uses_TSItems\n";
+    *res << "#define Uses_TButton\n";
+    *res << "#define Uses_TStaticText\n\n";
+
+    *res << "#include <tvision/tv.h>\n\n";
+
+    *res << "class " << class_name << " : public " << base_class_name << "\n{\n  public:\n";
+    *res << tab << class_name << "( const TRect& bounds, TStringView aTitle ) noexcept;\n";
+    *res << tab << "virtual ~" << class_name << "() {}\n\n";
+    *res << tab << "virtual void setData(void* Data);\n";
+    *res << tab << "virtual void* Data getData();\n";
+    *res << tab << "virtual void handleEvent(TEvent & event);\n\n";
+
+    forEach(&generateDialogHeader, &elem);
+    for (int i = 0; i < elem.size(); i++)
+        *res << elem[i] << "\n";
+    elem.clear();
+    *res << "};\n\n#endif /*" << class_name << "_H*/\n\n";
+
+    *res << "<<< ------------- CUT HERE ------------- >>>\n\n";
     //-- генерируем код
     *res << class_name << "::" << class_name << "() :\n ";
     *res << base_class_name << "(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), \"" << title << "\"),\n";

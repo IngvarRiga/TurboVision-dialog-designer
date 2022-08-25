@@ -158,6 +158,12 @@ void unselected(TView* obj, void*);
 /// <param name="val"></param>
 void generateDialogCode(TView* obj, void* val);
 /// <summary>
+/// Генерировать исходный код для диалога
+/// </summary>
+/// <param name="obj"></param>
+/// <param name="val"></param>
+void generateDialogHeader(TView* obj, void* val);
+/// <summary>
 /// Генерировать JSON для диалога 
 /// </summary>
 /// <param name="obj"></param>
