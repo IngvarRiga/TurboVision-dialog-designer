@@ -158,11 +158,17 @@ void unselected(TView* obj, void*);
 /// <param name="val"></param>
 void generateDialogCode(TView* obj, void* val);
 /// <summary>
-/// Генерировать исходный код для диалога
+/// Генерировать исходный код для диалога в части перечисления всех переменных для заголовочной части
 /// </summary>
 /// <param name="obj"></param>
 /// <param name="val"></param>
 void generateDialogHeader(TView* obj, void* val);
+/// <summary>
+/// Генерировать исходный код для диалога в части директив "Uses_" TurboVision
+/// </summary>
+/// <param name="obj"></param>
+/// <param name="val"></param>
+void generateDialogUses(TView* obj, void* val);
 /// <summary>
 /// Генерировать JSON для диалога 
 /// </summary>

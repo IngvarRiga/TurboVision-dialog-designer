@@ -210,6 +210,70 @@ void generateDialogHeader(TView* obj, void* res)
     }
 }
 
+void generateDialogUses(TView* obj, void* res)
+{
+    std::vector<std::string>* src = (std::vector<std::string>*) res;
+    std::stringstream ss;
+    std::string tmp;
+
+    if (dynamic_cast<TTrialStaticText*> (obj))
+    {
+        tmp = "#define Uses_TStaticText";
+        if (std::find(src->begin(), src->end(), tmp) == src->end())
+            src->push_back(tmp);
+    }
+    if (dynamic_cast<TTrialButton*> (obj))
+    {
+        tmp = "#define Uses_TButton";
+        if (std::find(src->begin(), src->end(), tmp) == src->end())
+            src->push_back(tmp);
+    }
+    //if (dynamic_cast<TTrialInputLong*> (obj))
+    //{
+    //}
+    //if (dynamic_cast<TTrialInputDouble*> (obj))
+    //{
+    //    TTrialInputDouble* to = dynamic_cast<TTrialInputDouble*> (obj);
+    //    to->genCode(&ss);
+    //}
+    if (dynamic_cast<TTrialInputLine*> (obj))
+    {
+        tmp = "#define Uses_TInputLine";
+        if (std::find(src->begin(), src->end(), tmp) == src->end())
+            src->push_back(tmp);
+    }
+    if (dynamic_cast<TTrialCheckBoxes*> (obj))
+    {
+        tmp = "#define Uses_TCheckBoxes";
+        if (std::find(src->begin(), src->end(), tmp) == src->end())
+            src->push_back(tmp);
+        tmp = "#define Uses_TSItems";
+        if (std::find(src->begin(), src->end(), tmp) == src->end())
+            src->push_back(tmp);
+    }
+    if (dynamic_cast<TTrialListBox*> (obj))
+    {
+        tmp = "#define Uses_TListBox";
+        if (std::find(src->begin(), src->end(), tmp) == src->end())
+            src->push_back(tmp);
+    }
+    if (dynamic_cast<TTrialRadioButtons*> (obj))
+    {
+        tmp = "#define Uses_TRadioButtons";
+        if (std::find(src->begin(), src->end(), tmp) == src->end())
+            src->push_back(tmp);
+        tmp = "#define Uses_TSItems";
+        if (std::find(src->begin(), src->end(), tmp) == src->end())
+            src->push_back(tmp);
+    }
+    if (dynamic_cast<TTrialMemo*> (obj))
+    {
+        tmp = "#define Uses_TMemo";
+        if (std::find(src->begin(), src->end(), tmp) == src->end())
+            src->push_back(tmp);
+    }
+}
+
 void scanComponentsSize(TView* obj, void* val)
 {
     TRect* r = (TRect*)val;

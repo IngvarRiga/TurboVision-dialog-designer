@@ -40,7 +40,7 @@ TTrialDialog::TTrialDialog(const int width, const int height, TStringView aTitle
     //----- ШТРИХОВКА ----------------------------------------------------------
     setState(sfModal, false); //-- окно НЕ модально, поскольку в режиме разработки
     DialSaved = false;
-    //-- окно можно перемещать за границы зоны видимости. для запрета - раскомментарить строку ниже
+    //-- окно можно перемещать за границы зоны видимости. для запрета - раскоментировать строку ниже
     //dragMode = dmLimitAll;
     flags |= wfGrow; // это позволяет изменять размеры диалога, хотя по умолчанию опция включена в предке
 
@@ -103,7 +103,7 @@ void TTrialDialog::editDialogProperties()
     {
         win->getData(data);
         setClassName(data->dlgClassName);
-        setBaseClassName(data->dlgClassName);
+        setBaseClassName(data->dlgBaseClass);
         setCentered(data->dlgOpt_Centered);
         setCaption(data->dlgCaption);
         set_wfDef(data->wfDef);
@@ -894,11 +894,11 @@ void TTrialDialog::handleEvent(TEvent& event)
 /// </summary>
 void TTrialDialog::saveDialogToJSON()
 {
-    //-- Формируем описание в JSON
-    std::string serialized_string = DialogToJSON().dump(2);
     //-- если диалог был загружен из файла
     if (dlg_loaded)
     {
+        //-- Формируем описание в JSON
+        std::string serialized_string = DialogToJSON().dump(2);
         struct stat buf;
         errno_t err;
         auto res = stat(dlg_file_name, &buf);
@@ -941,7 +941,6 @@ void TTrialDialog::saveDialogToJSON()
 
 void TTrialDialog::SaveDialogAs()
 {
-    std::string serialized_string = DialogToJSON().dump(2);
     //-- Диалоговое окно было создано а не загружено - сохраняем его
     //-- первоначально формируем имя файла из имени класса
     std::string fn(class_name);
@@ -949,6 +948,7 @@ void TTrialDialog::SaveDialogAs()
     auto fd = new TFileDialog(fn, txt_dlg_SaveAsCaption, txt_dlg_SaveAsName, fdOKButton, 100);
     if (fd != 0 && owner->execView(fd) != cmCancel)
     {
+        std::string serialized_string = DialogToJSON().dump(2);
         char fileName[MAXPATH];
         fd->getFileName(fileName);
         ofstream os;
@@ -1033,12 +1033,12 @@ void TTrialDialog::GenCode(ofstream* res)
     *res << "#define " << class_name << "_H\n";
     *res << "#define Uses_TDialog\n";
     *res << "#define Uses_TEvent\n";
-    *res << "#define Uses_TInputLine\n";
-    *res << "#define Uses_TRadioButtons\n";
-    *res << "#define Uses_TCheckBoxes\n";
-    *res << "#define Uses_TSItems\n";
-    *res << "#define Uses_TButton\n";
-    *res << "#define Uses_TStaticText\n\n";
+
+    //--формируем перечень Uses_
+    forEach(&generateDialogUses, &elem);
+    for (int i = 0; i < elem.size(); i++)
+        *res << elem[i] << "\n";
+    elem.clear();
 
     *res << "#include <tvision/tv.h>\n\n";
 
@@ -1080,6 +1080,20 @@ void TTrialDialog::GenCode(ofstream* res)
         *res << elem[i] << "\n";
     //-- формируем заканчивающий код диалога
     *res << "\n selectNext(false);\n}\n";
+
+    //-- шаблон для обработчика сообщений
+    *res << "\nvoid " << class_name << "::handleEvent(TEvent& event)\n{\n";
+    *res << "  " << base_class_name << "::handleEvent(event);";
+    *res << "\n}\n";
+
+    //-- шаблон для установки данных
+    *res << "\nvoid " << class_name << "::setData(void* Data)\n{\n";
+    *res << "\n\n}\n";
+
+    //-- шаблон для получения данных
+    *res << "\nvoid* Data " << class_name << "::getData()\n{\n";
+    *res << "  return Data;";
+    *res << "\n}\n";
 }
 
 
