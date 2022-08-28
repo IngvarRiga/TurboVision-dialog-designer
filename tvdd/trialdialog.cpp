@@ -1043,10 +1043,10 @@ void TTrialDialog::GenCode(ofstream* res)
     *res << "#include <tvision/tv.h>\n\n";
 
     *res << "class " << class_name << " : public " << base_class_name << "\n{\n  public:\n";
-    *res << tab << class_name << "( const TRect& bounds, TStringView aTitle ) noexcept;\n";
+    *res << tab << class_name << "();\n";
     *res << tab << "virtual ~" << class_name << "() {}\n\n";
     *res << tab << "virtual void setData(void* Data);\n";
-    *res << tab << "virtual void* Data getData();\n";
+    *res << tab << "virtual void getData(void* Data);\n";
     *res << tab << "virtual void handleEvent(TEvent & event);\n\n";
 
     forEach(&generateDialogHeader, &elem);
@@ -1081,18 +1081,17 @@ void TTrialDialog::GenCode(ofstream* res)
     //-- формируем заканчивающий код диалога
     *res << "\n selectNext(false);\n}\n";
 
-    //-- шаблон для обработчика сообщений
-    *res << "\nvoid " << class_name << "::handleEvent(TEvent& event)\n{\n";
-    *res << "  " << base_class_name << "::handleEvent(event);";
-    *res << "\n}\n";
-
     //-- шаблон для установки данных
     *res << "\nvoid " << class_name << "::setData(void* Data)\n{\n";
     *res << "\n\n}\n";
 
     //-- шаблон для получения данных
-    *res << "\nvoid* Data " << class_name << "::getData()\n{\n";
-    *res << "  return Data;";
+    *res << "\nvoid* Data " << class_name << "::getData(void* Data)\n{\n";
+    *res << "\n\n}\n";
+
+    //-- шаблон для обработчика сообщений
+    *res << "\nvoid " << class_name << "::handleEvent(TEvent& event)\n{\n";
+    *res << "  " << base_class_name << "::handleEvent(event);";
     *res << "\n}\n";
 }
 
