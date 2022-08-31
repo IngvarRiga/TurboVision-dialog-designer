@@ -247,7 +247,7 @@ void generateDialogUses(TView* obj, void* res)
         tmp = "#define Uses_TCheckBoxes";
         if (std::find(src->begin(), src->end(), tmp) == src->end())
             src->push_back(tmp);
-        tmp = "#define Uses_TSItems";
+        tmp = "#define Uses_TSItem";
         if (std::find(src->begin(), src->end(), tmp) == src->end())
             src->push_back(tmp);
     }
@@ -262,7 +262,7 @@ void generateDialogUses(TView* obj, void* res)
         tmp = "#define Uses_TRadioButtons";
         if (std::find(src->begin(), src->end(), tmp) == src->end())
             src->push_back(tmp);
-        tmp = "#define Uses_TSItems";
+        tmp = "#define Uses_TSItem";
         if (std::find(src->begin(), src->end(), tmp) == src->end())
             src->push_back(tmp);
     }
