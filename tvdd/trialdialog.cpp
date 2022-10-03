@@ -1086,7 +1086,7 @@ void TTrialDialog::GenCode(ofstream* res)
     *res << "\n\n}\n";
 
     //-- шаблон для получения данных
-    *res << "\nvoid* Data " << class_name << "::getData(void* Data)\n{\n";
+    *res << "\nvoid " << class_name << "::getData(void* Data)\n{\n";
     *res << "\n\n}\n";
 
     //-- шаблон для обработчика сообщений
