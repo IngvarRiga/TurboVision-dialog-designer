@@ -40,6 +40,10 @@ public:
     // position 'index'.
     static size_t prev(TStringView text, size_t index) noexcept;
 
+    // Converts the first character in 'text' to the current code page.
+    // If there is no possible converion or 'text' is empty, returns '\0'.
+    static char toCodePage(TStringView text) noexcept;
+
     // Returns the length in bytes of a leading substring of 'text' which is
     // 'count' columns wide. If 'text' is less than 'count' columns wide,
     // returns 'text.size()'. Negative values of 'count' are treated as 0.
@@ -184,6 +188,13 @@ inline size_t TText::prev(TStringView text, size_t index)
     return 0 < index && index <= text.size();
 }
 
+inline char TText::toCodePage(TStringView text)
+{
+    if (text.empty())
+        return '\0';
+    return text[0];
+}
+
 inline size_t TText::scroll(TStringView text, int count, Boolean)
 {
     return count > 0 ? min(count, text.size()) : 0;
@@ -271,9 +282,12 @@ inline Boolean TText::drawOne( TSpan<TScreenCell> cells, size_t &i,
                                TStringView text, size_t &j,
                                TColorAttr attr )
 {
-    if (i < cells.size())
-        ::setAttr(cells[i], attr);
-    return drawOne(cells, i, text, j);
+    if (i < cells.size() && j < text.size())
+    {
+        ::setCell(cells[i++], text[j++], attr);
+        return True;
+    }
+    return False;
 }
 
 #else

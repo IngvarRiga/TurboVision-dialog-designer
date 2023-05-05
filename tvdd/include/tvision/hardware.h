@@ -38,10 +38,6 @@
 
 #endif
 
-#ifndef __BORLANDC__
-class PlatformStrategy;
-#endif
-
 struct TEvent;
 struct MouseEventType;
 
@@ -52,14 +48,6 @@ public:
 
     THardwareInfo() noexcept;
     ~THardwareInfo();
-#ifndef __BORLANDC__
-    enum { eventQSize = 24 };
-    static TEvent eventQ[eventQSize];
-    static size_t eventCount;
-    static void flushScreen() noexcept;
-    static BOOL getPendingEvent(TEvent &event, Boolean mouse) noexcept;
-    static void readEvents() noexcept;
-#endif
 
     static uint32_t getTickCount() noexcept;
 
@@ -84,6 +72,7 @@ public:
     static ushort getScreenMode() noexcept;
     static void setScreenMode( ushort mode ) noexcept;
     static void clearScreen( ushort w, ushort h ) noexcept;
+    static void flushScreen() noexcept;
     static void screenWrite( ushort x, ushort y, TScreenCell *buf, DWORD len ) noexcept;
     static TScreenCell *allocateScreenBuffer() noexcept;
     static void freeScreenBuffer( TScreenCell *buffer ) noexcept;
@@ -101,8 +90,10 @@ public:
     static BOOL getMouseEvent( MouseEventType& event ) noexcept;
     static BOOL getKeyEvent( TEvent& event ) noexcept;
     static void clearPendingEvent() noexcept;
-    static void waitForEvents( int timeoutMs ) noexcept;
+    static void waitForEvent( int timeoutMs ) noexcept;
     static void stopEventWait() noexcept;
+    static BOOL setClipboardText( TStringView text ) noexcept;
+    static BOOL requestClipboardText( void (&accept)( TStringView ) ) noexcept;
 
 // System functions.
 
@@ -126,7 +117,14 @@ private:
     static INPUT_RECORD irBuffer;
     static CONSOLE_CURSOR_INFO crInfo;
     static CONSOLE_SCREEN_BUFFER_INFO sbInfo;
-    static int eventTimeoutMs;
+
+#ifndef __BORLANDC__
+    enum { eventQSize = 24 };
+    static TEvent eventQ[eventQSize];
+    static size_t eventCount;
+    static BOOL getPendingEvent(TEvent &event, Boolean mouse) noexcept;
+    static void readEvents() noexcept;
+#endif
 
 #else
 
@@ -187,9 +185,7 @@ inline ushort THardwareInfo::getScreenCols() noexcept
     return sbInfo.dwSize.X;
 }
 
-#if defined( __BORLANDC__ )
 #pragma option -w-inl
-#endif
 
 inline void THardwareInfo::clearScreen( ushort w, ushort h ) noexcept
 {
@@ -200,9 +196,11 @@ inline void THardwareInfo::clearScreen( ushort w, ushort h ) noexcept
     FillConsoleOutputCharacterA( consoleHandle[cnOutput], ' ', w*h, coord, &read );
 }
 
-#if defined( __BORLANDC__ )
 #pragma option -w+inl
-#endif
+
+inline void THardwareInfo::flushScreen() noexcept
+{
+}
 
 inline TScreenCell *THardwareInfo::allocateScreenBuffer() noexcept
 {

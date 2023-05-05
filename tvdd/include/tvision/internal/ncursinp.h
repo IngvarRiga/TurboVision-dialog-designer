@@ -10,22 +10,19 @@
 #define Uses_TEvent
 #include <tvision/tv.h>
 
-#include <internal/sigwinch.h>
-#include <internal/terminal.h>
-
 namespace tvision
 {
 
 class NcursesDisplay;
+struct InputState;
 
 class NcursesInput : public InputStrategy
 {
     enum : char { KEY_ESC = '\x1B' };
-    enum { readTimeout = 5 };
+    enum { readTimeout = 10 };
 
-    const StdioCtl &io;
-    MouseState mstate;
-    int buttonCount;
+    StdioCtl &io;
+    InputState &state;
     bool mouseEnabled;
 
     static int getch_nb() noexcept;
@@ -34,21 +31,12 @@ class NcursesInput : public InputStrategy
     void readUtf8Char(int keys[4], int &num_keys) noexcept;
 
     bool parseCursesMouse(TEvent&) noexcept;
-
-    class NcGetChBuf : public GetChBuf
-    {
-
-    protected:
-
-        int do_getch() noexcept override;
-        bool do_ungetch(int) noexcept override;
-
-    };
+    void consumeUnprocessedInput() noexcept;
 
 public:
 
-    // Lifetimes of 'io' and 'display' must exceed that of 'this'.
-    NcursesInput(const StdioCtl &io, NcursesDisplay &display, bool mouse) noexcept;
+    // Lifetimes of 'io', 'display' and 'state' must exceed that of 'this'.
+    NcursesInput(StdioCtl &io, NcursesDisplay &display, InputState &state, bool mouse) noexcept;
     ~NcursesInput();
 
     bool getEvent(TEvent &ev) noexcept;

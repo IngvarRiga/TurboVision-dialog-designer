@@ -107,7 +107,6 @@ public:
     char* data;
     uint maxLen;
     uint maxWidth;
-    uint maxGraphemes;
     int curPos;
     int firstPos;
     int selStart;

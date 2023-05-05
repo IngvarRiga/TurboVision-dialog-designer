@@ -5,47 +5,75 @@
 #define Uses_TEvent
 #include <tvision/tv.h>
 
+#include <tvision/compat/windows/windows.h>
+
 namespace tvision
 {
 
 class StdioCtl;
+class EventSource;
 
-struct MouseState
+struct Far2lState
 {
-    TPoint where;
-    uchar buttons;
-    uchar wheel;
-    uchar mods;
+    bool enabled {false};
+};
+
+struct InputState
+{
+    uchar buttons {0};
+#ifdef _WIN32
+    wchar_t surrogate {0};
+#endif
+    Far2lState far2l;
+    bool hasFullOsc52 {false};
+    bool bracketedPaste {false};
+    void (*putPaste)(TStringView) {nullptr};
+};
+
+class InputGetter
+{
+public:
+
+    virtual int get() noexcept = 0;
+    virtual void unget(int) noexcept = 0;
 };
 
 class GetChBuf
 {
-    enum { maxSize = 63 };
+    enum { maxSize = 31 };
 
+    InputGetter &in;
     uint size {0};
     int keys[maxSize];
 
-protected:
-
-    virtual int do_getch() noexcept = 0;
-    virtual bool do_ungetch(int) noexcept = 0;
-
 public:
 
+    GetChBuf(InputGetter &aIn) noexcept :
+        in(aIn)
+    {
+    }
+
+    int getUnbuffered() noexcept;
     int get(bool keepErr) noexcept;
     int last(size_t i) noexcept;
     void unget() noexcept;
     void reject() noexcept;
     bool getNum(uint &) noexcept;
     bool getInt(int &) noexcept;
+    bool readStr(TStringView) noexcept;
 
 };
+
+inline int GetChBuf::getUnbuffered() noexcept
+{
+    return in.get();
+}
 
 inline int GetChBuf::get(bool keepErr=false) noexcept
 {
     if (size < maxSize)
     {
-        int k = do_getch();
+        int k = in.get();
         if (keepErr || k != -1)
             keys[size++] = k;
         return k;
@@ -64,7 +92,7 @@ inline void GetChBuf::unget() noexcept
 {
     int k;
     if (size && (k = keys[--size]) != -1)
-        do_ungetch(k);
+        in.unget(k);
 }
 
 inline void GetChBuf::reject() noexcept
@@ -110,6 +138,19 @@ inline bool GetChBuf::getInt(int &result) noexcept
     return false;
 }
 
+inline bool GetChBuf::readStr(TStringView str) noexcept
+{
+    size_t origSize = size;
+    size_t i = 0;
+    while (i < str.size() && get() == str[i])
+        ++i;
+    if (i == str.size())
+        return true;
+    while (origSize < size)
+        unget();
+    return false;
+}
+
 enum ParseResult { Rejected = 0, Accepted, Ignored };
 
 struct CSIData
@@ -147,25 +188,29 @@ struct CSIData
 
 namespace TermIO
 {
+    void mouseOn(StdioCtl &) noexcept;
+    void mouseOff(StdioCtl &) noexcept;
+    void keyModsOn(StdioCtl &) noexcept;
+    void keyModsOff(StdioCtl &, EventSource &, InputState &) noexcept;
 
-    void mouseOn(const StdioCtl &) noexcept;
-    void mouseOff(const StdioCtl &) noexcept;
-    void keyModsOn(const StdioCtl &) noexcept;
-    void keyModsOff(const StdioCtl &) noexcept;
+    void normalizeKey(KeyDownEvent &keyDown) noexcept;
 
-    ParseResult parseEscapeSeq(GetChBuf&, TEvent&, MouseState&) noexcept;
-    ParseResult parseX10Mouse(GetChBuf&, TEvent&, MouseState&) noexcept;
-    ParseResult parseSGRMouse(GetChBuf&, TEvent&, MouseState&) noexcept;
-    ParseResult parseCSIKey(const CSIData &csi, TEvent&) noexcept;
+    bool setClipboardText(StdioCtl &, TStringView, InputState &) noexcept;
+    bool requestClipboardText(StdioCtl &, void (&)(TStringView), InputState &) noexcept;
+
+    ParseResult parseEvent(GetChBuf&, TEvent&, InputState&) noexcept;
+    ParseResult parseEscapeSeq(GetChBuf&, TEvent&, InputState&) noexcept;
+    ParseResult parseX10Mouse(GetChBuf&, TEvent&, InputState&) noexcept;
+    ParseResult parseSGRMouse(GetChBuf&, TEvent&, InputState&) noexcept;
+    ParseResult parseCSIKey(const CSIData &csi, TEvent&, InputState&) noexcept;
     ParseResult parseFKeyA(GetChBuf&, TEvent&) noexcept;
     ParseResult parseSS3Key(GetChBuf&, TEvent&) noexcept;
     ParseResult parseArrowKeyA(GetChBuf&, TEvent&) noexcept;
     ParseResult parseFixTermKey(const CSIData &csi, TEvent&) noexcept;
+    ParseResult parseDCS(GetChBuf&, InputState&) noexcept;
+    ParseResult parseOSC(GetChBuf&, InputState&) noexcept;
 
-    bool acceptMouseEvent(TEvent &ev, MouseState &oldm, const MouseState &newm) noexcept;
-    void setAltModifier(KeyDownEvent &keyDown) noexcept;
-    void fixKey(KeyDownEvent &keyDown) noexcept;
-
+    char *readUntilBelOrSt(GetChBuf &) noexcept;
 }
 
 } // namespace tvision

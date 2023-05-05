@@ -1,3 +1,5 @@
+#define Uses_TKeys
+
 #include "wstatictext.h"
 #include <tvision/tkeys.h>
 #define cpStaticText "\x06"

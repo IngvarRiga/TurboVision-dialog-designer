@@ -1,3 +1,6 @@
+#define Uses_TKeys
+
+
 #include "wcheckboxes.h"
 #include "common.h"
 #include <tvision/tkeys.h>

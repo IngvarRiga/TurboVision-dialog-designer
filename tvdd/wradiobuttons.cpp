@@ -1,3 +1,5 @@
+#define Uses_TKeys
+
 #include "wradiobuttons.h"
 #include "common.h"
 #include <tvision/tkeys.h>

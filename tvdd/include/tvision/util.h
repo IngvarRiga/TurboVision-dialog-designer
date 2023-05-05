@@ -84,7 +84,20 @@ Boolean isWild( const char *f ) noexcept;
 size_t strnzcpy( char *dest, TStringView src, size_t n ) noexcept;
 size_t strnzcat( char *dest, TStringView src, size_t n ) noexcept;
 
-#if !defined( __BORLANDC__ ) && !defined( _WIN32 )
+void printKeyCode(ostream _FAR &, ushort keyCode);
+void printControlKeyState(ostream _FAR &, ushort controlKeyState);
+void printEventCode(ostream _FAR &, ushort eventCode);
+void printMouseButtonState(ostream _FAR &, ushort buttonState);
+void printMouseWheelState(ostream _FAR &, ushort wheelState);
+void printMouseEventFlags(ostream _FAR &, ushort eventFlags);
+
+#if defined( __BORLANDC__ )
+
+int snprintf( char _FAR *buffer, size_t size, const char _FAR *format, ... );
+int vsnprintf( char _FAR *buffer, size_t size, const char _FAR *format,
+               void _FAR *arglist );
+
+#elif !defined( _WIN32 )
 
 int stricmp( const char *s1, const char *s2 ) noexcept;
 int strnicmp( const char *s1, const char *s2, size_t maxlen ) noexcept;
@@ -93,6 +106,6 @@ char *itoa( int value, char *buffer, int radix ) noexcept;
 char *ltoa( long value, char *buffer, int radix ) noexcept;
 char *ultoa( ulong value, char *buffer, int radix ) noexcept;
 
-#endif
+#endif // __BORLANDC__
 
 #endif  // __UTIL_H

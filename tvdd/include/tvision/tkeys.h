@@ -13,20 +13,36 @@
  *
  */
 
-#if !defined( __TKEYS_H )
-#define __TKEYS_H
+#if defined( Uses_TKeys ) && !defined( __TKeys )
+#define __TKeys
 
 #if defined( __FLAT__ ) && !defined( __WINDOWS_H )
 #include <tvision/compat/windows/windows.h>
 #endif
 
+//// Key codes
+//
+// The following constants can be used to define menu hotkeys and to
+// examine the 'keyCode' field of 'evKeyDown' event records.
+//
+// Not all key combinations can be used in all platforms. In particular:
+//
+// * In 16-bit mode, keystrokes corresponding to the 'additional extended
+//   key codes' are not reported.
+//
+// * Keystrokes corresponding to system shortcuts (e.g. Alt+F4 for 'close
+//   window' in graphical environments) are not reported either.
+//
+// * In Unix, support for key combinations varies among terminal emulators.
+//   Ctrl+H, Ctrl+I, Ctrl+J and Ctrl+M are not likely to work since they
+//   usually represent Backspace, Tab and Enter.
+//
+// These constants do not cover all possible combinations of the Shift, Ctrl
+// and Alt modifiers. For that purpose, see the TKey class below.
+
 const ushort
 
-//  Control keys
-//
-//  NOTE: these Control key definitions are intended only to provide
-//  mnemonic names for the ASCII control codes.  They cannot be used
-//  to define menu hotkeys, etc., which require scan codes.
+// Control keys
 
     kbCtrlA     = 0x0001,   kbCtrlB     = 0x0002,   kbCtrlC     = 0x0003,
     kbCtrlD     = 0x0004,   kbCtrlE     = 0x0005,   kbCtrlF     = 0x0006,
@@ -76,31 +92,31 @@ const ushort
     kbAlt4      = 0x7b00,   kbAlt5      = 0x7c00,   kbAlt6      = 0x7d00,
     kbAlt7      = 0x7e00,   kbAlt8      = 0x7f00,   kbAlt9      = 0x8000,
     kbAlt0      = 0x8100,   kbAltMinus  = 0x8200,   kbAltEqual  = 0x8300,
-    kbCtrlPgUp  = 0x8400,   kbAltBack   = 0x0800,   kbNoKey     = 0x0000,
-    kbCtrlUp    = 0x8D00,   kbCtrlDown  = 0x9100,   kbAltIns    = 0xA200,
-    kbAltDel    = 0xA300,   kbAltHome   = 0x9700,   kbAltEnd    = 0x9F00,
-    kbAltUp     = 0x9800,   kbAltDown   = 0xA000,   kbAltLeft   = 0x9B00,
-    kbAltRight  = 0x9D00,   kbAltPgUp   = 0x9900,   kbAltPgDn   = 0xA100,
-    kbCtrlTab   = 0x9400,   kbAltTab    = 0xA500,
+    kbCtrlPgUp  = 0x8400,   kbNoKey     = 0x0000,
 
-#if defined( __FLAT__ )
-    kbF11       = 0x8500,   kbF12       = 0x8600,   kbShiftF11  = 0x8700,
-    kbShiftF12  = 0x8800,   kbCtrlF11   = 0x8900,   kbCtrlF12   = 0x8A00,
-    kbAltF11    = 0x8B00,   kbAltF12    = 0x8C00,
-#endif
+// Additional extended key codes
 
-//  Keyboard state and shift masks
+    kbAltEsc    = 0x0100,   kbAltBack   = 0x0e00,   kbF11       = 0x8500,
+    kbF12       = 0x8600,   kbShiftF11  = 0x8700,   kbShiftF12  = 0x8800,
+    kbCtrlF11   = 0x8900,   kbCtrlF12   = 0x8a00,   kbAltF11    = 0x8b00,
+    kbAltF12    = 0x8c00,   kbCtrlUp    = 0x8d00,   kbCtrlDown  = 0x9100,
+    kbCtrlTab   = 0x9400,   kbAltHome   = 0x9700,   kbAltUp     = 0x9800,
+    kbAltPgUp   = 0x9900,   kbAltLeft   = 0x9b00,   kbAltRight  = 0x9d00,
+    kbAltEnd    = 0x9f00,   kbAltDown   = 0xa000,   kbAltPgDn   = 0xa100,
+    kbAltIns    = 0xa200,   kbAltDel    = 0xa300,   kbAltTab    = 0xa500,
+    kbAltEnter  = 0xa600,
 
-// Changes for this version:
-//   In 32-bit mode, distinguishing between the right and left shift
-//   keys is not supported, and there is an additional new flag,
-//   kbEnhanced, which is set if the key pressed was an enhanced key
-//   (e.g. <insert> or <home>)
+//// Keyboard state and shift masks
 //
-//   In 16-bit mode, there are additional flags for the right and left
-//   Control and Alt keys, but this is not supported.  The flags are
-//   there for source compatibility with the 32-bit version which does
-//   support this.
+// The following constants can be used when examining the 'controlKeyState'
+// field of an 'evKeyDown' event record.
+//
+// Distinguishing between the left and right Shift keys is only supported in
+// 16-bit mode, while distinguishing between the left and right Ctrl and Alt
+// keys is only supported in 32-bit DPMI and on Windows.
+//
+// The kbScrollState, kbNumState, kbCapsState and kbEnhanced flags are only
+// reported on DOS and Windows.
 
 #if !defined( __FLAT__ )
     kbLeftShift   = 0x0001,
@@ -115,7 +131,8 @@ const ushort
     kbScrollState = 0x0010,
     kbNumState    = 0x0020,
     kbCapsState   = 0x0040,
-    kbInsState    = 0x0080;
+    kbInsState    = 0x0080,
+    kbPaste       = 0x0100;
 #else
     kbLeftShift   = SHIFT_PRESSED,
     kbRightShift  = SHIFT_PRESSED,
@@ -130,7 +147,70 @@ const ushort
     kbNumState    = NUMLOCK_ON,
     kbCapsState   = CAPSLOCK_ON,
     kbEnhanced    = ENHANCED_KEY,
-    kbInsState    = 0x200;  // Ensure this doesn't overlap above values
+    kbInsState    = 0x200,  // Ensure this doesn't overlap above values
+    kbPaste       = 0x400;
 #endif
 
-#endif  // __TKEYS_H
+#endif // __TKeys
+
+#if !defined( __TKey )
+#define __TKey
+
+//// TKey
+//
+// This class provides the ability to define new key combinations by
+// specifying a key code and a mask of key modifiers. These key combinations
+// can then be used to define menu hotkeys and examine 'evKeyDown' event
+// records.
+//
+// The only modifiers taken into account are Shift, Ctrl and Alt, making no
+// distinction between the left and right key on platforms that support it.
+//
+// Given that some key code constants already imply the presence of a key
+// modifier, there are key combinations which can be defined in multiple
+// ways. TKey ensures equality between all of them. For example:
+//
+//     assert(kbCtrlA == TKey('A', kbCtrlShift));
+//     assert(TKey(kbCtrlTab, kbShift) == TKey(kbTab, kbShift | kbCtrlShift));
+//     assert(TKey(kbAltDel, kbCtrlShift) == TKey(kbCtrlDel, kbAltShift));
+
+class TKey
+{
+public:
+
+    constexpr TKey() noexcept;
+    TKey(ushort keyCode, ushort shiftState = 0) noexcept;
+
+    ushort code;
+    ushort mods;
+};
+
+inline constexpr TKey::TKey() noexcept :
+    code(0),
+    mods(0)
+{
+}
+
+inline constexpr Boolean operator==(TKey a, TKey b) noexcept
+{
+    return Boolean(
+        (a.code | ((int32_t) a.mods << 16)) == (b.code | ((int32_t) b.mods << 16))
+    );
+}
+
+inline constexpr Boolean operator!=(TKey a, TKey b) noexcept
+{
+    return Boolean( !(a == b) );
+}
+
+inline ipstream& operator >> ( ipstream& is, TKey& p )
+    { return is >> p.code >> p.mods; }
+inline ipstream& operator >> ( ipstream& is, TKey*& p )
+    { return is >> p->code >> p->mods; }
+
+inline opstream& operator << ( opstream& os, TKey& p )
+    { return os << p.code << p.mods; }
+inline opstream& operator << ( opstream& os, TKey* p )
+    { return os << p->code << p->mods; }
+
+#endif  // __TKey

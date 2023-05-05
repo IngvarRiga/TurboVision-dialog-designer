@@ -4,40 +4,41 @@
 #include <internal/platform.h>
 #ifdef _TV_UNIX
 
-#include <internal/sigwinch.h>
-
 namespace tvision
 {
 
 class ScreenLifetime;
+class SigwinchHandler;
+struct InputState;
+class DisplayBuffer;
 
 class UnixConsoleStrategy : public ConsoleStrategy
 {
+    StdioCtl &io;
+    DisplayBuffer &displayBuf;
     ScreenLifetime &scrl;
+    InputState &inputState;
     SigwinchHandler *sigwinch;
 
-    void forEachSource(void *args, void (&action)(void *, EventSource &)) noexcept override;
-
-protected:
-
-    void forEachPrivateSource(void *args, void (&action)(void *, EventSource &)) noexcept
-    {
-        if (sigwinch)
-            action(args, sigwinch->getEventSource());
-    }
+    UnixConsoleStrategy( DisplayStrategy &, InputStrategy &, StdioCtl &,
+                         DisplayBuffer &, ScreenLifetime &, InputState &,
+                         SigwinchHandler * ) noexcept;
 
 public:
 
-    // Takes ownership over 'aDisplay' and 'aInput'.
-    UnixConsoleStrategy(ScreenLifetime &aScrl, DisplayStrategy &aDisplay, InputStrategy &aInput) noexcept :
-        ConsoleStrategy(aDisplay, aInput),
-        scrl(aScrl),
-        sigwinch(SigwinchHandler::create())
-    {
-    }
+    // The lifetime of 'io' and 'displayBuf' must exceed that of the returned object.
+    // Takes ownership over 'scrl', 'inputState', 'display' and 'input'.
+    static UnixConsoleStrategy &create( StdioCtl &io,
+                                        DisplayBuffer &displayBuf,
+                                        ScreenLifetime &scrl,
+                                        InputState &inputState,
+                                        DisplayStrategy &display,
+                                        InputStrategy &input ) noexcept;
 
-    // Deletes 'display' and 'input'.
     ~UnixConsoleStrategy();
+
+    bool setClipboardText(TStringView) noexcept override;
+    bool requestClipboardText(void (&)(TStringView)) noexcept override;
 
     static int charWidth(uint32_t) noexcept;
 };

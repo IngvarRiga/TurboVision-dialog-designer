@@ -250,6 +250,7 @@ const int
 
 class _FAR TDialog;
 class _FAR TWindow;
+class _FAR TTimerQueue;
 
 class TProgram : public TGroup, public virtual TProgInit
 {
@@ -268,12 +269,14 @@ public:
     virtual void initScreen();
     virtual void outOfMemory();
     virtual void putEvent( TEvent& event );
-    virtual Boolean textEvent(TEvent& event, TSpan<char> dest, size_t &length);
     virtual void run();
     virtual TWindow* insertWindow(TWindow*);
     void setScreenMode( ushort mode );
     TView *validView( TView *p ) noexcept;
     virtual void shutDown();
+
+    virtual TTimerId setTimer( uint timeoutMs, int periodMs = -1 );
+    virtual void killTimer( TTimerId id );
 
     virtual void suspend() {}
     virtual void resume() {}
@@ -287,7 +290,7 @@ public:
     static TMenuBar * _NEAR menuBar;
     static TDeskTop * _NEAR deskTop;
     static int _NEAR appPalette;
-    static int _NEAR appEventTimeout;
+    static int _NEAR eventTimeout;
 
 protected:
 
@@ -295,9 +298,10 @@ protected:
 
 private:
 
-    Boolean readTextEvent(TEvent &, TSpan<char>, size_t &, Boolean);
+    static int eventWaitTimeout();
 
     static const char * _NEAR exitText;
+    static TTimerQueue _NEAR timerQueue;
 
 };
 

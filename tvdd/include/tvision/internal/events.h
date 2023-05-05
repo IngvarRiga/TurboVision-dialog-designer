@@ -70,11 +70,13 @@ public:
     {
     }
 
+    virtual ~EventSource() {}
+
     virtual bool hasPendingEvents() noexcept;
-    virtual bool getEvent(TEvent &) noexcept = 0;
+    virtual bool getEvent(TEvent &) noexcept;
 };
 
-class WakeUpEventSource final : public EventSource
+class WakeUpEventSource : public EventSource
 {
     SysManualEvent sys;
     bool (*callback) (void *, TEvent &) noexcept;
@@ -166,7 +168,7 @@ public:
     void removeSource(EventSource &) noexcept;
 
     bool getEvent(TEvent &ev) noexcept;
-    void waitForEvents(int ms) noexcept;
+    void waitForEvent(int ms) noexcept;
     void stopEventWait() noexcept;
 };
 

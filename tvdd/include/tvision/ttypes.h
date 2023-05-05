@@ -26,12 +26,12 @@
 #define I   asm
 #endif
 
-enum { False, True };
 
 #ifdef __BORLANDC__
-typedef int Boolean;
+enum Boolean { False, True };
 #else
 typedef bool Boolean;
+enum { False, True };
 #endif
 
 typedef unsigned short ushort;
@@ -108,6 +108,8 @@ opstream& _Cdecl operator << ( opstream&, TStreamable _FAR * );
 #include <tvision/compat/borland/iosfwd.h>
 class TStringView;
 ostream _FAR & _Cdecl operator<<(ostream _FAR &, TStringView);
+
+typedef void _FAR *TTimerId;
 
 typedef int ccIndex;
 typedef Boolean (*ccTestFunc)( void *, void * );

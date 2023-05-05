@@ -42,6 +42,10 @@
 #pragma warning(push)
 #pragma warning(disable: 4250)
 #endif
+#if defined( __clang__ )
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Woverloaded-virtual"
+#endif
 
 #if !defined( __FLAT__ )
 #if !defined ( __LARGE__ )
@@ -57,6 +61,7 @@
 
 #define Uses_EventCodes
 #define Uses_ViewCommands
+#define __INC_TKEYS_H
 #define __INC_STDDLG_H
 
 #if defined( Uses_TApplication )
@@ -503,6 +508,14 @@
 #define __INC_SYSTEM_H
 #endif
 
+#if defined( Uses_TClipboard )
+#define __INC_SYSTEM_H
+#endif
+
+#if defined( Uses_TTimerQueue )
+#define __INC_SYSTEM_H
+#endif
+
 #if defined( Uses_TEventQueue )
 #define Uses_TEvent
 #define __INC_SYSTEM_H
@@ -759,4 +772,7 @@
 #endif
 #if defined( _MSC_VER )
 #pragma warning(pop)
+#endif
+#if defined( __clang__ )
+#pragma clang diagnostic pop
 #endif

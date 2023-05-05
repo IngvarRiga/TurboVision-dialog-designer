@@ -72,14 +72,13 @@ const int meTripleClick = 0x10;
 
 #endif  // __EVENT_CODES
 
-
 #if defined( Uses_TEvent ) && !defined( __TEvent )
 #define __TEvent
 
 struct MouseEventType
 {
     TPoint where;
-    ushort eventFlags;           // Replacement for doubleClick.
+    ushort eventFlags;          // Replacement for doubleClick.
     ushort controlKeyState;
     uchar buttons;
     uchar wheel;
@@ -200,15 +199,21 @@ struct KeyDownEvent
         CharScanType charScan;
         };
     ushort controlKeyState;
-    char text[4];
+    char text[4];               // NOT null-terminated.
     uchar textLength;
 
-    inline TStringView getText() const;
+    TStringView getText() const;
+    operator TKey() const;
 };
 
 inline TStringView KeyDownEvent::getText() const
 {
     return TStringView(text, textLength);
+}
+
+inline KeyDownEvent::operator TKey() const
+{
+    return TKey(keyCode, controlKeyState);
 }
 
 struct MessageEvent
@@ -237,7 +242,7 @@ struct TEvent
 
     void getMouseEvent() noexcept;
     void getKeyEvent() noexcept;
-    static void waitEvent(int timeoutMs) noexcept;
+    static void waitForEvent(int timeoutMs) noexcept;
     static void putNothing() noexcept;
 };
 
@@ -253,8 +258,10 @@ public:
     ~TEventQueue();
 
     static void getMouseEvent( TEvent& ) noexcept;
+    static void getKeyEvent( TEvent& ) noexcept;
     static void suspend() noexcept;
     static void resume() noexcept;
+    static void waitForEvent( int ) noexcept;
 
     friend class TView;
     friend class TProgram;
@@ -263,10 +270,15 @@ public:
     static ushort _NEAR doubleDelay;
     static Boolean _NEAR mouseReverse;
 
+    static void putPaste( TStringView ) noexcept;
+
 private:
 
-    static TMouse *mouse;
+    static TMouse * _NEAR mouse;
     static Boolean getMouseState( TEvent& ) noexcept;
+    static Boolean getPasteEvent( TEvent& ) noexcept;
+    static void getKeyOrPasteEvent( TEvent& ) noexcept;
+    static Boolean readKeyPress( TEvent& ) noexcept;
 
 #if !defined( __FLAT__ )
 #if !defined( __DPMI16__ )
@@ -276,8 +288,6 @@ private:
 #endif
     static void __MOUSEHUGE mouseInt();
 #endif
-
-    static void setLast( TEvent& ) noexcept;
 
     static MouseEventType _NEAR lastMouse;
 public:
@@ -303,6 +313,14 @@ private:
     static ushort _NEAR autoTicks;
     static ushort _NEAR autoDelay;
 
+    static char * _FAR pasteText;
+    static size_t _NEAR pasteTextLength;
+    static size_t _NEAR pasteTextIndex;
+
+    static TEvent _NEAR keyEventQueue[ keyEventQSize ];
+    static size_t _NEAR keyEventCount;
+    static size_t _NEAR keyEventIndex;
+    static Boolean _NEAR keyPasteState;
 };
 
 inline void TEvent::getMouseEvent() noexcept
@@ -311,6 +329,61 @@ inline void TEvent::getMouseEvent() noexcept
 }
 
 #endif  // Uses_TEventQueue
+
+#if defined( Uses_TTimerQueue ) && !defined( __TTimerQueue )
+#define __TTimerQueue
+
+#ifdef __BORLANDC__
+typedef uint32_t TTimePoint;
+#else
+typedef uint64_t TTimePoint;
+#endif
+
+struct _FAR TTimer;
+
+class TTimerQueue
+{
+public:
+
+    TTimerQueue() noexcept;
+    TTimerQueue(TTimePoint (&getTimeMs)()) noexcept;
+    ~TTimerQueue();
+
+    TTimerId setTimer(uint32_t timeoutMs, int32_t periodMs = -1);
+    void killTimer(TTimerId id);
+    void collectTimeouts(void (&func)(TTimerId, void *), void *args);
+    int32_t timeUntilTimeout();
+
+private:
+
+    TTimePoint (&getTimeMs)();
+    TTimer *first;
+};
+
+#endif // Uses_TTimerQueue
+
+#if defined( Uses_TClipboard ) && !defined( __TClipboard )
+#define __TClipboard
+
+class TClipboard
+{
+public:
+
+    ~TClipboard();
+
+    static void setText(TStringView text) noexcept;
+    static void requestText() noexcept;
+
+private:
+
+    TClipboard();
+
+    static TClipboard instance;
+    static char *localText;
+    static size_t localTextLength;
+};
+
+#endif
 
 #if defined( Uses_TScreen ) && !defined( __TScreen )
 #define __TScreen
@@ -395,12 +468,6 @@ public:
     static void resume() noexcept;
 
 };
-
-#ifdef __BORLANDC__
-inline void TScreen::flushScreen() noexcept
-{
-}
-#endif
 
 #endif  // Uses_TScreen
 

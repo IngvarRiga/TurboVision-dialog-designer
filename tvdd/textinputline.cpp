@@ -8,29 +8,9 @@
 #define Uses_TText
 #include <tvision/tv.h>
 
-//#if !defined( __CTYPE_H )
-//#include <ctype.h>
-//#endif  // __CTYPE_H
-//
-//#if !defined( __STRING_H )
-//#include <string.h>
-//#endif  // __STRING_H
-//
-//#if !defined( __DOS_H )
-//#include <dos.h>
-//#endif  // __DOS_H
 
 const int CONTROL_Y = 25;
 
-//char hotKey(const char* s) noexcept
-//{
-//    char* p;
-//
-//    if ((p = strchr((char*)s, '~')) != 0)
-//        return toupper(p[1]);
-//    else
-//        return 0;
-//}
 
 /// <summary>
 /// Определение позиции предыдущего слова в строке
@@ -64,7 +44,6 @@ TExtInputLine::TExtInputLine(const TRect& bounds, uint limit, TValidator* aValid
     TView(bounds),
     maxLen((limitMode == ilMaxBytes) ? min(max(limit - 1, 0), 255) : 255),
     maxWidth((limitMode == ilMaxWidth) ? limit : UINT_MAX),
-    maxGraphemes((limitMode == ilMaxGraphemes) ? limit : UINT_MAX),
     curPos(0),
     firstPos(0),
     selStart(0),
@@ -402,8 +381,7 @@ void TExtInputLine::handleEvent(TEvent& event)
                                 TTextMetrics dataMts = TText::measure(data);
                                 TTextMetrics keyMts = TText::measure(keyText);
                                 if (strlen(data) + len <= maxLen &&
-                                    dataMts.width + keyMts.width <= maxWidth &&
-                                    dataMts.graphemeCount + keyMts.graphemeCount <= maxGraphemes
+                                    dataMts.width + keyMts.width <= maxWidth                                    
                                     )
                                 {
                                     if (firstPos > curPos)

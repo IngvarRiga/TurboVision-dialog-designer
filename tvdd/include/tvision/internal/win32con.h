@@ -1,31 +1,33 @@
 #ifndef WIN32CON_H
 #define WIN32CON_H
 
-#include <internal/termdisp.h>
-
-#ifdef _WIN32
-
 #include <tvision/tv.h>
-#include <tvision/compat/windows/windows.h>
+#include <compat/windows/windows.h>
 #include <internal/stdioctl.h>
+#include <internal/termdisp.h>
+#include <internal/terminal.h>
 
 namespace tvision
 {
+
+bool getWin32Key(const KEY_EVENT_RECORD &, TEvent &, InputState &) noexcept;
+void getWin32Mouse(const MOUSE_EVENT_RECORD &, TEvent &, InputState &) noexcept;
+
+#ifdef _WIN32
 
 class Win32Input;
 class Win32Display;
 
 class Win32ConsoleStrategy final : public ConsoleStrategy
 {
-    const StdioCtl &io;
+    StdioCtl &io;
     UINT cpInput, cpOutput;
 
-
-    Win32ConsoleStrategy( const StdioCtl &aIo,
+    Win32ConsoleStrategy( StdioCtl &aIo,
                           UINT cpInput, UINT cpOutput,
                           DisplayStrategy &aDisplay,
                           InputStrategy &aInput ) noexcept :
-        ConsoleStrategy(aDisplay, aInput),
+        ConsoleStrategy(aDisplay, aInput, {&aInput}),
         io(aIo),
         cpInput(cpInput),
         cpOutput(cpOutput)
@@ -35,7 +37,8 @@ class Win32ConsoleStrategy final : public ConsoleStrategy
     ~Win32ConsoleStrategy();
 
     bool isAlive() noexcept override;
-    void forEachSource(void *, void (&)(void *, EventSource &)) noexcept override;
+    bool setClipboardText(TStringView) noexcept override;
+    bool requestClipboardText(void (&)(TStringView)) noexcept override;
 
 public:
 
@@ -45,28 +48,25 @@ public:
 
 class Win32Input final : public InputStrategy
 {
-    const StdioCtl &io;
-    bool insertState {true};
-    ushort surrogate {0};
+    StdioCtl &io;
+    InputState state;
 
     bool getEvent(const INPUT_RECORD &, TEvent &ev) noexcept;
-    bool getKeyEvent(KEY_EVENT_RECORD, TEvent &ev) noexcept;
-    bool getUnicodeEvent(KEY_EVENT_RECORD, TEvent &ev) noexcept;
     bool getMouseEvent(MOUSE_EVENT_RECORD, TEvent &ev) noexcept;
 
 public:
 
     // The lifetime of 'aIo' must exceed that of 'this'.
-    Win32Input(const StdioCtl &aIo) noexcept :
+    Win32Input(StdioCtl &aIo) noexcept :
         InputStrategy(aIo.in()),
         io(aIo)
     {
     }
 
+    bool getEvent(TEvent &ev) noexcept override;
     int getButtonCount() noexcept override;
     void cursorOn() noexcept override;
     void cursorOff() noexcept override;
-    bool getEvent(TEvent &ev) noexcept override;
 };
 
 class Win32Display : public TerminalDisplay
@@ -79,7 +79,7 @@ class Win32Display : public TerminalDisplay
 public:
 
     // The lifetime of 'aIo' must exceed that of 'this'.
-    Win32Display(const StdioCtl &aIo) noexcept :
+    Win32Display(StdioCtl &aIo) noexcept :
         TerminalDisplay(aIo)
     {
         initCapabilities();
@@ -100,8 +100,8 @@ protected:
     void lowlevelFlush() noexcept override;
 };
 
-} // namespace tvision
-
 #endif // _WIN32
+
+} // namespace tvision
 
 #endif // WIN32CON_H
