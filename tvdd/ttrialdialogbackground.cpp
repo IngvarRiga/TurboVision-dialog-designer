@@ -44,7 +44,7 @@ void TTrialDialogBackground::handleEvent(TEvent& event)
 {
 	if (event.what == evBroadcast)
 	{
-		if (event.message.command == cm_DisableCursorPaint)
+		if (event.message.command == (ushort)TDDCommand::cm_DisableCursorPaint)
 		{
 			clearEvent(event);
 			currPos.y = -1;
@@ -60,7 +60,7 @@ void TTrialDialogBackground::handleEvent(TEvent& event)
 		//-- вызов окна редактирования свойств объекта
 		if ((event.mouse.buttons == mbLeftButton) && (event.mouse.eventFlags == meDoubleClick))
 		{
-			message(owner, evBroadcast, cmOption_Dialog, nullptr);
+			message(owner, evBroadcast, (ushort)TDDCommand::cmOption_Dialog, nullptr);
 			clearEvent(event);
 		}
 
@@ -70,7 +70,7 @@ void TTrialDialogBackground::handleEvent(TEvent& event)
 			//-- вызов контекстного меню для диалога
 			if (event.mouse.buttons == mbRightButton)
 			{
-				message(owner, evBroadcast, cmPopupMenu_Dialog, &event.mouse.where);
+				message(owner, evBroadcast, (ushort)TDDCommand::cmPopupMenu_Dialog, &event.mouse.where);
 			}
 		}
 	}

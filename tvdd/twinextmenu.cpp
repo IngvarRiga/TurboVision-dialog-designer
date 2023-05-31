@@ -43,16 +43,16 @@ void TWinExtMenu::handleEvent(TEvent& event)
 			r.b.y = r.a.y + 20;
 			TMenuBox* contextMenu = new TMenuBox(TRect(0, 0, 0, 0),
 												 new TMenu(
-													 *new TMenuItem(txt_PropertyDialogCaption, cmOption_Dialog, kbNoKey, hcNoContext) +
+													 *new TMenuItem(txt_PropertyDialogCaption, (ushort)TDDCommand::cmOption_Dialog, kbNoKey, hcNoContext) +
 													 newLine() +
-													 *new TMenuItem(txt_mnu_DlgPropShowPosition, cmDialogPosOnOff, kbNoKey, hcNoContext) +
-													 *new TMenuItem(txt_mnu_DlgPropShowSize, cmDialogSizeOnOff, kbNoKey, hcNoContext) +
+													 *new TMenuItem(txt_mnu_DlgPropShowPosition, (ushort)TDDCommand::cmDialogPosOnOff, kbNoKey, hcNoContext) +
+													 *new TMenuItem(txt_mnu_DlgPropShowSize, (ushort)TDDCommand::cmDialogSizeOnOff, kbNoKey, hcNoContext) +
 													 newLine() +
-													 *new TMenuItem(txt_mnu_DlgPropShowSizePos, cmDialogPosSizeOnOff, kbNoKey, hcNoContext) +
+													 *new TMenuItem(txt_mnu_DlgPropShowSizePos, (ushort)TDDCommand::cmDialogPosSizeOnOff, kbNoKey, hcNoContext) +
 													 newLine() +
-													 *new TMenuItem(txt_mnu_SaveToJson, cmDialogSaveToJson, kbNoKey, hcNoContext) +
+													 *new TMenuItem(txt_mnu_SaveToJson, (ushort)TDDCommand::cmDialogSaveToJson, kbNoKey, hcNoContext) +
 													 newLine() +
-													 *new TMenuItem(txt_mnu_GenCode, cmDialogGenCode, kbNoKey, hcNoContext)
+													 *new TMenuItem(txt_mnu_GenCode, (ushort)TDDCommand::cmDialogGenCode, kbNoKey, hcNoContext)
 												 ), nullptr);
 			contextMenu->options |= ofCentered;
 			auto res = owner->owner->execView(contextMenu);

@@ -398,7 +398,7 @@ TView* object_fromJSON(nlohmann::json object, bool test)
     std::string tmp;
     switch (type)
     {
-        case otInputLine:
+    case objType::otInputLine:
             {
                 int ax = object[str_pos][str_x];
                 int ay = object[str_pos][str_y];
@@ -419,7 +419,7 @@ TView* object_fromJSON(nlohmann::json object, bool test)
                 }
                 break;
             }
-        case otInputLong:
+        case objType::otInputLong:
             {
                 int ax = object[str_pos][str_x];
                 int ay = object[str_pos][str_y];
@@ -446,7 +446,7 @@ TView* object_fromJSON(nlohmann::json object, bool test)
                 }
                 break;
             }
-        case otStaticText:
+        case objType::otStaticText:
             {
                 int ax = object[str_pos][str_x];
                 int ay = object[str_pos][str_y];
@@ -468,7 +468,7 @@ TView* object_fromJSON(nlohmann::json object, bool test)
                 }
                 break;
             }
-        case otButton:
+        case objType::otButton:
             {
                 int ax = object[str_pos][str_x];
                 int ay = object[str_pos][str_y];
@@ -490,7 +490,7 @@ TView* object_fromJSON(nlohmann::json object, bool test)
                 }
                 break;
             }
-        case otRadioButton:
+        case objType::otRadioButton:
             {
                 int ax = object[str_pos][str_x];
                 int ay = object[str_pos][str_y];
@@ -520,7 +520,7 @@ TView* object_fromJSON(nlohmann::json object, bool test)
                 }
                 break;
             }
-        case otCheckBox:
+        case objType::otCheckBox:
             {
                 int ax = object[str_pos][str_x];
                 int ay = object[str_pos][str_y];
@@ -550,7 +550,7 @@ TView* object_fromJSON(nlohmann::json object, bool test)
                 }
                 break;
             }
-        case otMemo:
+        case objType::otMemo:
             {
                 int ax = object[str_pos][str_x];
                 int ay = object[str_pos][str_y];
@@ -572,10 +572,10 @@ TView* object_fromJSON(nlohmann::json object, bool test)
                 }
                 break;
             }
-        case otListBox:
+        case objType::otListBox:
             break;
             //-- здесь это не обслуживается
-        case otDialog:
+        case objType::otDialog:
         default:
             break;
     }
@@ -586,18 +586,18 @@ TMenuItem& dialogMenu()
 {
     //-- создание контекстного меню диалога
     return
-        *new TMenuItem(txt_PropertyDialogCaption, cmOption_Dialog, kbCtrlEnter, hcNoContext, "Ctrl+Enter") +
+        *new TMenuItem(txt_PropertyDialogCaption, (ushort)TDDCommand::cmOption_Dialog, kbCtrlEnter, hcNoContext, "Ctrl+Enter") +
         newLine() +
-        *new TMenuItem(txt_mnu_StaticText, cm_ed_InsertStaticText, kbNoKey) +
-        *new TMenuItem(txt_mnu_Button, cm_ed_InsertButton, kbNoKey) +
-        *new TMenuItem(txt_mnu_InputLine, cm_ed_InsertInputLine, kbNoKey) +
-        *new TMenuItem(txt_mnu_InputLong, cm_ed_InsertInputLong, kbNoKey) +
-        *new TMenuItem(txt_mnu_InputDouble, cm_ed_InsertInputDouble, kbNoKey) +
-        *new TMenuItem(txt_mnu_RadioButtons, cm_ed_InsertRadioButtons, kbNoKey) +
-        *new TMenuItem(txt_mnu_CheckBoxes, cm_ed_InsertCheckBoxes, kbNoKey) +
-        *new TMenuItem(txt_mnu_ListBox, cm_ed_InsertListBox, kbNoKey) +
-        *new TMenuItem(txt_mnu_Memo, cm_ed_InsertMemo, kbNoKey) +
+        *new TMenuItem(txt_mnu_StaticText, (ushort)TDDCommand::cm_ed_InsertStaticText, kbNoKey) +
+        *new TMenuItem(txt_mnu_Button, (ushort)TDDCommand::cm_ed_InsertButton, kbNoKey) +
+        *new TMenuItem(txt_mnu_InputLine, (ushort)TDDCommand::cm_ed_InsertInputLine, kbNoKey) +
+        *new TMenuItem(txt_mnu_InputLong, (ushort)TDDCommand::cm_ed_InsertInputLong, kbNoKey) +
+        *new TMenuItem(txt_mnu_InputDouble, (ushort)TDDCommand::cm_ed_InsertInputDouble, kbNoKey) +
+        *new TMenuItem(txt_mnu_RadioButtons, (ushort)TDDCommand::cm_ed_InsertRadioButtons, kbNoKey) +
+        *new TMenuItem(txt_mnu_CheckBoxes, (ushort)TDDCommand::cm_ed_InsertCheckBoxes, kbNoKey) +
+        *new TMenuItem(txt_mnu_ListBox, (ushort)TDDCommand::cm_ed_InsertListBox, kbNoKey) +
+        *new TMenuItem(txt_mnu_Memo, (ushort)TDDCommand::cm_ed_InsertMemo, kbNoKey) +
         newLine() +
-        *new TMenuItem(txt_mnu_Paste, cm_ed_Paste, kbNoKey);
+        *new TMenuItem(txt_mnu_Paste, (ushort)TDDCommand::cm_ed_Paste, kbNoKey);
 }
 

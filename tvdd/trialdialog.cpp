@@ -180,20 +180,20 @@ void TTrialDialog::handleEvent(TEvent& event)
     {
         if (!isDest)
             //-- отключаем отображение позиции курсора в текущем диалоге
-            message(Background, evBroadcast, cm_DisableCursorPaint, 0);
+            message(Background, evBroadcast, (ushort)TDDCommand::cm_DisableCursorPaint, 0);
     }
     if (event.what == evBroadcast)
     {
-        if (event.message.command == cm_DisableCursorPaint)
+        if (event.message.command == (ushort)TDDCommand::cm_DisableCursorPaint)
         {
-            message(Background, evBroadcast, cm_DisableCursorPaint, 0);
+            message(Background, evBroadcast, (ushort)TDDCommand::cm_DisableCursorPaint, 0);
             clearEvent(event);
             return;
         }
 
         switch (event.message.command)
         {
-            case cmPopupMenu_Dialog:
+            case (ushort)TDDCommand::cmPopupMenu_Dialog:
                 {
                     TPoint tmp;
                     tmp.x = ((TPoint*)event.message.infoPtr)->x;
@@ -220,14 +220,14 @@ void TTrialDialog::handleEvent(TEvent& event)
                         message(owner, evBroadcast, res, &tmp);
                     break;
                 }
-            case cmOption_Dialog:
+            case (ushort)TDDCommand::cmOption_Dialog:
                 {
                     //-- вызов редактора свойств диалога
                     editDialogProperties();
                     clearEvent(event);
                     break;
                 }
-            case cmOption_StaticText:
+            case (ushort)TDDCommand::cmOption_StaticText:
                 {
                     //-- вызов настройки статического текста
                     auto data = new dataTSTP();
@@ -256,7 +256,7 @@ void TTrialDialog::handleEvent(TEvent& event)
                     clearEvent(event);
                     break;
                 }
-            case cmOption_Button:
+            case (ushort)TDDCommand::cmOption_Button:
                 {
                     //-- вызов настройки TButton
                     auto data = new dataTBTNP();
@@ -282,7 +282,7 @@ void TTrialDialog::handleEvent(TEvent& event)
                     clearEvent(event);
                     break;
                 }
-            case cmOption_CheckBoxes:
+            case (ushort)TDDCommand::cmOption_CheckBoxes:
                 {
                     //-- вызов настройки TCheckBoxes
                     auto data = new dataTCBP();
@@ -358,7 +358,7 @@ void TTrialDialog::handleEvent(TEvent& event)
                     clearEvent(event);
                     break;
                 }
-            case cmOption_InputLine:
+            case (ushort)TDDCommand::cmOption_InputLine:
                 {
                     //-- вызов настройки статического текста
                     auto data = new dataTILP();
@@ -380,7 +380,7 @@ void TTrialDialog::handleEvent(TEvent& event)
                     clearEvent(event);
                     break;
                 }
-            case cmOption_InputLong:
+            case (ushort)TDDCommand::cmOption_InputLong:
                 {
                     //-- вызов настройки статического текста
                     auto data = new dataTInputLong();
@@ -407,19 +407,19 @@ void TTrialDialog::handleEvent(TEvent& event)
                     clearEvent(event);
                     break;
                 }
-            case cmOption_ListBox:
+            case (ushort)TDDCommand::cmOption_ListBox:
                 {
                     //-- вызов настройки
                     clearEvent(event);
                     break;
                 }
-            case cmOption_Memo:
+            case (ushort)TDDCommand::cmOption_Memo:
                 {
                     //-- вызов настройки
                     clearEvent(event);
                     break;
                 }
-            case cmOption_RadioButtons:
+            case (ushort)TDDCommand::cmOption_RadioButtons:
                 {
                     //-- вызов настройки TRadioButtons
                     auto data = new dataTCBP();
@@ -496,7 +496,7 @@ void TTrialDialog::handleEvent(TEvent& event)
                     clearEvent(event);
                     break;
                 }
-            case cmDialogPosOnOff:
+            case (ushort)TDDCommand::cmDialogPosOnOff:
                 {
                     ind->setPosInfo(!ind->getPosInfo());
                     drawView();
@@ -504,14 +504,14 @@ void TTrialDialog::handleEvent(TEvent& event)
                     clearEvent(event);
                     break;
                 }
-            case cmDialogSizeOnOff:
+            case (ushort)TDDCommand::cmDialogSizeOnOff:
                 {
                     ind->setSizeInfo(!ind->getSizeInfo());
                     frame->drawView();
                     clearEvent(event);
                     break;
                 }
-            case cmDialogPosSizeOnOff:
+            case (ushort)TDDCommand::cmDialogPosSizeOnOff:
                 {
                     if (ind->getPosInfo() || ind->getSizeInfo())
                     {
@@ -527,7 +527,7 @@ void TTrialDialog::handleEvent(TEvent& event)
                     clearEvent(event);
                     break;
                 }
-            case cm_ed_InsertStaticText:
+            case (ushort)TDDCommand::cm_ed_InsertStaticText:
                 {
                     TPoint tmp;
                     tmp.x = ((TPoint*)event.message.infoPtr)->x;
@@ -542,7 +542,7 @@ void TTrialDialog::handleEvent(TEvent& event)
                     DialSaved = false;
                     break;
                 }
-            case cm_drp_DropStaticText:
+            case (ushort)TDDCommand::cm_drp_DropStaticText:
                 {
                     TPoint tmp;
                     tmp.x = ((TPoint*)event.message.infoPtr)->x;
@@ -564,7 +564,7 @@ void TTrialDialog::handleEvent(TEvent& event)
                     }
                     break;
                 }
-            case cm_ed_InsertInputLine:
+            case (ushort)TDDCommand::cm_ed_InsertInputLine:
                 {
                     TPoint tmp;
                     tmp.x = ((TPoint*)event.message.infoPtr)->x;
@@ -580,7 +580,7 @@ void TTrialDialog::handleEvent(TEvent& event)
                     DialSaved = false;
                     break;
                 }
-            case cm_drp_DropInputLine:
+            case (ushort)TDDCommand::cm_drp_DropInputLine:
                 {
                     TPoint tmp;
                     tmp.x = ((TPoint*)event.message.infoPtr)->x;
@@ -603,7 +603,7 @@ void TTrialDialog::handleEvent(TEvent& event)
                     }
                     break;
                 }
-            case cm_ed_InsertInputLong:
+            case (ushort)TDDCommand::cm_ed_InsertInputLong:
                 {
                     TPoint tmp;
                     tmp.x = ((TPoint*)event.message.infoPtr)->x;
@@ -619,7 +619,7 @@ void TTrialDialog::handleEvent(TEvent& event)
                     DialSaved = false;
                     break;
                 }
-            case cm_drp_DropInputLong:
+            case (ushort)TDDCommand::cm_drp_DropInputLong:
                 {
                     //-- для упрощения кода в режиме дизайна используется клон TInputLine
 
@@ -644,7 +644,7 @@ void TTrialDialog::handleEvent(TEvent& event)
                     }
                     break;
                 }
-            case cm_ed_InsertButton:
+            case (ushort)TDDCommand::cm_ed_InsertButton:
                 {
                     TPoint tmp;
                     tmp.x = ((TPoint*)event.message.infoPtr)->x;
@@ -659,7 +659,7 @@ void TTrialDialog::handleEvent(TEvent& event)
                     DialSaved = false;
                     break;
                 }
-            case cm_drp_DropButton:
+            case (ushort)TDDCommand::cm_drp_DropButton:
                 {
                     TPoint tmp;
                     tmp.x = ((TPoint*)event.message.infoPtr)->x;
@@ -682,7 +682,7 @@ void TTrialDialog::handleEvent(TEvent& event)
                     }
                     break;
                 }
-            case cm_ed_InsertCheckBoxes:
+            case (ushort)TDDCommand::cm_ed_InsertCheckBoxes:
                 {
                     TPoint tmp;
                     tmp.x = ((TPoint*)event.message.infoPtr)->x;
@@ -694,7 +694,7 @@ void TTrialDialog::handleEvent(TEvent& event)
                     DialSaved = false;
                     break;
                 }
-            case cm_drp_DropCheckBoxes:
+            case (ushort)TDDCommand::cm_drp_DropCheckBoxes:
                 {
                     TPoint tmp;
                     tmp.x = ((TPoint*)event.message.infoPtr)->x;
@@ -717,7 +717,7 @@ void TTrialDialog::handleEvent(TEvent& event)
                     }
                     break;
                 }
-            case cm_ed_InsertRadioButtons:
+            case (ushort)TDDCommand::cm_ed_InsertRadioButtons:
                 {
                     TPoint tmp;
                     tmp.x = ((TPoint*)event.message.infoPtr)->x;
@@ -730,7 +730,7 @@ void TTrialDialog::handleEvent(TEvent& event)
                     DialSaved = false;
                     break;
                 }
-            case cm_drp_DropRadioButtons:
+            case (ushort)TDDCommand::cm_drp_DropRadioButtons:
                 {
                     TPoint tmp;
                     tmp.x = ((TPoint*)event.message.infoPtr)->x;
@@ -753,7 +753,7 @@ void TTrialDialog::handleEvent(TEvent& event)
                     }
                     break;
                 }
-            case cm_ed_InsertListBox:
+            case (ushort)TDDCommand::cm_ed_InsertListBox:
                 {
                     TPoint tmp;
                     tmp.x = ((TPoint*)event.message.infoPtr)->x;
@@ -766,7 +766,7 @@ void TTrialDialog::handleEvent(TEvent& event)
                     DialSaved = false;
                     break;
                 }
-            case cm_drp_DropListBox:
+            case (ushort)TDDCommand::cm_drp_DropListBox:
                 {
                     //-- добавление нового TListBox
                     insert(new TTrialListBox(TRect(size.x - 15, size.y - 4, size.x - 2, size.y - 2), 1, 0));
@@ -774,7 +774,7 @@ void TTrialDialog::handleEvent(TEvent& event)
                     clearEvent(event);
                     break;
                 }
-            case cm_ed_InsertMemo:
+            case (ushort)TDDCommand::cm_ed_InsertMemo:
                 {
                     TPoint tmp;
                     tmp.x = ((TPoint*)event.message.infoPtr)->x;
@@ -789,7 +789,7 @@ void TTrialDialog::handleEvent(TEvent& event)
                     DialSaved = false;
                     break;
                 }
-            case cm_drp_DropMemo:
+            case (ushort)TDDCommand::cm_drp_DropMemo:
                 {
                     //TPoint tmp;
                     //tmp.x = ((TPoint*)event.message.infoPtr)->x;
@@ -811,25 +811,25 @@ void TTrialDialog::handleEvent(TEvent& event)
                     //}
                     //break;
                 }
-            case cmDialogSaveToJson:
+            case (ushort)TDDCommand::cmDialogSaveToJson:
                 {
                     clearEvent(event);
                     saveDialogToJSON();
                     break;
                 }
-            case cmDialogSaveToJsonAs:
+            case (ushort)TDDCommand::cmDialogSaveToJsonAs:
                 {
                     clearEvent(event);
                     SaveDialogAs();
                     break;
                 }
-            case cmDialogGenCode:
+            case (ushort)TDDCommand::cmDialogGenCode:
                 {
                     clearEvent(event);
                     saveDialogToSrc();
                     break;
                 }
-            case cm_ed_Paste:
+            case (ushort)TDDCommand::cm_ed_Paste:
                 {
                     clearEvent(event);
                     if (!copy_buffer.is_null())
@@ -971,7 +971,7 @@ nlohmann::json TTrialDialog::DialogToJSON()
     //-- Формируем JSON описание диалога. В это описание входят только те свойства, которые реально
     //-- имеют значение для конечного пользователя. Т.е. всякие индикаторы во время разработки не участвуют 
     //-- в сохранении
-    sav[str_type] = otDialog; //-- тип сохраняемого ресурса
+    sav[str_type] = objType::otDialog; //-- тип сохраняемого ресурса
     sav[str_class_name] = class_name; //-- имя класса
     sav[str_base_class_name] = base_class_name; //-- имя базового класса
     //--  запоминаем размеры

@@ -7,8 +7,10 @@
 #define Uses_TDrawBuffer
 #define Uses_TText
 #define Uses_TSItem
-#include <tvision/tv.h>
+#define Uses_TRect
+#include "include/tvision/tv.h"
 #include "wcluster.h"
+#include <concepts>
  /* ---------------------------------------------------------------------- */
  /*      class TRadioButtons                                               */
  /*                                                                        */

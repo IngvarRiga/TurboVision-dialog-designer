@@ -41,6 +41,21 @@
 #define txt_cmExit "Выход"
 #define txt_cmStatusExit "~Alt+X~ Выход"
 
+
+//-- DialogProperties
+#define txt_cmWindowCaption "Заголовок окна"
+#define txt_cmWindowClassName "Имя класса окна"
+#define txt_cmWindowBaseClassName "Имя базового класса"
+#define txt_cmWindowAdditionProperties "Дополнительные свойства:"
+#define txt_cmWindowFlags "Флаги окна (если не отмечено, то по умолчанию)"
+#define txt_cmWindowCenterByShow "Центрировать TDialog на экране"
+#define txt_cmWindow_wfMove "Перемещение"
+#define txt_cmWindow_wfGrow "Изменение размеров"
+#define txt_cmWindow_wfClose "Кнопка закрытия"
+#define txt_cmWindow_wfZoom "Кнопка 'распахивания'"
+#define txt_cmWindow_Keys "Ключи"
+
+
 #define txt_btnOk "O~K~"
 #define txt_btnCancel "Отмена"
 #define txt_btnButton "Кнопка"
@@ -147,6 +162,19 @@
 
 #define txt_cmExit "E~x~it"
 #define txt_cmStatusExit "~Alt+X~ Exit"
+
+//-- DialogProperties
+#define txt_cmWindowCaption "TDialog caption"
+#define txt_cmWindowClassName "Window class name"
+#define txt_cmWindowBaseClassName "Window base class name"
+#define txt_cmWindowAdditionProperties "Addition properties:"
+#define txt_cmWindowFlags "Window flags (if not set - by default)"
+#define txt_cmWindowCenterByShow "TDialog centered on desktop"
+#define txt_cmWindow_wfMove "Moving"
+#define txt_cmWindow_wfGrow "Sized"
+#define txt_cmWindow_wfClose "Close button"
+#define txt_cmWindow_wfZoom "Zoom button"
+#define txt_cmWindow_Keys "Keys"
 
 #define txt_btnOk "O~K~"
 #define txt_btnCancel "~C~ancel"

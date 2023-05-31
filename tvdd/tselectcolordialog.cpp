@@ -24,7 +24,7 @@ void TSelectColorDialog::handleEvent(TEvent& event)
     //-- двойной клик на неиспользуемом пространстве - вызов редактора
     if (event.what == evBroadcast)
     {
-        if (event.message.command == cm_ColorFieldClicked)
+        if (event.message.command == (int)TDDCommand::cm_ColorFieldClicked)
         {
             char valp[StringMaxLen];
             char res[StringMaxLen];

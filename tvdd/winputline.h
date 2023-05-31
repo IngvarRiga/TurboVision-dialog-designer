@@ -22,71 +22,71 @@
 
 class TWrapInputLine : public TView
 {
-  public:
+public:
 
-    TWrapInputLine(const TRect& bounds, uint aMaxLen, TValidator *aValid = 0, TLineType type=lt_InputLine, bool click = false) noexcept;
-    ~TWrapInputLine();
+	TWrapInputLine(const TRect& bounds, uint aMaxLen, TValidator* aValid = 0, TLineType type = TLineType::lt_InputLine, bool click = false) noexcept;
+	~TWrapInputLine();
 
-    virtual ushort dataSize();
-    virtual void draw();
-    virtual void getData(void *rec);
-    virtual TPalette& getPalette() const;
-    virtual void handleEvent(TEvent& event);
-    void selectAll(Boolean enable, Boolean scroll = True);
-    virtual void setData(void *rec);
-    virtual void setState(ushort aState, Boolean enable);
-    virtual Boolean valid(ushort cmd);
-    void setValidator(TValidator* aValid);
+	virtual ushort dataSize();
+	virtual void draw();
+	virtual void getData(void* rec);
+	virtual TPalette& getPalette() const;
+	virtual void handleEvent(TEvent& event);
+	void selectAll(Boolean enable, Boolean scroll = True);
+	virtual void setData(void* rec);
+	virtual void setState(ushort aState, Boolean enable);
+	virtual Boolean valid(ushort cmd);
+	void setValidator(TValidator* aValid);
 
 
-    //-- переопределяем идиотский функционал получение аццкой палитры
-    virtual TAttrPair getColor( ushort color );
-    
-    bool isSelected();
-    void setSelected(bool val);
-    
+	//-- переопределяем идиотский функционал получение аццкой палитры
+	virtual TAttrPair getColor(ushort color);
 
-    void setDragged()
-    {
-        eventDragged = true;
-    };
+	bool isSelected();
+	void setSelected(bool val);
 
-    char* data;
-    uint maxLen;
-    int curPos;
-    int firstPos;
-    int selStart;
-    int selEnd;
-    TLineType edType;
-  private:
 
-    Boolean canScroll(int delta);
-    int mouseDelta(TEvent& event);
-    int mousePos(TEvent& event);
-    int displayedPos(int pos);
-    void deleteSelect();
-    void deleteCurrent();
-    void adjustSelectBlock();
-    void saveState();
-    void restoreState();
-    Boolean checkValid(Boolean);
+	void setDragged()
+	{
+		eventDragged = true;
+	};
 
-    static const char rightArrow;
-    static const char leftArrow;
+	char* data;
+	uint maxLen;
+	int curPos;
+	int firstPos;
+	int selStart;
+	int selEnd;
+	TLineType edType;
+private:
 
-    TValidator* validator;
+	Boolean canScroll(int delta);
+	int mouseDelta(TEvent& event);
+	int mousePos(TEvent& event);
+	int displayedPos(int pos);
+	void deleteSelect();
+	void deleteCurrent();
+	void adjustSelectBlock();
+	void saveState();
+	void restoreState();
+	Boolean checkValid(Boolean);
 
-    int anchor;
-    char* oldData;
-    int oldCurPos;
-    int oldFirstPos;
-    int oldSelStart;
-    int oldSelEnd;
+	static const char rightArrow;
+	static const char leftArrow;
 
-  protected:
-    bool Selected; //-- компонент выбран пользователем
-    bool eventClick; //-- специфическая реакция на клик по компоненту (только для дизайнера)
-    bool eventDragged; //-- компонент находится в режиме перемещения (только для дизайнера)
+	TValidator* validator;
+
+	int anchor;
+	char* oldData;
+	int oldCurPos;
+	int oldFirstPos;
+	int oldSelStart;
+	int oldSelEnd;
+
+protected:
+	bool Selected; //-- компонент выбран пользователем
+	bool eventClick; //-- специфическая реакция на клик по компоненту (только для дизайнера)
+	bool eventDragged; //-- компонент находится в режиме перемещения (только для дизайнера)
 };
 
 #endif /* WINPUTLINE_H */

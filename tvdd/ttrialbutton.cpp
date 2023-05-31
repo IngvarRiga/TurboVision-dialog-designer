@@ -24,7 +24,7 @@ TTrialButton::TTrialButton(const TRect& bounds,
 nlohmann::json TTrialButton::genJSON()
 {
     nlohmann::json job;
-    job[str_type] = otButton;
+    job[str_type] = objType::otButton;
     job[str_text] = getCaption();
     job[str_variable][str_use_var_name] = getUsedVarName();
     job[str_variable][str_var_name] = getVarName();
@@ -52,12 +52,12 @@ void TTrialButton::handleEvent(TEvent& event)
 {
     if (event.what | evMouse)
     {
-        message(owner, evBroadcast, cm_DisableCursorPaint, 0);
+        message(owner, evBroadcast, (ushort)TDDCommand::cm_DisableCursorPaint, 0);
 
         //-- вызов окна редактирования свойств объекта
         if ((event.mouse.buttons == mbLeftButton) && (event.mouse.eventFlags == meDoubleClick))
         {
-            message(owner, evBroadcast, cmOption_Button, this);
+            message(owner, evBroadcast, (ushort)TDDCommand::cmOption_Button, this);
             clearEvent(event);
         }
         if (event.mouse.buttons == mbRightButton)
@@ -73,12 +73,12 @@ void TTrialButton::handleEvent(TEvent& event)
                 //-- создание контекстного меню диалога
                 TMenuBox* contextMenu = new TMenuBox(TRect(0, 0, 0, 0),
                                                      new TMenu(
-                                                         *new TMenuItem(txt_PropertyButton, cmOption_Button, -1, hcNoContext) +
-                                                         *new TMenuItem(txt_PropertyAlignSize, cm_AlignSize, -1, hcNoContext) +
+                                                         *new TMenuItem(txt_PropertyButton, (ushort)TDDCommand::cmOption_Button, -1, hcNoContext) +
+                                                         *new TMenuItem(txt_PropertyAlignSize, (ushort)TDDCommand::cm_AlignSize, -1, hcNoContext) +
                                                          newLine() +
-                                                         *new TMenuItem(txt_mnu_cmDelete, cm_ed_DestroyButton, kbCtrlDel, hcNoContext)
+                                                         *new TMenuItem(txt_mnu_cmDelete, (ushort)TDDCommand::cm_ed_DestroyButton, kbCtrlDel, hcNoContext)
                                                          + newLine() +
-                                                         *new TMenuItem(txt_mnu_Copy, cm_ed_Copy, kbNoKey)
+                                                         *new TMenuItem(txt_mnu_Copy, (ushort)TDDCommand::cm_ed_Copy, kbNoKey)
                                                      ), nullptr);
 
                 TPoint tmp;
@@ -103,17 +103,17 @@ void TTrialButton::handleEvent(TEvent& event)
                     case 0:
                         //-- нет команды
                         break;
-                    case cm_ed_DestroyButton:
+                    case (ushort)TDDCommand::cm_ed_DestroyButton:
                         destroy(this);
                         return;
                         break;
-                    case cm_ed_Copy:
+                    case (ushort)TDDCommand::cm_ed_Copy:
                         //-- формируем описание объекта в JSON-строку и запоминаем её в буфере
                         copy_buffer.clear();
                         copy_buffer = genJSON();
                         return;
                         break;
-                    case cm_AlignSize:
+                    case (ushort)TDDCommand::cm_AlignSize:
                         b1 = getBounds();
                         cpt = getCaption();
                         g = strlen(cpt);

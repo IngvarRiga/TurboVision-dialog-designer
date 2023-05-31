@@ -23,12 +23,12 @@ void TTrialInputLong::handleEvent(TEvent& event)
 {
     if (event.what | evMouse)
     {
-        message(owner, evBroadcast, cm_DisableCursorPaint, 0);
+        message(owner, evBroadcast, (ushort)TDDCommand::cm_DisableCursorPaint, 0);
 
         //-- вызов окна редактирования свойств объекта
         if ((event.mouse.buttons == mbLeftButton) && (event.mouse.eventFlags == meDoubleClick))
         {
-            message(owner, evBroadcast, cmOption_InputLong, this);
+            message(owner, evBroadcast, (ushort)TDDCommand::cmOption_InputLong, this);
             clearEvent(event);
         }
         if (event.mouse.buttons == mbRightButton)
@@ -37,11 +37,11 @@ void TTrialInputLong::handleEvent(TEvent& event)
                 //-- создание контекстного меню диалога
                 TMenuBox* contextMenu = new TMenuBox(TRect(0, 0, 0, 0),
                                                      new TMenu(
-                                                         *new TMenuItem(txt_PropertyInputLong, cmOption_InputLong, -1, hcNoContext) +
+                                                         *new TMenuItem(txt_PropertyInputLong, (ushort)TDDCommand::cmOption_InputLong, -1, hcNoContext) +
                                                          newLine() +
-                                                         *new TMenuItem(txt_mnu_cmDelete, cm_ed_DestroyInputLong, kbCtrlDel, hcNoContext) +
+                                                         *new TMenuItem(txt_mnu_cmDelete, (ushort)TDDCommand::cm_ed_DestroyInputLong, kbCtrlDel, hcNoContext) +
                                                          newLine() +
-                                                         *new TMenuItem(txt_mnu_Copy, cm_ed_Copy, kbNoKey)
+                                                         *new TMenuItem(txt_mnu_Copy, (ushort)TDDCommand::cm_ed_Copy, kbNoKey)
                                                      ), nullptr);
 
                 TPoint tmp;
@@ -66,11 +66,11 @@ void TTrialInputLong::handleEvent(TEvent& event)
                     case 0:
                         //-- нет команды
                         break;
-                    case cm_ed_DestroyInputLine:
+                    case (ushort)TDDCommand::cm_ed_DestroyInputLine:
                         destroy(this);
                         return;
                         break;
-                    case cm_ed_Copy:
+                    case (ushort)TDDCommand::cm_ed_Copy:
                         //-- формируем описание объекта в JSON-строку и запоминаем её в буфере
                         copy_buffer.clear();
                         copy_buffer = genJSON();
@@ -186,7 +186,7 @@ void TTrialInputLong::setVarName(const char* val)
 nlohmann::json TTrialInputLong::genJSON()
 {
     nlohmann::json job;
-    job[str_type] = otInputLong;
+    job[str_type] = objType::otInputLong;
     job[str_max_len] = getVarLen();
     job[str_var_name] = getVarName();
     job[str_class_name] = getClassName();

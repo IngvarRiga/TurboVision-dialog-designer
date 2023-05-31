@@ -5,11 +5,11 @@ TDialogProperties::TDialogProperties() :
     TCustomDialog(TRect(29, 20, 90, 37), txt_PropertyDialogCaption),
     TWindowInit(&TDialog::initFrame)
 {
-    insert(new TStaticText(TRect(2, 2, 45, 3), "Заголовок окна"));
-    insert(new TStaticText(TRect(2, 4, 45, 5), "Имя класса окна"));
-    insert(new TStaticText(TRect(2, 6, 45, 7), "Имя базового класса"));
-    insert(new TStaticText(TRect(2, 8, 45, 9), "Дополнительные свойства:"));
-    insert(new TStaticText(TRect(7, 10, 45, 11), "Флаги окна"));
+    insert(new TStaticText(TRect(2, 2, 45, 3), txt_cmWindowCaption));
+    insert(new TStaticText(TRect(2, 4, 45, 5), txt_cmWindowClassName));
+    insert(new TStaticText(TRect(2, 6, 45, 7), txt_cmWindowBaseClassName));
+    insert(new TStaticText(TRect(2, 8, 45, 9), txt_cmWindowAdditionProperties));
+    insert(new TStaticText(TRect(7, 10, 55, 11), txt_cmWindowFlags));
     caption = new TInputLine(TRect(2, 3, 59, 4), 241);
     insert(caption);
     class_name = new TInputLine(TRect(2, 5, 59, 6), 241);
@@ -17,20 +17,20 @@ TDialogProperties::TDialogProperties() :
     base_name = new TInputLine(TRect(2, 7, 59, 8), 241);
     insert(base_name);
     add_prop = new TCheckBoxes(TRect(2, 9, 45, 10),
-                               new TSItem("Центрировать TDialog на экране", 0));
+                               new TSItem(txt_cmWindowCenterByShow, 0));
     insert(add_prop);
     dlg_WinFlagDef = new TCheckBoxes(TRect(2, 10, 7, 11),
                                      new TSItem(" ", 0));
     insert(dlg_WinFlagDef);
-    dlg_WinFlags = new TCheckBoxes(TRect(2, 11, 27, 13),
-                                   new TSItem("wfMove",
-                                              new TSItem("wfGrow",
-                                                         new TSItem("wfClose",
-                                                                    new TSItem("wfZoom", 0)))));
+    dlg_WinFlags = new TCheckBoxes(TRect(2, 11, 53, 13),
+                                   new TSItem(txt_cmWindow_wfMove,
+                                              new TSItem(txt_cmWindow_wfGrow,
+                                                         new TSItem(txt_cmWindow_wfClose,
+                                                                    new TSItem(txt_cmWindow_wfZoom, 0)))));
     insert(dlg_WinFlags);
-    insert(new TButton(TRect(47, 11, 58, 13), "Ключи", cmKeys, bfDefault));
-    insert(new TButton(TRect(1, 14, 11, 16), "Отмена", cmCancel, bfDefault));
-    insert(new TButton(TRect(11, 14, 21, 16), "O~K~", cmOK, bfDefault));
+    insert(new TButton(TRect(47, 14, 58, 16), txt_cmWindow_Keys, (ushort)TDDCommand::cmKeys, bfDefault));
+    insert(new TButton(TRect(1, 14, 11, 16), txt_btnCancel, cmCancel, bfDefault));
+    insert(new TButton(TRect(11, 14, 21, 16), txt_btnOk, cmOK, bfDefault));
     selectNext(false);
 }
 
@@ -54,7 +54,7 @@ void TDialogProperties::setData(dataTDP* val)
             dlg_WinFlags->press(2);
         if (val->wfZoom)
             dlg_WinFlags->press(3);
-        //dlg_WinFlags->setState( sfDisabled,true);
+        //dlg_WinFlags->setState( sfDisabled, true);
     }
 }
 

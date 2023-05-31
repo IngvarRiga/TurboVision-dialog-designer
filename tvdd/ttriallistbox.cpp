@@ -35,12 +35,12 @@ void TTrialListBox::handleEvent(TEvent& event)
 {
 	if (event.what | evMouse)
 	{
-		message(owner, evBroadcast, cm_DisableCursorPaint, 0);
+		message(owner, evBroadcast, (ushort)TDDCommand::cm_DisableCursorPaint, 0);
 
 		//-- вызов окна редактирования свойств объекта
 		if ((event.mouse.buttons == mbLeftButton) && (event.mouse.eventFlags == meDoubleClick))
 		{
-			message(owner, evBroadcast, cmOption_ListBox, nullptr);
+			message(owner, evBroadcast, (ushort)TDDCommand::cmOption_ListBox, nullptr);
 			clearEvent(event);
 		}
 		if (event.mouse.buttons == mbRightButton)
@@ -49,9 +49,9 @@ void TTrialListBox::handleEvent(TEvent& event)
 				//-- создание контекстного меню диалога
 				TMenuBox* contextMenu = new TMenuBox(TRect(0, 0, 0, 0),
 													 new TMenu(
-													 *new TMenuItem(txt_PropertyListBox, cmOption_ListBox, -1, hcNoContext) +
+													 *new TMenuItem(txt_PropertyListBox, (ushort)TDDCommand::cmOption_ListBox, -1, hcNoContext) +
 													 newLine() +
-													 *new TMenuItem(txt_mnu_cmDelete, cm_ed_DestroyListBox, kbCtrlDel, hcNoContext)), nullptr);
+													 *new TMenuItem(txt_mnu_cmDelete, (ushort)TDDCommand::cm_ed_DestroyListBox, kbCtrlDel, hcNoContext)), nullptr);
 
 				TPoint tmp;
 				tmp.x = event.mouse.where.x;
@@ -70,7 +70,7 @@ void TTrialListBox::handleEvent(TEvent& event)
 				//---------------------------------------------------------------------
 				auto res = this->owner->owner->execView(contextMenu);
 				destroy(contextMenu);
-				if (res == cm_ed_DestroyListBox)
+				if (res == (ushort)TDDCommand::cm_ed_DestroyListBox)
 				{
 					destroy(this);
 					return;

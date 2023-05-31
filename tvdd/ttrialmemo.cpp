@@ -12,7 +12,6 @@ TTrialMemo::TTrialMemo(const TRect& bounds,
     options |= ofPreProcess;
     //-- ограничиваем перемещение внутри окна его границами
     dragMode |= dmLimitAll;
-    //Selected = false;
     memset(var_name, 0x0, StringMaxLen);
     memset(class_name, 0x0, StringMaxLen);
     strncpy(var_name, txt_control, strlen(txt_control));
@@ -23,7 +22,7 @@ TTrialMemo::TTrialMemo(const TRect& bounds,
 nlohmann::json TTrialMemo::genJSON()
 {
     nlohmann::json job;
-    job[str_type] = otMemo;
+    job[str_type] = objType::otMemo;
     job[str_var_name] = getVarName();
     job[str_class_name] = getVarName();
     auto sz = getBounds();
@@ -40,12 +39,12 @@ void TTrialMemo::handleEvent(TEvent& event)
 {
     if (event.what | evMouse)
     {
-        message(owner, evBroadcast, cm_DisableCursorPaint, 0);
+        message(owner, evBroadcast, (ushort)TDDCommand::cm_DisableCursorPaint, 0);
 
         //-- вызов окна редактирования свойств объекта
         if ((event.mouse.buttons == mbLeftButton) && (event.mouse.eventFlags == meDoubleClick))
         {
-            message(owner, evBroadcast, cmOption_Button, this);
+            message(owner, evBroadcast, (ushort)TDDCommand::cmOption_Button, this);
             clearEvent(event);
         }
         if (event.mouse.buttons == mbRightButton)
@@ -54,11 +53,11 @@ void TTrialMemo::handleEvent(TEvent& event)
                 //-- создание контекстного меню диалога
                 TMenuBox* contextMenu = new TMenuBox(TRect(0, 0, 0, 0),
                                                      new TMenu(
-                                                         *new TMenuItem(txt_PropertyMemo, cmOption_Memo, -1, hcNoContext) +
+                                                         *new TMenuItem(txt_PropertyMemo, (ushort)TDDCommand::cmOption_Memo, -1, hcNoContext) +
                                                          *new TMenuItem(0, 0, 0, hcNoContext, 0, 0) + //-- это типа newLine(), поскольку идёт конфликт с одноимённой функцией TMemo
-                                                         *new TMenuItem(txt_mnu_cmDelete, cm_ed_DestroyMemo, kbCtrlDel, hcNoContext) +
+                                                         *new TMenuItem(txt_mnu_cmDelete, (ushort)TDDCommand::cm_ed_DestroyMemo, kbCtrlDel, hcNoContext) +
                                                          *new TMenuItem(0, 0, 0, hcNoContext, 0, 0) + //-- это типа newLine(), поскольку идёт конфликт с одноимённой функцией TMemo
-                                                         *new TMenuItem(txt_mnu_Copy, cm_ed_Copy, kbNoKey)
+                                                         *new TMenuItem(txt_mnu_Copy, (ushort)TDDCommand::cm_ed_Copy, kbNoKey)
                                                      ), nullptr);
 
                 TPoint tmp;
@@ -83,11 +82,11 @@ void TTrialMemo::handleEvent(TEvent& event)
                     case 0:
                         //-- нет команды
                         break;
-                    case cm_ed_DestroyMemo:
+                    case (ushort)TDDCommand::cm_ed_DestroyMemo:
                         destroy(this);
                         return;
                         break;
-                    case cm_ed_Copy:
+                    case (ushort)TDDCommand::cm_ed_Copy:
                         //-- формируем описание объекта в JSON-строку и запоминаем её в буфере
                         copy_buffer.clear();
                         copy_buffer = genJSON();

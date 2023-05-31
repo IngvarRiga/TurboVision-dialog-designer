@@ -35,7 +35,7 @@ void TWrapCheckBoxes::handleEvent(TEvent& event)
 				//-- берем координаты клика мышкой в глобальных координатах
 				auto pt = event.mouse.where;
 				//-- обязательно отсылаем ссылку на редактируемый компонент
-				message(owner, evBroadcast, cm_cmp_CreateCheckBoxes, &pt);
+				message(owner, evBroadcast, (ushort)TDDCommand::cm_cmp_CreateCheckBoxes, &pt);
 				clearEvent(event);
 			}
 		}
@@ -62,7 +62,7 @@ void TWrapCheckBoxes::handleEvent(TEvent& event)
 
 				TEvent evDrop;
 				evDrop.what = evBroadcast;
-				evDrop.message.command = cm_drp_DropCheckBoxes;
+				evDrop.message.command = (ushort)TDDCommand::cm_drp_DropCheckBoxes;
 				TPoint* pt = new TPoint();
 				pt->x = event.mouse.where.x;
 				pt->y = event.mouse.where.y;

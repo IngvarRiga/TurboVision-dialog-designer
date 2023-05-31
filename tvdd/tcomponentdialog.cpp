@@ -20,17 +20,17 @@ TComponentDialog::TComponentDialog() :
 	insert(new TWrapStaticText(TRect(2, 2, 6, 3), txt_dlg_StaticText, true));
 
 	//-- InputLine
-	auto il = new TWrapInputLine(TRect(8, 2, 13, 3), 11, 0, lt_InputLine, true);
+	auto il = new TWrapInputLine(TRect(8, 2, 13, 3), 11, 0, TLineType::lt_InputLine, true);
 	il->setData((void*)txt_dlg_InputLine);
 	insert(il);
 
 	//-- InputLong
-	auto ilong = new TWrapInputLine(TRect(8, 4, 13, 5), 11, 0, lt_InputLong, true);
+	auto ilong = new TWrapInputLine(TRect(8, 4, 13, 5), 11, 0, TLineType::lt_InputLong, true);
 	ilong->setData((void*)txt_dlg_InputLong);
 	insert(ilong);
 
 	//-- InputDouble
-	auto idouble = new TWrapInputLine(TRect(8, 6, 13, 7), 11, 0, lt_InputDouble, true);
+	auto idouble = new TWrapInputLine(TRect(8, 6, 13, 7), 11, 0, TLineType::lt_InputDouble, true);
 	idouble->setData((void*)txt_dlg_InputDouble);
 	insert(idouble);
 
@@ -88,7 +88,7 @@ void TComponentDialog::handleEvent(TEvent& event)
 		auto pt = ((TPoint*)event.message.infoPtr);
 		switch (event.message.command)
 		{
-			case cm_cmp_CreateStaticText:
+			case (ushort)TDDCommand::cm_cmp_CreateStaticText:
 				{
 					//-- очистка события должна быть именно здесь иначе сообщение о Drop  не доходит до диалогового окна
 					clearEvent(event);
@@ -103,11 +103,11 @@ void TComponentDialog::handleEvent(TEvent& event)
 					message(v, evMouseDown, -1, 0);
 					break;
 				}
-			case cm_cmp_CreateInputLine:
+			case (ushort)TDDCommand::cm_cmp_CreateInputLine:
 				{
 					//-- очистка события должна быть именно здесь иначе сообщение о Drop  не доходит до диалогового окна
 					clearEvent(event);
-					auto v = new TWrapInputLine(TRect(pt->x, pt->y - 1, pt->x + 10, pt->y), 11, nullptr, lt_InputLine, false);
+					auto v = new TWrapInputLine(TRect(pt->x, pt->y - 1, pt->x + 10, pt->y), 11, nullptr, TLineType::lt_InputLine, false);
 					v->setData((void*)txt_dlg_InputLine);
 					v->setDragged();
 					v->options |= ofPreProcess | ofPostProcess;
@@ -118,11 +118,11 @@ void TComponentDialog::handleEvent(TEvent& event)
 					message(v, evMouseDown, -1, 0);
 					break;
 				}
-			case cm_cmp_CreateInputLong:
+			case (ushort)TDDCommand::cm_cmp_CreateInputLong:
 				{
 					//-- очистка события должна быть именно здесь иначе сообщение о Drop не доходит до диалогового окна
 					clearEvent(event);
-					auto v = new TWrapInputLine(TRect(pt->x, pt->y - 1, pt->x + 10, pt->y), 11, nullptr, lt_InputLong, false);
+					auto v = new TWrapInputLine(TRect(pt->x, pt->y - 1, pt->x + 10, pt->y), 11, nullptr, TLineType::lt_InputLong, false);
 					v->setData((void*)txt_dlg_InputLong);
 					v->setDragged();
 					v->options |= ofPreProcess | ofPostProcess;
@@ -133,13 +133,13 @@ void TComponentDialog::handleEvent(TEvent& event)
 					message(v, evMouseDown, -1, 0);
 					break;
 				}
-			case cm_cmp_CreateInputDouble:
+			case (ushort)TDDCommand::cm_cmp_CreateInputDouble:
 				{
 					//-- очистка события должна быть именно здесь иначе сообщение о Drop не доходит до диалогового окна
 					clearEvent(event);
 					messageBox(txt_error_Unreleased, mfInformation | mfOKButton);
 
-					//auto v = new TWrapInputLine(TRect(pt->x, pt->y - 1, pt->x + 10, pt->y), 11, nullptr, lt_InputDouble, false);
+					//auto v = new TWrapInputLine(TRect(pt->x, pt->y - 1, pt->x + 10, pt->y), 11, nullptr, TLineType::lt_InputDouble, false);
 					//v->setData((void*)txt_dlg_InputDouble);
 					//v->setDragged();
 					//v->options |= ofPreProcess | ofPostProcess;
@@ -150,7 +150,7 @@ void TComponentDialog::handleEvent(TEvent& event)
 					//message(v, evMouseDown, -1, 0);
 					break;
 				}
-			case cm_cmp_CreateButton:
+			case (ushort)TDDCommand::cm_cmp_CreateButton:
 				{
 					//-- очистка события должна быть именно здесь иначе сообщение о Drop  не доходит до диалогового окна
 					clearEvent(event);
@@ -164,7 +164,7 @@ void TComponentDialog::handleEvent(TEvent& event)
 					message(v, evMouseDown, -1, 0);
 					break;
 				}
-			case cm_cmp_CreateCheckBoxes:
+			case (ushort)TDDCommand::cm_cmp_CreateCheckBoxes:
 				{
 					//-- очистка события должна быть именно здесь иначе сообщение о Drop  не доходит до диалогового окна
 					clearEvent(event);
@@ -178,7 +178,7 @@ void TComponentDialog::handleEvent(TEvent& event)
 					message(v, evMouseDown, -1, 0);
 					break;
 				}
-			case cm_cmp_CreateRadioButtons:
+			case (ushort)TDDCommand::cm_cmp_CreateRadioButtons:
 				{
 					//-- очистка события должна быть именно здесь иначе сообщение о Drop  не доходит до диалогового окна
 					clearEvent(event);
@@ -192,11 +192,11 @@ void TComponentDialog::handleEvent(TEvent& event)
 					message(v, evMouseDown, -1, 0);
 					break;
 				}
-			case cm_cmp_CreateListBox:
+			case (ushort)TDDCommand::cm_cmp_CreateListBox:
 				{
 					break;
 				}
-			case cm_cmp_CreateMemo:
+			case (ushort)TDDCommand::cm_cmp_CreateMemo:
 				{
 					break;
 				}

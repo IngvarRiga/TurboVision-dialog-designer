@@ -89,7 +89,7 @@ void TColorField::handleEvent(TEvent & event)
             
             selectedColor = (ushort)(y-3)|((ushort)((x-3)/2) <<4);
             //-- рассылаем команды
-            message(owner, evBroadcast, cm_ColorFieldClicked, nullptr);
+            message(owner, evBroadcast, (ushort)TDDCommand::cm_ColorFieldClicked, nullptr);
         }
     }
     TView::handleEvent(event);

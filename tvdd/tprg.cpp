@@ -10,7 +10,6 @@
 #include "textrainput.h"
 
 
-
 TPrg::TPrg() :
     TProgInit(&TPrg::initStatusLine,
               &TPrg::initMenuBar,
@@ -26,9 +25,9 @@ void TPrg::handleEvent(TEvent& event)
 {
     if (event.what == evBroadcast)
     {
-        if (event.message.command == cm_DisableCursorPaint)
+        if (event.message.command == (ushort)TDDCommand::cm_DisableCursorPaint)
         {
-            message(0, evBroadcast, cm_DisableCursorPaint, 0);
+            message(0, evBroadcast, (ushort)TDDCommand::cm_DisableCursorPaint, 0);
             clearEvent(event);
             return;
         }
@@ -38,15 +37,15 @@ void TPrg::handleEvent(TEvent& event)
     {
         switch (event.message.command)
         {
-            case cmAbout:
+            case (ushort)TDDCommand::cmAbout:
                 deskTop->execView(AboutDialog());
                 clearEvent(event);
                 break;
-            case cmNewDialog:
+            case (ushort)TDDCommand::cmNewDialog:
                 deskTop->insert(new TTrialDialog(50, 20, txt_DefaultNewDialogCaption));
                 clearEvent(event);
                 break;
-            case cmLoadJSON:
+            case (ushort)TDDCommand::cmLoadJSON:
                 {
                     auto fd = new TFileDialog("*.json", txt_dlg_LoadAsCaption, txt_dlg_SaveAsName, fdOpenButton, 100);
 
@@ -60,7 +59,7 @@ void TPrg::handleEvent(TEvent& event)
                     clearEvent(event);
                     break;
                 }
-            case cmDialogAutoSize:
+            case (ushort)TDDCommand::cmDialogAutoSize:
                 {
                     //-- получаем ссылку на диалог
                     auto dlg = (TTrialDialog*)deskTop->current;
@@ -94,13 +93,13 @@ void TPrg::handleEvent(TEvent& event)
                     return;
                 }
 
-            case cmDialogSaveToJson:
-            case cmDialogSaveToJsonAs:
+            case (ushort)TDDCommand::cmDialogSaveToJson:
+            case (ushort)TDDCommand::cmDialogSaveToJsonAs:
                 //-- передаем команду непосредственно активному элементу
                 message(deskTop->current, evBroadcast, event.message.command, NULL);
                 clearEvent(event);
                 break;
-            case cmDialogTest:
+            case (ushort)TDDCommand::cmDialogTest:
                 {
                     //-- тестирование активного диалога
                     //-- получаем ссылку на текущий диалог 
@@ -115,15 +114,15 @@ void TPrg::handleEvent(TEvent& event)
                     clearEvent(event);
                     break;
                 }
-            case cmColorTest:
+            case (ushort)TDDCommand::cmColorTest:
                 deskTop->insert(new TSelectColorDialog());
                 clearEvent(event);
                 break;
-            case cmTest:
+            case (ushort)TDDCommand::cmTest:
                 deskTop->execView(TestDialog());
                 clearEvent(event);
                 break;
-            case cmTestWin:
+            case (ushort)TDDCommand::cmTestWin:
                 deskTop->insert(TestEditWindow());
                 clearEvent(event);
                 break;
@@ -149,7 +148,7 @@ void TPrg::LoadFromJSON(const char* fname)
         objType typ = json[str_type];
         switch (typ)
         {
-            case otDialog:
+        case objType::otDialog:
                 //-- при загрузке передаём имя файла, чтобы сохранять файл одним нажатием на F2
                 LoadDialogJSON(json, fname);
                 break;
@@ -236,29 +235,29 @@ TMenuBar* TPrg::initMenuBar(TRect r)
     return new TMenuBar(r,
                         //-- первым идёт так называемое - системное меню
                         *new TSubMenu("~\360~", kbAltSpace) +
-                        *new TMenuItem(winAboutCapt, cmAbout, kbNoKey) +
+                        *new TMenuItem(winAboutCapt, (ushort)TDDCommand::cmAbout, kbNoKey) +
                         newLine() +
                         *new TMenuItem(txt_cmExit, cmQuit, kbAltX, hcNoContext, "Alt-X") +
                         //-- перечень реализованных алгоритмов
                         *new TSubMenu(txt_mnu_DialogDesign, kbNoKey) +
                         (TMenuItem&)(
-                            *new TMenuItem(txt_mnu_NewDialogWindow, cmNewDialog, kbCtrlN, hcNoContext, "Ctrl-N") +
+                            *new TMenuItem(txt_mnu_NewDialogWindow, (ushort)TDDCommand::cmNewDialog, kbCtrlN, hcNoContext, "Ctrl-N") +
                             newLine() +
-                            *new TMenuItem(txt_mnu_LoadFromJSON, cmLoadJSON, kbF3, hcNoContext, "F3") +
+                            *new TMenuItem(txt_mnu_LoadFromJSON, (ushort)TDDCommand::cmLoadJSON, kbF3, hcNoContext, "F3") +
                             newLine() +
-                            *new TMenuItem(txt_mnu_SaveToJson, cmDialogSaveToJson, kbF2, hcNoContext, "F2") +
-                            *new TMenuItem(txt_mnu_SaveToJsonAs, cmDialogSaveToJsonAs, kbShiftF2, hcNoContext, "Shift+F2") +
+                            *new TMenuItem(txt_mnu_SaveToJson, (ushort)TDDCommand::cmDialogSaveToJson, kbF2, hcNoContext, "F2") +
+                            *new TMenuItem(txt_mnu_SaveToJsonAs, (ushort)TDDCommand::cmDialogSaveToJsonAs, kbShiftF2, hcNoContext, "Shift+F2") +
                             newLine() +
-                            *new TMenuItem(txt_DialogAlignSize, cmDialogAutoSize, kbAltC, hcNoContext, "Alt+C") +
-                            *new TMenuItem(txt_DialogTest, cmDialogTest, kbF9, hcNoContext, "F9")
+                            *new TMenuItem(txt_DialogAlignSize, (ushort)TDDCommand::cmDialogAutoSize, kbAltC, hcNoContext, "Alt+C") +
+                            *new TMenuItem(txt_DialogTest, (ushort)TDDCommand::cmDialogTest, kbF9, hcNoContext, "F9")
                             ) 
 #if _DEBUG
                         +
                         *new TSubMenu(txt_mnu_AlgoritmTest, kbNoKey) +
                         (TMenuItem&)(
-                            *new TMenuItem(txt_mnu_ColorSelect, cmColorTest, kbNoKey) +
-                            *new TMenuItem("Тест редакторов ввода", cmTest, kbNoKey) +
-                            *new TMenuItem("Тест окна редактирования", cmTestWin, kbNoKey)
+                            *new TMenuItem(txt_mnu_ColorSelect, (ushort)TDDCommand::cmColorTest, kbNoKey) +
+                            *new TMenuItem("Тест редакторов ввода", (ushort)TDDCommand::cmTest, kbNoKey) +
+                            *new TMenuItem("Тест окна редактирования", (ushort)TDDCommand::cmTestWin, kbNoKey)
                             )
 #endif
     );

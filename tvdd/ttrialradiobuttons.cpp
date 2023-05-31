@@ -27,7 +27,7 @@ void TTrialRadioButtons::setState(ushort aState, Boolean enable)
 nlohmann::json TTrialRadioButtons::genJSON()
 {
     nlohmann::json job;
-    job[str_type] = otRadioButton;
+    job[str_type] = objType::otRadioButton;
     auto items = getItems();
     for (int i = 0; i < items->getCount(); i++)
         job[str_items].push_back((char*)items->at(i));
@@ -46,12 +46,12 @@ void TTrialRadioButtons::handleEvent(TEvent& event)
 {
     if (event.what | evMouse)
     {
-        message(owner, evBroadcast, cm_DisableCursorPaint, 0);
+        message(owner, evBroadcast, (ushort)TDDCommand::cm_DisableCursorPaint, 0);
 
         //-- вызов окна редактирования свойств объекта
         if ((event.mouse.buttons == mbLeftButton) && (event.mouse.eventFlags == meDoubleClick))
         {
-            message(owner, evBroadcast, cmOption_RadioButtons, this);
+            message(owner, evBroadcast, (ushort)TDDCommand::cmOption_RadioButtons, this);
             clearEvent(event);
         }
         if (event.mouse.buttons == mbRightButton)
@@ -60,11 +60,11 @@ void TTrialRadioButtons::handleEvent(TEvent& event)
                 //-- создание контекстного меню диалога
                 TMenuBox* contextMenu = new TMenuBox(TRect(0, 0, 0, 0),
                                                      new TMenu(
-                                                         *new TMenuItem(txt_PropertyRadioButtons, cmOption_RadioButtons, -1, hcNoContext) +
+                                                         *new TMenuItem(txt_PropertyRadioButtons, (ushort)TDDCommand::cmOption_RadioButtons, -1, hcNoContext) +
                                                          newLine() +
-                                                         *new TMenuItem(txt_mnu_cmDelete, cm_ed_DestroyRadioButtons, kbCtrlDel, hcNoContext)
+                                                         *new TMenuItem(txt_mnu_cmDelete, (ushort)TDDCommand::cm_ed_DestroyRadioButtons, kbCtrlDel, hcNoContext)
                                                          + newLine() +
-                                                         *new TMenuItem(txt_mnu_Copy, cm_ed_Copy, kbNoKey)
+                                                         *new TMenuItem(txt_mnu_Copy, (ushort)TDDCommand::cm_ed_Copy, kbNoKey)
                                                      ), nullptr);
 
                 TPoint tmp;
@@ -89,11 +89,11 @@ void TTrialRadioButtons::handleEvent(TEvent& event)
                     case 0:
                         //-- нет команды
                         break;
-                    case cm_ed_DestroyRadioButtons:
+                    case (ushort)TDDCommand::cm_ed_DestroyRadioButtons:
                         destroy(this);
                         return;
                         break;
-                    case cm_ed_Copy:
+                    case (ushort)TDDCommand::cm_ed_Copy:
                         //-- формируем описание объекта в JSON-строку и запоминаем её в буфере
                         copy_buffer.clear();
                         copy_buffer = genJSON();
