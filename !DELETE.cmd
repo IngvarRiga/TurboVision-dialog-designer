@@ -10,6 +10,7 @@ del /S *.obj
 del /S *.ilk
 
 rd /S /Q .vs\tvdd
+rd /S /Q build
 rd /S /Q tvdd\x64
 ECHO ================================================================================
 ECHO -- Finish garbage. Press Any key :) ...

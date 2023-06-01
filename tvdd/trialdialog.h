@@ -30,19 +30,34 @@ public:
 	void setClassName(const char* val);
 	void setBaseClassName(const char* val);
 	void setDialogFileName(const char* val);
-	void setCentered(bool val);
 	void setCaption(const char* val);
 	void setLoaded() { dlg_loaded = true; } //-- установка признака, что диалог загружен из файла
 	void SaveDialogAs(); //-- Сохранить диалог как...
 	bool getSaved() { return DialSaved; }
+
+	//-- Windows flags
 	void set_wfDef(bool val) { wfDef = val; } //-- все значения по умолчанию
 	void set_wfMove(bool val) { tr_wfMove = val; } //-- перемещаться
 	void set_wfGrow(bool val) { tr_wfGrow = val; } //-- изменять размеры
 	void set_wfClose(bool val) { tr_wfClose = val; } //-- иметь кнопку закрытия
 	void set_wfZoom(bool val) { tr_wfZoom = val; } //-- изменять размеры
 
+	void setCentered(bool val) { prp_Centered = val; }
+	void set_ofSelectable(bool val) { tr_ofSelectable = val; }
+	void set_ofTopSelect(bool val) { tr_ofTopSelect = val; }
+	void set_ofFirstClick(bool val) { tr_ofFirstClick = val; }
+	void set_ofFramed(bool val) { tr_ofFramed = val; }
+	void set_ofPreProcess(bool val) { tr_ofPreProcess = val; }
+	void set_ofPostProcess(bool val) { tr_ofPostProcess = val; }
+	void set_ofBuffered(bool val) { tr_ofBuffered = val; }
+	void set_ofTileable(bool val) { tr_ofTileable = val; }
+	void set_ofCenterX(bool val) { tr_ofCenterX = val; }
+	void set_ofCenterY(bool val) { tr_ofCenterY = val; }
+	void set_ofValidate(bool val) { tr_ofValidate = val; }
+
+
 	void setSaved(bool val = true) { DialSaved = val; }
-	const char * getDialogFileName();
+	const char* getDialogFileName();
 
 private:
 	bool DialSaved; //-- признак сохранённости диалога
@@ -53,6 +68,19 @@ private:
 	bool tr_wfGrow; //-- изменять размеры
 	bool tr_wfClose; //-- иметь кнопку закрытия
 	bool tr_wfZoom; //-- изменять размеры
+
+	bool tr_ofSelectable;
+	bool tr_ofTopSelect;
+	bool tr_ofFirstClick;
+	bool tr_ofFramed;
+	bool tr_ofPreProcess;
+	bool tr_ofPostProcess;
+	bool tr_ofBuffered;
+	bool tr_ofTileable;
+	bool tr_ofCenterX;
+	bool tr_ofCenterY;
+	bool tr_ofValidate;
+	//bool tr_ofCentered; //-- данный флаг соответствует prp_Centered
 
 
 	char dlg_file_name[StringMaxLen]; //-- имя файла диалога (при загрузке устанавливается из имени, при создании в имя класса)
@@ -68,7 +96,7 @@ private:
 	//-----------------------------------------------------------
 
 	void GenCode(ofstream* res); //-- генерация кода диалога
-	
+
 protected:
 	bool isDest; //-- объект находится в стадии уничтожения
 };

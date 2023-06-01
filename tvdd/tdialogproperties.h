@@ -25,6 +25,20 @@ class dataTDP
     bool wfClose; //-- иметь кнопку закрытия
     bool wfZoom; //-- изменять размеры
 
+    bool ofSelectable;
+    bool ofTopSelect;
+    bool ofFirstClick;
+    bool ofFramed;
+    bool ofPreProcess;
+    bool ofPostProcess;
+    bool ofBuffered;
+    bool ofTileable;
+    bool ofCenterX;
+    bool ofCenterY;
+    bool ofValidate;
+
+
+
     ////-- при генерации кода создавать: 
     //bool gcConstructor; //-- конструктор
     //bool ghHeader; //-- заголовочный файл
@@ -32,6 +46,9 @@ class dataTDP
     //bool gcReadWriteFunc; //-- функции чтения и записи данных окна
 };
 
+/// <summary>
+/// Окно редактирование свойств диалогового окна
+/// </summary>
 class TDialogProperties : public TCustomDialog
 {
   public:

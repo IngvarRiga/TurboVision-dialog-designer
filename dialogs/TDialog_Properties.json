@@ -1,7 +1,7 @@
 {
   "base_class_name": "TDialog",
   "caption": "Свойства TDialog",
-  "centered": false,
+  "centered": true,
   "class_name": "TDialog_Properties",
   "objects": [
     {
@@ -86,7 +86,7 @@
     },
     {
       "class_name": "TInputLine",
-      "max_len": 240,
+      "max_len": 239,
       "pos": {
         "x": 2,
         "y": 3
@@ -100,7 +100,7 @@
     },
     {
       "class_name": "TInputLine",
-      "max_len": 240,
+      "max_len": 239,
       "pos": {
         "x": 2,
         "y": 5
@@ -114,7 +114,7 @@
     },
     {
       "class_name": "TInputLine",
-      "max_len": 240,
+      "max_len": 239,
       "pos": {
         "x": 2,
         "y": 7
@@ -135,7 +135,7 @@
         "y": 9
       },
       "size": {
-        "x": 43,
+        "x": 51,
         "y": 1
       },
       "type": 1004,
@@ -161,14 +161,14 @@
         "Перемещение",
         "Изменение размеров",
         "Кнопка закрытия",
-        "Кнопка зума"
+        "Кнопка 'распахивания'"
       ],
       "pos": {
         "x": 2,
         "y": 11
       },
       "size": {
-        "x": 45,
+        "x": 51,
         "y": 2
       },
       "type": 1004,
@@ -177,7 +177,7 @@
     {
       "pos": {
         "x": 48,
-        "y": 13
+        "y": 14
       },
       "size": {
         "x": 11,
@@ -229,8 +229,8 @@
   },
   "type": 0,
   "wfClose": true,
-  "wfDef": true,
+  "wfDef": false,
   "wfGrow": false,
-  "wfMove": true,
+  "wfMove": false,
   "wfZoom": false
 }

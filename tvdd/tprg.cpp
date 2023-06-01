@@ -188,6 +188,18 @@ TTrialDialog* TPrg::LoadDialogJSON(nlohmann::json json, const char* fname)
     win->set_wfClose(json.contains(str_wfClose) ? (bool)json[str_wfClose] : false); //-- иметь кнопку закрытия
     win->set_wfZoom(json.contains(str_wfZoom) ? (bool)json[str_wfZoom] : false); //-- изменять размеры
 
+    win->set_ofSelectable(json.contains(str_ofSelectable) ? (bool)json[str_ofSelectable] : false); 
+    win->set_ofTopSelect(json.contains(str_ofTopSelect) ? (bool)json[str_ofTopSelect] : false);
+    win->set_ofFirstClick(json.contains(str_ofFirstClick) ? (bool)json[str_ofFirstClick] : false);
+    win->set_ofFramed(json.contains(str_ofFramed) ? (bool)json[str_ofFramed] : false);
+    win->set_ofPreProcess(json.contains(str_ofPreProcess) ? (bool)json[str_ofPreProcess] : false);
+    win->set_ofPostProcess(json.contains(str_ofPostProcess) ? (bool)json[str_ofPostProcess] : false);
+    win->set_ofBuffered(json.contains(str_ofBuffered) ? (bool)json[str_ofBuffered] : false);
+    win->set_ofTileable(json.contains(str_ofTileable) ? (bool)json[str_ofTileable] : false);
+    win->set_ofCenterX(json.contains(str_ofCenterX) ? (bool)json[str_ofCenterX] : false);
+    win->set_ofCenterY(json.contains(str_ofCenterY) ? (bool)json[str_ofCenterY] : false);
+    win->set_ofValidate(json.contains(str_ofValidate) ? (bool)json[str_ofValidate] : false);
+
     tmp = json[str_caption];
     win->setCaption(tmp.c_str());
     //-- формируем перечень объектов, которые уже вставлены в диалоговое окно
@@ -291,10 +303,10 @@ TDialog* TPrg::AboutDialog()
     TCustomDialog* dlg = new TCustomDialog(49, 11, winAboutCapt);
     if (!dlg) return 0;
     dlg->insert(new TStaticText(TRect(3, 2, 47, 3), winAboutText1));
-    dlg->insert(new TStaticText(TRect(3, 3, 47, 4), "\003Основано на:"));
+    dlg->insert(new TStaticText(TRect(3, 3, 47, 4), "\003Based on:"));
     dlg->insert(new TStaticText(TRect(3, 4, 47, 5), "\003Turbo Vision by magiblot"));
     dlg->insert(new TStaticText(TRect(3, 5, 47, 6), "\003JSON C++ by nlohmann"));
-    dlg->insert(new TStaticText(TRect(3, 6, 47, 7), "\003(C) Иван Рог"));
+    dlg->insert(new TStaticText(TRect(3, 6, 47, 7), "\003(C) Ivan Rog"));
     dlg->insert(new TButton(TRect(20, 8, 30, 10), txt_btnOk, cmOK, bfDefault));
     dlg->selectNext(False);
     return dlg;

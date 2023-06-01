@@ -191,7 +191,7 @@
 #define txt_RewriteDialogFile "\003Dialog file already exist. Rewrite it?"
 #define txt_PropertyDialogCaption "Dialog properties"
 #define txt_PropertyStaticText "TStaticText properties"
-#define txt_PropertyInputLIne "TInputLine properties"
+#define txt_PropertyInputLine "TInputLine properties"
 #define txt_PropertyInputLong "TInputLong properties"   
 #define txt_PropertyInputDouble "TInputDouble properties"   
 #define txt_PropertyButton "TButton properties"      
@@ -223,15 +223,16 @@
 #define txt_pd_Keys "Keys"
 
 #define txt_dlg_SaveAsCaption "Save dialog as..."
-#define txt_dlg_SaveCodeAsCaption "Save source code как..."
+#define txt_dlg_SaveCodeAsCaption "Save source code as..."
 #define txt_dlg_LoadAsCaption "Load dialog from..."
 #define txt_dlg_SaveAsName "Name"
-#define txt_dlg_SaveCodeAsCaption "Save dialog SRC code as..."
 
 #define txt_dlg_GadgetsPanel "D&D"
 #define txt_dlg_StaticText "Text"
 #define txt_dlg_InputLine "ABC"
 #define txt_dlg_Buton "~O~K"
+#define txt_dlg_InputLong "123"
+#define txt_dlg_InputDouble "1.2"
 
 #define txt_error_NotJSON "Error reading JSON, probably consist structure errors?"
 #define txt_error_Unreleased "\003Unreleased. :("

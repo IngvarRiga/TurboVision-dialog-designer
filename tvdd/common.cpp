@@ -40,6 +40,17 @@ const char* str_wfGrow = "wfGrow"; //-- изменять размеры
 const char* str_wfClose = "wfClose"; //-- иметь кнопку закрытия
 const char* str_wfZoom = "wfZoom"; //-- изменять размеры
 
+const char* str_ofSelectable = "ofSelectable";
+const char* str_ofTopSelect = "ofTopSelect";
+const char* str_ofFirstClick = "ofFirstClick";
+const char* str_ofFramed = "ofFramed";
+const char* str_ofPreProcess = "ofPreProcess";
+const char* str_ofPostProcess = "ofPostProcess";
+const char* str_ofBuffered = "ofBuffered";
+const char* str_ofTileable = "ofTileable";
+const char* str_ofCenterX = "ofCenterX";
+const char* str_ofCenterY = "ofCenterY";
+const char* str_ofValidate = "ofValidate";
 
 
 void DragObject(TView* obj, TEvent event)
