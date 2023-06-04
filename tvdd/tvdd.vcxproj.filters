@@ -159,9 +159,6 @@
     <ClCompile Include="wcluster.cpp">
       <Filter>Исходные файлы\Rework</Filter>
     </ClCompile>
-    <ClCompile Include="textrainput.cpp">
-      <Filter>Исходные файлы\TVExtra</Filter>
-    </ClCompile>
     <ClCompile Include="tcustomwindow.cpp">
       <Filter>Исходные файлы\Базовые классы</Filter>
     </ClCompile>
@@ -171,8 +168,14 @@
     <ClCompile Include="tinputlongproperties.cpp">
       <Filter>Исходные файлы\Редакторы свойств</Filter>
     </ClCompile>
-    <ClCompile Include="textinputline.cpp">
+    <ClCompile Include="textinputlong.cpp">
       <Filter>Исходные файлы\TVExtra</Filter>
+    </ClCompile>
+    <ClCompile Include="textinputdouble.cpp">
+      <Filter>Исходные файлы\TVExtra</Filter>
+    </ClCompile>
+    <ClCompile Include="ttrialinputdouble.cpp">
+      <Filter>Исходные файлы\Классы дизайнера</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -289,6 +292,9 @@
     </ClInclude>
     <ClInclude Include="tinputlongproperties.h">
       <Filter>Файлы заголовков\Редакторы свойств</Filter>
+    </ClInclude>
+    <ClInclude Include="ttrialinputdouble.h">
+      <Filter>Файлы заголовков\Классы дизайнера</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

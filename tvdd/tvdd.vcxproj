@@ -234,8 +234,8 @@
     <ClCompile Include="tcustomdialog.cpp" />
     <ClCompile Include="tcustomwindow.cpp" />
     <ClCompile Include="tdialogproperties.cpp" />
-    <ClCompile Include="textinputline.cpp" />
-    <ClCompile Include="textrainput.cpp" />
+    <ClCompile Include="textinputdouble.cpp" />
+    <ClCompile Include="textinputlong.cpp" />
     <ClCompile Include="tinputlineproperties.cpp" />
     <ClCompile Include="tinputlongproperties.cpp" />
     <ClCompile Include="tlistboxproperties.cpp" />
@@ -248,6 +248,7 @@
     <ClCompile Include="ttrialbutton.cpp" />
     <ClCompile Include="ttrialcheckboxes.cpp" />
     <ClCompile Include="ttrialdialogbackground.cpp" />
+    <ClCompile Include="ttrialinputdouble.cpp" />
     <ClCompile Include="ttrialinputline.cpp" />
     <ClCompile Include="ttrialinputlong.cpp" />
     <ClCompile Include="ttriallistbox.cpp" />
@@ -288,6 +289,7 @@
     <ClInclude Include="ttrialbutton.h" />
     <ClInclude Include="ttrialcheckboxes.h" />
     <ClInclude Include="ttrialdialogbackground.h" />
+    <ClInclude Include="ttrialinputdouble.h" />
     <ClInclude Include="ttrialinputline.h" />
     <ClInclude Include="ttrialinputlong.h" />
     <ClInclude Include="ttriallistbox.h" />

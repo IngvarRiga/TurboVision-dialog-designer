@@ -25,23 +25,29 @@ private:
     /// </summary>
     long minv, maxv;
     /// <summary>
-    /// 
+    /// Конвертация строки в Long
     /// </summary>
     /// <param name="tmp"></param>
     /// <param name="out"></param>
-    /// <returns></returns>
-    bool convertl(const char* tmp, long* out);
+    /// <returns>Возвращает true, если конвертация успешна</returns>
+    bool convert(const char* tmp, long* out);
     /// <summary>
     /// Отобразить ошибку ввода
     /// </summary>
     void ShowError();
+    void draw();
+
+    Boolean canScroll(int delta);
+    static const char rightArrow = '\x10';
+    static const char leftArrow = '\x11';
+    int displayedPos(int pos);
 
 public:
 
     TInputLong(const TRect& bounds, long MinValue = LONG_MIN, long MaxValue = LONG_MAX, long DefValue = 0);
     ~TInputLong() {};
 
-    virtual void handleEvent(TEvent& event);
+   // virtual void handleEvent(TEvent& event);
     /// <summary>
     /// Нормализованное получение данных 
     /// </summary>
@@ -59,85 +65,64 @@ public:
     /// <returns></returns>
     bool CheckValue(long val);
 
-    virtual void setState(ushort aState, Boolean enable);
+   // virtual void setState(ushort aState, Boolean enable);
 };
 
-/* ---------------------------------------------------------------------- */
-/*      class TExtInputLine                                                  */
-/*                                                                        */
-/*      Palette layout                                                    */
-/*        1 = Passive                                                     */
-/*        2 = Active                                                      */
-/*        3 = Selected                                                    */
-/*        4 = Arrows                                                      */
-/* ---------------------------------------------------------------------- */
-
-
-//const ushort
-//ilMaxBytes = 0,
-//ilMaxWidth = 1,
-//ilMaxGraphemes = 2;
-
-//class _FAR TRect;
-//struct _FAR TEvent;
-//class _FAR TValidator;
-
-/// <summary>
-/// Переделка базового класса TInputLine. Потоковая загрузка удалена как устаревшая
-/// </summary>
-class TExtInputLine : public TView
+//-- определение класса TInputLong
+class TInputDouble : public TInputLine
 {
+private:
+    /// <summary>
+    /// Редактируемое значение
+    /// </summary>
+    long double value;
+    /// <summary>
+    /// Допустимый диапазон изменений значения
+    /// </summary>
+    long double minv, maxv;
+    /// <summary>
+    /// Конвертация строки в Long Double
+    /// </summary>
+    /// <param name="tmp"></param>
+    /// <param name="out"></param>
+    /// <returns>Возвращает true, если конвертация успешна</returns>
+    bool convert(const char* tmp, long  double* out);
+    /// <summary>
+    /// Отобразить ошибку ввода
+    /// </summary>
+    void ShowError();
+    void draw();
+
+    Boolean canScroll(int delta);
+    static const char rightArrow = '\x10';
+    static const char leftArrow = '\x11';
+    int displayedPos(int pos);
 
 public:
 
-    TExtInputLine(const TRect& bounds, uint limit, TValidator* aValid = nullptr, ushort limitMode = ilMaxBytes) noexcept;
-    ~TExtInputLine();
+    TInputDouble(const TRect& bounds, long double MinValue = -FLT_MAX, long double MaxValue = FLT_MAX, long double DefValue = -100.0);
+    ~TInputDouble() {};
 
-    virtual ushort dataSize();
-    virtual void draw();
-    virtual void getData(void* rec);
-    virtual TPalette& getPalette() const;
-    virtual void handleEvent(TEvent& event);
-    void selectAll(Boolean enable, Boolean scroll = True);
-    virtual void setData(void* rec);
-    virtual void setState(ushort aState, Boolean enable);
-    virtual Boolean valid(ushort cmd);
-    void setValidator(TValidator* aValid);
+    // virtual void handleEvent(TEvent& event);
+     /// <summary>
+     /// Нормализованное получение данных 
+     /// </summary>
+     /// <returns></returns>
+    long double getValue() { return value; }
+    /// <summary>
+    /// Нормализованная установка данных
+    /// </summary>
+    /// <param name="val"></param>
+    void setValue(long double val);
+    /// <summary>
+    /// Проверка попадания в диапазон допустимых значений
+    /// </summary>
+    /// <param name="val"> - проверяемое значение</param>
+    /// <returns></returns>
+    bool CheckValue(long double val);
 
-    char* data;
-    uint maxLen;
-    uint maxWidth;
-    int curPos;
-    int firstPos;
-    int selStart;
-    int selEnd;
-
-private:
-
-    Boolean canScroll(int delta);
-    int mouseDelta(TEvent& event);
-    int mousePos(TEvent& event);
-    int displayedPos(int pos);
-    void deleteSelect();
-    void deleteCurrent();
-    void adjustSelectBlock();
-    void saveState();
-    void restoreState();
-    Boolean checkValid(Boolean);
-
-    static const char rightArrow = '\x10';
-    static const char leftArrow = '\x11';
-
-    TValidator* validator;
-
-    int anchor;
-    char* oldData;
-    int oldCurPos;
-    int oldFirstPos;
-    int oldSelStart;
-    int oldSelEnd;
+    // virtual void setState(ushort aState, Boolean enable);
 };
-
 
 #endif
 

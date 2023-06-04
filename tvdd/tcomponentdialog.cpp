@@ -137,17 +137,17 @@ void TComponentDialog::handleEvent(TEvent& event)
 				{
 					//-- очистка события должна быть именно здесь иначе сообщение о Drop не доходит до диалогового окна
 					clearEvent(event);
-					messageBox(txt_error_Unreleased, mfInformation | mfOKButton);
+					//messageBox(txt_error_Unreleased, mfInformation | mfOKButton);
 
-					//auto v = new TWrapInputLine(TRect(pt->x, pt->y - 1, pt->x + 10, pt->y), 11, nullptr, TLineType::lt_InputDouble, false);
-					//v->setData((void*)txt_dlg_InputDouble);
-					//v->setDragged();
-					//v->options |= ofPreProcess | ofPostProcess;
-					////-- прикручиваем тень к объекту, чтобы он "парил"
-					//v->setState(sfShadow, true);
-					//v->drawView();
-					//owner->insert(v);
-					//message(v, evMouseDown, -1, 0);
+					auto v = new TWrapInputLine(TRect(pt->x, pt->y - 1, pt->x + 10, pt->y), 11, nullptr, TLineType::lt_InputDouble, false);
+					v->setData((void*)txt_dlg_InputDouble);
+					v->setDragged();
+					v->options |= ofPreProcess | ofPostProcess;
+					//-- прикручиваем тень к объекту, чтобы он "парил"
+					v->setState(sfShadow, true);
+					v->drawView();
+					owner->insert(v);
+					message(v, evMouseDown, -1, 0);
 					break;
 				}
 			case (ushort)TDDCommand::cm_cmp_CreateButton:

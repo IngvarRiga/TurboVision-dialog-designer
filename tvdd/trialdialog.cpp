@@ -7,6 +7,7 @@
 #include "ttrialstatictext.h"
 #include "ttrialinputline.h"
 #include "ttrialinputlong.h"
+#include "ttrialinputdouble.h"
 #include "ttrialbutton.h"
 #include "ttrialcheckboxes.h"
 #include "ttrialradiobuttons.h"
@@ -642,6 +643,48 @@ void TTrialDialog::handleEvent(TEvent& event)
 			}
 			break;
 		}
+		case (ushort)TDDCommand::cm_ed_InsertInputDouble:
+		{
+			TPoint tmp;
+			tmp.x = ((TPoint*)event.message.infoPtr)->x;
+			tmp.y = ((TPoint*)event.message.infoPtr)->y;
+			clearEvent(event);
+			auto lc = makeLocal(tmp);
+			//-- добавление нового TInputLine
+			auto v = new TTrialInputDouble(TRect(lc.x, lc.y, lc.x + 12, lc.y + 1), 255);
+			v->setData((void*)txt_dlg_InputDouble);
+			forEach(&unselected, 0);
+			v->setSelected(true);
+			insert(v);
+			DialSaved = false;
+			break;
+		}
+		case (ushort)TDDCommand::cm_drp_DropInputDouble:
+		{
+			//-- для упрощения кода в режиме дизайна используется клон TInputLine
+
+			TPoint tmp;
+			tmp.x = ((TPoint*)event.message.infoPtr)->x;
+			tmp.y = ((TPoint*)event.message.infoPtr)->y;
+			auto lc = makeLocal(tmp);
+			auto b = getExtent();
+			//-- если Drop происходит ВНЕ границ окна - просто игнорируем событие и все
+			//-- чтобы не вставлять то, что не увидится
+			if ((lc.x >= 1) && (lc.y >= 1) && (lc.x < b.b.x - 1) && (lc.y < b.b.y - 1))
+			{
+				clearEvent(event);
+				//-- добавление нового TInputLong
+				auto v = new TTrialInputDouble(TRect(lc.x, lc.y, lc.x + 12, lc.y + 1), 255);
+				v->setData((void*)txt_dlg_InputDouble);
+				forEach(&unselected, 0);
+				v->setSelected(true);
+				insert(v);
+				DialSaved = false;
+				this->focus();
+			}
+			break;
+		}
+
 		case (ushort)TDDCommand::cm_ed_InsertButton:
 		{
 			TPoint tmp;

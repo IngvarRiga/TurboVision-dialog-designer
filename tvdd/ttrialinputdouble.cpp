@@ -1,8 +1,8 @@
-#include "ttrialinputlong.h"
+#include "ttrialinputdouble.h"
 #include "multilang.h"
 #include "common.h"
 
-TTrialInputLong::TTrialInputLong(const TRect& bounds, uint aMaxLen, TValidator* aValid) :
+TTrialInputDouble::TTrialInputDouble(const TRect& bounds, uint aMaxLen, TValidator* aValid) :
     TWrapInputLine(bounds, aMaxLen, aValid)
 {
     eventMask |= 0xFF; //-- установлен флаг получения ВСЕХ сообщений
@@ -13,13 +13,13 @@ TTrialInputLong::TTrialInputLong(const TRect& bounds, uint aMaxLen, TValidator* 
     memset(var_name, 0x0, StringMaxLen);
     memset(class_name, 0x0, StringMaxLen);
     strncpy(var_name, txt_control, strlen(txt_control));
-    strncpy(class_name, txt_TInputLong, strlen(txt_TInputLong));
-    minvalue = LONG_MIN;
-    maxvalue = LONG_MAX;
+    strncpy(class_name, txt_TInputDouble, strlen(txt_TInputDouble));
+    minvalue = -FLT_MAX;
+    maxvalue = FLT_MAX;
     defvalue = 0;
 }
 
-void TTrialInputLong::handleEvent(TEvent& event)
+void TTrialInputDouble::handleEvent(TEvent& event)
 {
     if (event.what | evMouse)
     {
@@ -28,7 +28,7 @@ void TTrialInputLong::handleEvent(TEvent& event)
         //-- вызов окна редактирования свойств объекта
         if ((event.mouse.buttons == mbLeftButton) && (event.mouse.eventFlags == meDoubleClick))
         {
-            message(owner, evBroadcast, (ushort)TDDCommand::cmOption_InputLong, this);
+            message(owner, evBroadcast, (ushort)TDDCommand::cmOption_InputDouble, this);
             clearEvent(event);
         }
         if (event.mouse.buttons == mbRightButton)
@@ -37,9 +37,9 @@ void TTrialInputLong::handleEvent(TEvent& event)
                 //-- создание контекстного меню диалога
                 TMenuBox* contextMenu = new TMenuBox(TRect(0, 0, 0, 0),
                                                      new TMenu(
-                                                         *new TMenuItem(txt_PropertyInputLong, (ushort)TDDCommand::cmOption_InputLong, -1, hcNoContext) +
+                                                         *new TMenuItem(txt_PropertyInputDouble, (ushort)TDDCommand::cmOption_InputDouble, -1, hcNoContext) +
                                                          newLine() +
-                                                         *new TMenuItem(txt_mnu_cmDelete, (ushort)TDDCommand::cm_ed_DestroyInputLong, kbCtrlDel, hcNoContext) +
+                                                         *new TMenuItem(txt_mnu_cmDelete, (ushort)TDDCommand::cm_ed_DestroyInputDouble, kbCtrlDel, hcNoContext) +
                                                          newLine() +
                                                          *new TMenuItem(txt_mnu_Copy, (ushort)TDDCommand::cm_ed_Copy, kbNoKey)
                                                      ), nullptr);
@@ -108,7 +108,7 @@ void TTrialInputLong::handleEvent(TEvent& event)
     TWrapInputLine::handleEvent(event);
 }
 
-void TTrialInputLong::setState(ushort aState, Boolean enable)
+void TTrialInputDouble::setState(ushort aState, Boolean enable)
 {
     TWrapInputLine::setState(aState, enable);
     if (aState == sfSelected)
@@ -118,7 +118,7 @@ void TTrialInputLong::setState(ushort aState, Boolean enable)
     }
 }
 
-void TTrialInputLong::sizeLimits(TPoint& min, TPoint& max)
+void TTrialInputDouble::sizeLimits(TPoint& min, TPoint& max)
 {
     TWrapInputLine::sizeLimits(min, max);
     min.x = 1;
@@ -128,7 +128,7 @@ void TTrialInputLong::sizeLimits(TPoint& min, TPoint& max)
     max.y = 1;
 }
 
-void TTrialInputLong::genCode(void* val)
+void TTrialInputDouble::genCode(void* val)
 {
     ofstream* res = (ofstream*)val;
     auto r = getBounds();
@@ -139,16 +139,16 @@ void TTrialInputLong::genCode(void* val)
 
 }
 
-char* TTrialInputLong::getVarName()
+char* TTrialInputDouble::getVarName()
 {
     return var_name;
 }
 
-uint TTrialInputLong::getVarLen()
+uint TTrialInputDouble::getVarLen()
 {
     return maxLen;
 }
-void TTrialInputLong::setClassName(const char* val)
+void TTrialInputDouble::setClassName(const char* val)
 {
     memset(class_name, 0x0, StringMaxLen);
     auto len = strlen(val);
@@ -156,12 +156,12 @@ void TTrialInputLong::setClassName(const char* val)
         memcpy(class_name, val, len > StringMaxLen ? StringMaxLen : len);
 }
 
-char* TTrialInputLong::getClassName()
+char* TTrialInputDouble::getClassName()
 {
     return class_name;
 }
 
-void TTrialInputLong::setVarName(const char* val)
+void TTrialInputDouble::setVarName(const char* val)
 {
     memset(var_name, 0x0, StringMaxLen);
     auto len = strlen(val);
@@ -169,10 +169,10 @@ void TTrialInputLong::setVarName(const char* val)
         memcpy(var_name, val, len > StringMaxLen ? StringMaxLen : len);
 }
 
-nlohmann::json TTrialInputLong::genJSON()
+nlohmann::json TTrialInputDouble::genJSON()
 {
     nlohmann::json job;
-    job[str_type] = objType::otInputLong;
+    job[str_type] = objType::otInputDouble;
     job[str_max_len] = getVarLen();
     job[str_var_name] = getVarName();
     job[str_class_name] = getClassName();
@@ -191,33 +191,33 @@ nlohmann::json TTrialInputLong::genJSON()
 }
 
 
-void TTrialInputLong::setVarLen(uint val)
+void TTrialInputDouble::setVarLen(uint val)
 {
     maxLen = val;
 }
 
-void TTrialInputLong::setMaxValue(long val)
+void TTrialInputDouble::setMaxValue(long double val)
 {
     maxvalue = val;
 }
-void TTrialInputLong::setMinValue(long val)
+void TTrialInputDouble::setMinValue(long double val)
 {
     minvalue = val;
 }
-void TTrialInputLong::setDefValue(long val)
+void TTrialInputDouble::setDefValue(long double val)
 {
     defvalue = val;
 }
 
-long TTrialInputLong::getMaxValue()
+long double TTrialInputDouble::getMaxValue()
 {
     return maxvalue;
 }
-long TTrialInputLong::getMinValue()
+long double TTrialInputDouble::getMinValue()
 {
     return minvalue;
 }
-long TTrialInputLong::getDefValue()
+long double TTrialInputDouble::getDefValue()
 {
     return defvalue;
 }

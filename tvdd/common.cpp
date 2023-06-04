@@ -3,6 +3,7 @@
 #include "ttrialstatictext.h"
 #include "ttrialinputline.h"
 #include "ttrialinputlong.h"
+#include "ttrialinputdouble.h"
 #include "textrainput.h"
 #include "ttrialbutton.h"
 #include "ttrialcheckboxes.h"
@@ -104,11 +105,11 @@ void generateDialogCode(TView* obj, void* res)
         TTrialInputLong* to = dynamic_cast<TTrialInputLong*> (obj);
         to->genCode(&ss);
     }
-    //if (dynamic_cast<TTrialInputDouble*> (obj))
-    //{
-    //    TTrialInputDouble* to = dynamic_cast<TTrialInputDouble*> (obj);
-    //    to->genCode(&ss);
-    //}
+    if (dynamic_cast<TTrialInputDouble*> (obj))
+    {
+        TTrialInputDouble* to = dynamic_cast<TTrialInputDouble*> (obj);
+        to->genCode(&ss);
+    }
     if (dynamic_cast<TTrialInputLine*> (obj))
     {
         TTrialInputLine* to = dynamic_cast<TTrialInputLine*> (obj);
@@ -173,11 +174,11 @@ void generateDialogHeader(TView* obj, void* res)
         TTrialInputLong* to = dynamic_cast<TTrialInputLong*> (obj);
         ss << tab << to->getClassName() << "* " << to->getVarName() << ";";
     }
-    //if (dynamic_cast<TTrialInputDouble*> (obj))
-    //{
-    //    TTrialInputDouble* to = dynamic_cast<TTrialInputDouble*> (obj);
-    //    to->genCode(&ss);
-    //}
+    if (dynamic_cast<TTrialInputDouble*> (obj))
+    {
+        TTrialInputDouble* to = dynamic_cast<TTrialInputDouble*> (obj);
+        to->genCode(&ss);
+    }
     if (dynamic_cast<TTrialInputLine*> (obj))
     {
         TTrialInputLine* to = dynamic_cast<TTrialInputLine*> (obj);
@@ -239,6 +240,8 @@ void generateDialogUses(TView* obj, void* res)
         if (std::find(src->begin(), src->end(), tmp) == src->end())
             src->push_back(tmp);
     }
+    //-- Следующие 2 компонента не являются частью TurboVision
+    //-- поэтому #define Uses_ им не нужны
     //if (dynamic_cast<TTrialInputLong*> (obj))
     //{
     //}
@@ -386,6 +389,11 @@ void generateDialogJSON(TView* obj, void* _src)
         TTrialInputLong* to = dynamic_cast<TTrialInputLong*> (obj);
         sav->push_back(to->genJSON());
     }
+    if (dynamic_cast<TTrialInputDouble*> (obj))
+    {
+        TTrialInputDouble* to = dynamic_cast<TTrialInputDouble*> (obj);
+        sav->push_back(to->genJSON());
+    }
     //if (dynamic_cast<TTrialListBox*> (obj))
     //{
     //	TTrialListBox* to = dynamic_cast<TTrialListBox*> (obj);
@@ -457,6 +465,33 @@ TView* object_fromJSON(nlohmann::json object, bool test)
                 }
                 break;
             }
+        case objType::otInputDouble:
+        {
+            int ax = object[str_pos][str_x];
+            int ay = object[str_pos][str_y];
+            int ax1 = object[str_pos][str_x]; ax1 += (int)object[str_size][str_x];
+            int ay1 = object[str_pos][str_y]; ay1 += (int)object[str_size][str_y];
+            long double minv = object[str_values][str_values_min];
+            long double maxv = object[str_values][str_values_max];
+            long double defv = object[str_values][str_values_def];
+            if (test)
+            {
+                auto cmp = new TInputDouble(TRect(ax, ay, ax1, ay1), minv, maxv, defv);
+                return cmp;
+            }
+            else
+            {
+                auto cmp = new TTrialInputDouble(TRect(ax, ay, ax1, ay1), object[str_max_len]);
+                cmp->setData((void*)txt_dlg_InputDouble);
+                tmp = object[str_var_name];
+                cmp->setVarName(tmp.c_str());
+                cmp->setMaxValue(maxv);
+                cmp->setMinValue(minv);
+                cmp->setDefValue(defv);
+                return cmp;
+            }
+            break;
+        }
         case objType::otStaticText:
             {
                 int ax = object[str_pos][str_x];
