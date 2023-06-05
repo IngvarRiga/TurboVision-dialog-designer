@@ -18,7 +18,7 @@ TInputLong::TInputLong(const TRect& bounds, long MinValue, long MaxValue, long D
 		minv = MaxValue;
 	}
 	if (CheckValue(DefValue))
-		value = DefValue;
+		value = def_value = DefValue;
 	else
 	{
 		ShowError();
@@ -29,6 +29,60 @@ TInputLong::TInputLong(const TRect& bounds, long MinValue, long MaxValue, long D
 			value = (maxv + minv) / 2L;
 	}
 	TInputLine::setData((void*)to_string(value).c_str());
+}
+
+void TInputLong::handleEvent(TEvent& event)
+{
+	if (event.what | evMouse)
+	{
+		if (event.mouse.buttons == mbRightButton)
+			if (event.what == evMouseDown)
+			{
+				//-- создание контекстного меню диалога
+				TMenuBox* contextMenu = new TMenuBox(TRect(0, 0, 0, 0),
+					new TMenu(
+						*new TMenuItem(txt_set_Minimum + std::to_string(minv), (ushort)TNumericInputCommand::cmSetMinimum, kbNoKey) +
+						newLine() +
+						*new TMenuItem(txt_set_Default + std::to_string(def_value), (ushort)TNumericInputCommand::cmSetDefault, kbNoKey) +
+						newLine() +
+						*new TMenuItem(txt_set_Maximum + std::to_string(maxv), (ushort)TNumericInputCommand::cmSetMaximum, kbNoKey)
+					), nullptr);
+
+				TPoint tmp;
+				tmp.x = event.mouse.where.x;
+				tmp.y = event.mouse.where.y;
+				clearEvent(event);
+
+				//-- смещаем левую верхнюю точку меню в точку клика мышкой на экране
+				auto b = contextMenu->getBounds();
+				auto dx = b.b.x - b.a.x;
+				auto dy = b.b.y - b.a.y;
+				b.a.x = tmp.x;
+				b.a.y = tmp.y - 1;
+				b.b.x = b.a.x + dx;
+				b.b.y = b.a.y + dy;
+				contextMenu->setBounds(b);
+				//---------------------------------------------------------------------
+				auto res = this->owner->owner->execView(contextMenu);
+				destroy(contextMenu);
+				switch (res)
+				{
+				case (ushort)TNumericInputCommand::cmSetMinimum:
+					setValue(minv);
+					return;
+					break;
+				case (ushort)TNumericInputCommand::cmSetDefault:
+					setValue(def_value);
+					return;
+					break;
+				case (ushort)TNumericInputCommand::cmSetMaximum:
+					setValue(maxv);
+					return;
+					break;
+				}
+			}
+	}
+	TInputLine::handleEvent(event);
 }
 
 void TInputLong::ShowError()

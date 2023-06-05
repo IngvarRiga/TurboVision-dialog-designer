@@ -7,10 +7,32 @@
 #define Uses_TKeys
 #define Uses_TRect
 #define Uses_MsgBox
+#define Uses_TMenuBox
+#define Uses_TMenu
+#define Uses_TMenuItem
+#define Uses_TGroup
 #include <tvision/tv.h>
 #include <math.h>
 #include "multilang.h"
 
+#ifdef RUS
+#define txt_set_Minimum "Установить минимум: "
+#define txt_set_Maximum "Установить максимум: "
+#define txt_set_Default "По умолчанию: "
+#endif
+
+#ifdef ENG
+#define txt_set_Minimum "Set min: "
+#define txt_set_Maximum "Set max: "
+#define txt_set_Default "Set default: "
+#endif
+
+enum class TNumericInputCommand : ushort
+{
+    cmSetMinimum = 11001,
+    cmSetMaximum = 11002,
+    cmSetDefault = 11003,
+};
 
 //-- определение класса TInputLong
 class TInputLong : public TInputLine
@@ -20,6 +42,10 @@ private:
     /// Редактируемое значение
     /// </summary>
     long value;
+    /// <summary>
+    /// Значение по умолчанию
+    /// </summary>
+    long def_value;
     /// <summary>
     /// Допустимый диапазон изменений значения
     /// </summary>
@@ -46,6 +72,7 @@ public:
 
     TInputLong(const TRect& bounds, long MinValue = LONG_MIN, long MaxValue = LONG_MAX, long DefValue = 0);
     ~TInputLong() {};
+    virtual void handleEvent(TEvent& event);
 
    // virtual void handleEvent(TEvent& event);
     /// <summary>
@@ -77,6 +104,10 @@ private:
     /// </summary>
     long double value;
     /// <summary>
+    /// Значение по умолчанию
+    /// </summary>
+    long def_value;
+    /// <summary>
     /// Допустимый диапазон изменений значения
     /// </summary>
     long double minv, maxv;
@@ -100,11 +131,11 @@ private:
 
 public:
 
-    TInputDouble(const TRect& bounds, long double MinValue = -FLT_MAX, long double MaxValue = FLT_MAX, long double DefValue = -100.0);
+    TInputDouble(const TRect& bounds, long double MinValue = -FLT_MAX, long double MaxValue = FLT_MAX, long double DefValue = 0.0);
     ~TInputDouble() {};
+    virtual void handleEvent(TEvent& event);
 
-    // virtual void handleEvent(TEvent& event);
-     /// <summary>
+    /// <summary>
      /// Нормализованное получение данных 
      /// </summary>
      /// <returns></returns>
