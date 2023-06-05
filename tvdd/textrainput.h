@@ -67,6 +67,7 @@ private:
     static const char rightArrow = '\x10';
     static const char leftArrow = '\x11';
     int displayedPos(int pos);
+    std::string getDiap();
 
 public:
 
@@ -91,6 +92,7 @@ public:
     /// <param name="val"> - проверяемое значение</param>
     /// <returns></returns>
     bool CheckValue(long val);
+    
 
    // virtual void setState(ushort aState, Boolean enable);
 };
@@ -104,9 +106,13 @@ private:
     /// </summary>
     long double value;
     /// <summary>
+    /// Точность представления (после запятой). Не может быть менее 1
+    /// </summary>
+    int prec;
+    /// <summary>
     /// Значение по умолчанию
     /// </summary>
-    long def_value;
+    long double def_value;
     /// <summary>
     /// Допустимый диапазон изменений значения
     /// </summary>
@@ -117,7 +123,7 @@ private:
     /// <param name="tmp"></param>
     /// <param name="out"></param>
     /// <returns>Возвращает true, если конвертация успешна</returns>
-    bool convert(const char* tmp, long  double* out);
+    bool convert(const char* tmp, long double* out);
     /// <summary>
     /// Отобразить ошибку ввода
     /// </summary>
@@ -128,10 +134,11 @@ private:
     static const char rightArrow = '\x10';
     static const char leftArrow = '\x11';
     int displayedPos(int pos);
+    std::string getDiap();
 
 public:
 
-    TInputDouble(const TRect& bounds, long double MinValue = -FLT_MAX, long double MaxValue = FLT_MAX, long double DefValue = 0.0);
+    TInputDouble(const TRect& bounds, long double MinValue = -FLT_MAX, long double MaxValue = FLT_MAX, long double DefValue = 0.0, uint precision = 5);
     ~TInputDouble() {};
     virtual void handleEvent(TEvent& event);
 
@@ -152,7 +159,8 @@ public:
     /// <returns></returns>
     bool CheckValue(long double val);
 
-    // virtual void setState(ushort aState, Boolean enable);
+    std::string convert_to_exp(long double val);
+        // virtual void setState(ushort aState, Boolean enable);
 };
 
 #endif

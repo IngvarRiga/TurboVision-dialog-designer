@@ -37,6 +37,7 @@ class TTrialInputDouble : public TWrapInputLine
     long double getMaxValue();
     long double getMinValue();
     long double getDefValue();
+    int getPrecision();
 
     //-- установка значений
     void setVarName(const char *val);
@@ -45,6 +46,7 @@ class TTrialInputDouble : public TWrapInputLine
     void setMaxValue(long double val);
     void setMinValue(long double val);
     void setDefValue(long double val);
+    void setPrecision(int val);
 
     nlohmann::json genJSON();
 
@@ -55,7 +57,8 @@ class TTrialInputDouble : public TWrapInputLine
     long double minvalue; //-- минимально допустимое значение
     long double maxvalue; //-- максимально допустимое значение
     long double defvalue; //-- значение задаваемое по умолчанию
- };
+    int precision; //-- значение задаваемое по умолчанию
+};
 
 #endif /* TTRIALINPUTLINE_H */
 

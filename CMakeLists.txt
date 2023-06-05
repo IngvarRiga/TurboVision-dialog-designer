@@ -17,9 +17,6 @@ else()
         message("[INFO] Use RUSSIAN resources")
 endif()
 
- message("[INFO] -- " ${CMAKE_BUILD_TYPE})
-
-
 if (WIN32)
     message("[INFO] Build Windows revision")
 endif(WIN32)

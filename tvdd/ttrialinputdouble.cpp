@@ -17,6 +17,7 @@ TTrialInputDouble::TTrialInputDouble(const TRect& bounds, uint aMaxLen, TValidat
     minvalue = -FLT_MAX;
     maxvalue = FLT_MAX;
     defvalue = 0;
+    precision = 8;
 }
 
 void TTrialInputDouble::handleEvent(TEvent& event)
@@ -134,7 +135,8 @@ void TTrialInputDouble::genCode(void* val)
     auto r = getBounds();
 
     //-- генерируем код компонента
-    *res << "\n " << var_name << " = new " << class_name << "(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), " << minvalue << ", "<< maxvalue << ", " << defvalue << ");";
+//    std::string minv = convert_to
+    *res << "\n " << var_name << " = new " << class_name << "(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), " << minvalue << ", "<< maxvalue << ", " << defvalue << ", " << precision << ");";
     *res << "\n insert(" << var_name << ");";
 
 }
@@ -187,6 +189,7 @@ nlohmann::json TTrialInputDouble::genJSON()
     job[str_values][str_values_min] = minvalue;
     job[str_values][str_values_max] = maxvalue;
     job[str_values][str_values_def] = defvalue;
+    job[str_values][str_values_prec] = precision;
     return job;
 }
 
@@ -209,6 +212,11 @@ void TTrialInputDouble::setDefValue(long double val)
     defvalue = val;
 }
 
+void TTrialInputDouble::setPrecision(int val)
+{
+    precision = val;
+}
+
 long double TTrialInputDouble::getMaxValue()
 {
     return maxvalue;
@@ -222,3 +230,7 @@ long double TTrialInputDouble::getDefValue()
     return defvalue;
 }
 
+int TTrialInputDouble::getPrecision()
+{
+    return precision;
+}

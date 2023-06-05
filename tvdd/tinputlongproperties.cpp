@@ -5,10 +5,10 @@ TInputLongProperties::TInputLongProperties() :
 	TCustomDialog(TRect(39, 24, 81, 34), txt_PropertyInputLong),
 	TWindowInit(&TDialog::initFrame)
 {
-	insert(new TStaticText(TRect(2, 2, 22, 3), "Минимальное значение"));
-	insert(new TStaticText(TRect(2, 3, 23, 4), "Максимальное значение"));
-	insert(new TStaticText(TRect(2, 4, 23, 5), "Значение по умолчанию"));
-	insert(new TStaticText(TRect(2, 5, 16, 6), "Имя переменной"));
+	insert(new TStaticText(TRect(2, 2, 22, 3), txt_PropertyMinValue));
+	insert(new TStaticText(TRect(2, 3, 23, 4), txt_PropertyMaxValue));
+	insert(new TStaticText(TRect(2, 4, 23, 5), txt_PropertyDefValue));
+	insert(new TStaticText(TRect(2, 5, 16, 6), txt_pd_VariableName));
 	minv = new TInputLong(TRect(24, 2, 40, 3), -2147483648, 2147483647, 0);
 	insert(minv);
 	maxv = new TInputLong(TRect(24, 3, 40, 4), -2147483648, 2147483647, 0);

@@ -20,6 +20,7 @@ const char* str_values = "values";
 const char* str_values_min = "min";
 const char* str_values_max = "max";
 const char* str_values_def = "def";
+const char* str_values_prec = "prec";
 const char* str_x = "x";
 const char* str_y = "y";
 const char* str_type = "type";
@@ -177,7 +178,7 @@ void generateDialogHeader(TView* obj, void* res)
     if (dynamic_cast<TTrialInputDouble*> (obj))
     {
         TTrialInputDouble* to = dynamic_cast<TTrialInputDouble*> (obj);
-        to->genCode(&ss);
+        ss << tab << to->getClassName() << "* " << to->getVarName() << ";";
     }
     if (dynamic_cast<TTrialInputLine*> (obj))
     {
@@ -314,6 +315,24 @@ void scanComponentsSize(TView* obj, void* val)
     if (dynamic_cast<TTrialInputLine*> (obj))
     {
         TTrialInputLine* to = dynamic_cast<TTrialInputLine*> (obj);
+        auto rect = to->getBounds();
+        if (rect.b.x > r->b.x)
+            r->b.x = rect.b.x;
+        if (rect.b.y > r->b.y)
+            r->b.y = rect.b.y;
+    }
+    if (dynamic_cast<TTrialInputLong*> (obj))
+    {
+        TTrialInputLong* to = dynamic_cast<TTrialInputLong*> (obj);
+        auto rect = to->getBounds();
+        if (rect.b.x > r->b.x)
+            r->b.x = rect.b.x;
+        if (rect.b.y > r->b.y)
+            r->b.y = rect.b.y;
+    }
+    if (dynamic_cast<TTrialInputDouble*> (obj))
+    {
+        TTrialInputDouble* to = dynamic_cast<TTrialInputDouble*> (obj);
         auto rect = to->getBounds();
         if (rect.b.x > r->b.x)
             r->b.x = rect.b.x;
@@ -474,9 +493,10 @@ TView* object_fromJSON(nlohmann::json object, bool test)
             long double minv = object[str_values][str_values_min];
             long double maxv = object[str_values][str_values_max];
             long double defv = object[str_values][str_values_def];
+            int prec = object[str_values][str_values_prec];
             if (test)
             {
-                auto cmp = new TInputDouble(TRect(ax, ay, ax1, ay1), minv, maxv, defv);
+                auto cmp = new TInputDouble(TRect(ax, ay, ax1, ay1), minv, maxv, defv, prec);
                 return cmp;
             }
             else

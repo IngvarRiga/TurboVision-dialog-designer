@@ -236,6 +236,7 @@
     <ClCompile Include="tdialogproperties.cpp" />
     <ClCompile Include="textinputdouble.cpp" />
     <ClCompile Include="textinputlong.cpp" />
+    <ClCompile Include="tinputdoubleproperties.cpp" />
     <ClCompile Include="tinputlineproperties.cpp" />
     <ClCompile Include="tinputlongproperties.cpp" />
     <ClCompile Include="tlistboxproperties.cpp" />
@@ -277,6 +278,7 @@
     <ClInclude Include="tcustomwindow.h" />
     <ClInclude Include="tdialogproperties.h" />
     <ClInclude Include="textrainput.h" />
+    <ClInclude Include="tinputdoubleproperties.h" />
     <ClInclude Include="tinputlineproperties.h" />
     <ClInclude Include="tinputlongproperties.h" />
     <ClInclude Include="tlistboxproperties.h" />

@@ -11,7 +11,7 @@ struct memInfo
 
 
 TComponentDialog::TComponentDialog() :
-	TCustomDialog(TRect(2, 1, 17, 14), txt_dlg_GadgetsPanel, false, false),
+	TCustomDialog(TRect(1, 1, 16, 14), txt_dlg_GadgetsPanel, false, false),
 	TWindowInit(&TCustomDialog::initFrame)
 {
 	//-- удаляем кнопку закрытия окна

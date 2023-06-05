@@ -177,6 +177,9 @@
     <ClCompile Include="ttrialinputdouble.cpp">
       <Filter>Исходные файлы\Классы дизайнера</Filter>
     </ClCompile>
+    <ClCompile Include="tinputdoubleproperties.cpp">
+      <Filter>Исходные файлы\Редакторы свойств</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -295,6 +298,9 @@
     </ClInclude>
     <ClInclude Include="ttrialinputdouble.h">
       <Filter>Файлы заголовков\Классы дизайнера</Filter>
+    </ClInclude>
+    <ClInclude Include="tinputdoubleproperties.h">
+      <Filter>Файлы заголовков\Редакторы свойств</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

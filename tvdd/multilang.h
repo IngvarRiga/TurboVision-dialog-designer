@@ -74,7 +74,13 @@
 #define txt_PropertyStaticText "Свойства TStaticText"
 #define txt_PropertyInputLine "Свойства TInputLine"        
 #define txt_PropertyInputLong "Свойства TInputLong"   
-#define txt_PropertyInputDouble "Свойства TInputDouble"   
+#define txt_PropertyInputDouble "Свойства TInputDouble"  
+
+#define txt_PropertyMinValue "Минимальное значение"
+#define txt_PropertyMaxValue "Максимальное значение"
+#define txt_PropertyDefValue "Значение по умолчанию"
+#define txt_PropertyPrecision "Точность представления"
+
 #define txt_PropertyButton "Свойства TButton"   
 #define txt_PropertyRadioButtons "Свойства TRadioButtons"   
 #define txt_PropertyCheckBoxes "Свойства TCheckBoxes"
@@ -193,6 +199,12 @@
 #define txt_PropertyStaticText "TStaticText properties"
 #define txt_PropertyInputLine "TInputLine properties"
 #define txt_PropertyInputLong "TInputLong properties"   
+
+#define txt_PropertyMinValue "Minimal"
+#define txt_PropertyMaxValue "Maximal"
+#define txt_PropertyDefValue "Default"
+#define txt_PropertyPrecision "Precision"
+
 #define txt_PropertyInputDouble "TInputDouble properties"   
 #define txt_PropertyButton "TButton properties"      
 #define txt_PropertyRadioButtons "TRadioButtons properties"   

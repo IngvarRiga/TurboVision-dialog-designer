@@ -16,6 +16,7 @@
 #include "tstatictextproperties.h"
 #include "tinputlineproperties.h"
 #include "tinputlongproperties.h"
+#include "tinputdoubleproperties.h"
 #include "tbuttonproperties.h"
 #include "tcheckboxesproperties.h"
 
@@ -94,10 +95,23 @@ void TTrialDialog::editDialogProperties()
 	data->wfDef = wfDef;
 	data->wfMove = tr_wfMove;
 	data->wfGrow = tr_wfGrow;
-
-
 	data->wfClose = tr_wfClose;
 	data->wfZoom = tr_wfZoom;
+
+	//-- дополнительные флаги
+	data->ofBuffered = tr_ofBuffered;
+	data->ofCenterX = tr_ofCenterX;
+	data->ofCenterY = tr_ofCenterY;
+	data->ofFirstClick = tr_ofFirstClick;
+	data->ofFramed = tr_ofFramed;
+	data->ofPostProcess = tr_ofPostProcess;
+	data->ofPreProcess = tr_ofPreProcess;
+	data->ofSelectable = tr_ofSelectable;
+	data->ofTileable = tr_ofTileable;
+	data->ofTopSelect = tr_ofTopSelect;
+	data->ofValidate = tr_ofValidate;
+
+
 	TDialogProperties* win = new TDialogProperties();
 	win->setData(data);
 	if (owner->execView(win) == cmOK)
@@ -112,6 +126,19 @@ void TTrialDialog::editDialogProperties()
 		set_wfGrow(data->wfGrow);
 		set_wfClose(data->wfClose);
 		set_wfZoom(data->wfZoom);
+
+		tr_ofBuffered = data->ofBuffered;
+		tr_ofCenterX = data->ofCenterX;
+		tr_ofCenterY = data->ofCenterY;
+		tr_ofFirstClick = data->ofFirstClick;
+		tr_ofFramed = data->ofFramed;
+		tr_ofPostProcess = data->ofPostProcess;
+		tr_ofPreProcess = data->ofPreProcess;
+		tr_ofSelectable = data->ofSelectable;
+		tr_ofTileable = data->ofTileable;
+		tr_ofTopSelect = data->ofTopSelect;
+		tr_ofValidate = data->ofValidate;
+
 		drawView();
 		frame->drawView();
 		DialSaved = false;
@@ -381,7 +408,7 @@ void TTrialDialog::handleEvent(TEvent& event)
 		}
 		case (ushort)TDDCommand::cmOption_InputLong:
 		{
-			//-- вызов настройки статического текста
+			//-- вызов настройки ввода long-значений
 			auto data = new dataTInputLong();
 			auto ed_ptr = ((TTrialInputLong*)event.message.infoPtr);
 			strncpy(data->var_name, ed_ptr->getVarName(), StringMaxLen);
@@ -398,6 +425,35 @@ void TTrialDialog::handleEvent(TEvent& event)
 				ed_ptr->setMinValue(data->minv);
 				ed_ptr->setMaxValue(data->maxv);
 				ed_ptr->setDefValue(data->defv);
+				drawView();
+				DialSaved = false;
+			}
+			delete data;
+			destroy(win);
+			clearEvent(event);
+			break;
+		}
+		case (ushort)TDDCommand::cmOption_InputDouble:
+		{
+			//-- вызов настройки ввода double-значений
+			auto data = new dataTInputDouble();
+			auto ed_ptr = ((TTrialInputDouble*)event.message.infoPtr);
+			strncpy(data->var_name, ed_ptr->getVarName(), StringMaxLen);
+			data->minv = ed_ptr->getMinValue();
+			data->maxv = ed_ptr->getMaxValue();
+			data->defv = ed_ptr->getDefValue();
+			data->prec = ed_ptr->getPrecision();
+
+			auto win = new TInputDoubleProperties();
+			win->setData(data);
+			if (owner->execView(win) == cmOK)
+			{
+				win->getData(data);
+				ed_ptr->setVarName(data->var_name);
+				ed_ptr->setMinValue(data->minv);
+				ed_ptr->setMaxValue(data->maxv);
+				ed_ptr->setDefValue(data->defv);
+				ed_ptr->setPrecision(data->prec);
 				drawView();
 				DialSaved = false;
 			}
@@ -1113,7 +1169,7 @@ void TTrialDialog::GenCode(ofstream* res)
 	*res << base_class_name << "(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), \"" << title << "\"),\n";
 	*res << " TWindowInit(&" << base_class_name << "::initFrame)\n{\n";
 	//-- если установлен признак центрирования диалога
-	if (prp_Centered )
+	if (prp_Centered)
 		*res << " options |= ofCentered;\n";
 	if (tr_ofSelectable)
 		*res << " options |= ofSelectable;\n";

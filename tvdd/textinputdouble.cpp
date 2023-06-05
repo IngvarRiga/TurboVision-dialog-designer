@@ -2,9 +2,11 @@
 #include <string>
 using namespace std;
 
-TInputDouble::TInputDouble(const TRect& bounds, long double MinValue, long double MaxValue, long double DefValue) :
+TInputDouble::TInputDouble(const TRect& bounds, long double MinValue, long double MaxValue, long double DefValue, uint precision) :
 	TInputLine(bounds, 255)
 {
+	prec = precision;
+	if (prec <= 0) prec = 1;
 	//-- устанавливаем правильные значения
 	if (MinValue < MaxValue)
 	{
@@ -39,14 +41,17 @@ void TInputDouble::handleEvent(TEvent& event)
 		if (event.mouse.buttons == mbRightButton)
 			if (event.what == evMouseDown)
 			{
+				std::string fmin = convert_to_exp(minv);
+				std::string fdef = convert_to_exp(def_value);
+				std::string fmax = convert_to_exp(maxv);
 				//-- создание контекстного меню диалога
 				TMenuBox* contextMenu = new TMenuBox(TRect(0, 0, 0, 0),
 					new TMenu(
-						*new TMenuItem(txt_set_Minimum + std::to_string(minv), (ushort)TNumericInputCommand::cmSetMinimum, kbNoKey) +
+						*new TMenuItem(txt_set_Minimum + fmin, (ushort)TNumericInputCommand::cmSetMinimum, kbNoKey) +
 						newLine() +
-						*new TMenuItem(txt_set_Default + std::to_string(def_value), (ushort)TNumericInputCommand::cmSetDefault, kbNoKey) +
+						*new TMenuItem(txt_set_Default + fdef, (ushort)TNumericInputCommand::cmSetDefault, kbNoKey) +
 						newLine() +
-						*new TMenuItem(txt_set_Maximum + std::to_string(maxv), (ushort)TNumericInputCommand::cmSetMaximum, kbNoKey)
+						*new TMenuItem(txt_set_Maximum + fmax, (ushort)TNumericInputCommand::cmSetMaximum, kbNoKey)
 					), nullptr);
 
 				TPoint tmp;
@@ -88,8 +93,7 @@ void TInputDouble::handleEvent(TEvent& event)
 
 void TInputDouble::ShowError()
 {
-	std::string str = std::to_string(minv) + ' ' + (char)0x1D + ' ' + std::to_string(maxv);
-	messageBox(str.c_str(), mfError | mfOKButton);
+	messageBox(getDiap().c_str(), mfError | mfOKButton);
 }
 
 bool TInputDouble::CheckValue(long double val)
@@ -111,9 +115,10 @@ void TInputDouble::setValue(long double val)
 			value = maxv;
 		if (val < minv)
 			value = minv;
-		TInputLine::setData((void*)to_string(value).c_str());
-		drawView();
 	}
+	std::string valt = convert_to_exp(value);
+	TInputLine::setData((void*)valt.c_str());
+	drawView();
 }
 
 bool TInputDouble::convert(const char* tmp, long double* out)
@@ -122,7 +127,7 @@ bool TInputDouble::convert(const char* tmp, long double* out)
 	char* ptr;
 	errno = 0;
 	//-- преобразование в тип long double
-	*out = (long)strtold(tmp, &ptr);
+	*out = (long double)strtold(tmp, &ptr);
 	//-- если мусор в строке есть, то ошибка
 	if (strlen(ptr) > 0) return false;
 	//-- если вне диапазона, то ошибка
@@ -130,15 +135,52 @@ bool TInputDouble::convert(const char* tmp, long double* out)
 	return true;
 }
 
+std::string TInputDouble::convert_to_exp(long double val)
+{
+	char buffer[255];
+	memset(buffer, 0, sizeof(buffer));
+	//-- вне указанных пределов все в экспоненте
+	if (val == 0.0)
+	{
+		snprintf(buffer, sizeof(buffer), "%1.1f", 0.0);
+	}
+	else
+	{
+		if ((val < 0.0001L) || (val > 9000.0L))
+		{
+			std::string _prec = "%1." + to_string(prec) + "e";
+			snprintf(buffer, sizeof(buffer), _prec.c_str(), val);
+		}
+		else
+		{
+			//-- внутри пределов - значение с пплавающей точкой
+			std::string _prec = "%###1." + to_string(prec) + "f";
+			snprintf(buffer, sizeof(buffer), _prec.c_str(), val);
+		}
+	}
+	std::string result = buffer;
+	return result;
+}
+
+std::string TInputDouble::getDiap()
+{
+	std::string fmin(convert_to_exp(minv));
+	std::string fmax(convert_to_exp(maxv));
+
+	std::string str = fmin + ' ' + (char)0x1D + ' ' + fmax;
+	return str;
+}
+
 void TInputDouble::draw()
 {
 	int l, r;
 	TDrawBuffer b;
 
-	std::string str = std::to_string(minv) + ' ' + (char)0x1D + ' ' + std::to_string(maxv);
+	auto diap = getDiap();
+
 	char buff_diap[512];
 	memset(buff_diap, 0x0, 512);
-	str.copy(buff_diap, str.length());
+	diap.copy(buff_diap, diap.length());
 	TColorAttr color = getColor((state & sfFocused) ? 2 : 1);
 
 	long double res = 0.0;

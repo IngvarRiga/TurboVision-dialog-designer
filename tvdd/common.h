@@ -222,6 +222,7 @@ extern const char* str_values;
 extern const char* str_values_min;
 extern const char* str_values_max;
 extern const char* str_values_def;
+extern const char* str_values_prec;
 extern const char* str_x;
 extern const char* str_y;
 extern const char* str_type;

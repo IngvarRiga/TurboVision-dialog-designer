@@ -87,8 +87,13 @@ void TInputLong::handleEvent(TEvent& event)
 
 void TInputLong::ShowError()
 {
+	messageBox(getDiap().c_str(), mfError | mfOKButton);
+}
+
+std::string TInputLong::getDiap()
+{
 	std::string str = std::to_string(minv) + ' ' + (char)0x1D + ' ' + std::to_string(maxv);
-	messageBox(str.c_str(), mfError | mfOKButton);
+	return str;
 }
 
 bool TInputLong::CheckValue(long val)
@@ -135,7 +140,8 @@ void TInputLong::draw()
 	int l, r;
 	TDrawBuffer b;
 
-	std::string str = std::to_string(minv) + ' ' + (char)0x1D + ' ' + std::to_string(maxv);
+	auto str = getDiap();
+
 	char buff_diap[512];
 	memset(buff_diap, 0x0, 512);
 	str.copy(buff_diap, str.length());
