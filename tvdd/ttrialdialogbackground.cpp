@@ -22,7 +22,7 @@ void TTrialDialogBackground::draw()
 	// 0xB2 = havy  hatch ▓
 	TDrawBuffer bf1;
 	TDrawBuffer b;
-	char ch1;
+	uchar ch1;
 	if (Patterned)
 		ch1 = 0xb0;
 	else
@@ -30,7 +30,7 @@ void TTrialDialogBackground::draw()
 	//-- заполняем буфер легкой штриховки
 	bf1.moveChar(0, ch1, 0x8E, size.x); // 76
 	b.moveChar(0, ch1, 0x8E, size.x); // 76
-	b.moveChar(currPos.x, 0xB1, 0x8A, 1);
+	b.moveChar(currPos.x, (uchar)0xB1, 0x8A, 1);
 	for (int i = 0; i < size.y; i++)
 	{
 		if (i == currPos.y)

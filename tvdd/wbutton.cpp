@@ -18,7 +18,7 @@ TWrapButton::TWrapButton(const TRect& bounds,
 						 bool click) noexcept :
 	TView(bounds),
 	command(aCommand),
-	flags(aFlags),
+	flags((uchar)aFlags),
 	amDefault(Boolean((aFlags& bfDefault) != 0))
 {
 	memset(title, 0x0, StringMaxLen);

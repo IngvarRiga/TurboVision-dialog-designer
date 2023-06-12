@@ -43,7 +43,6 @@ public:
     virtual void press();
     virtual void setState(ushort aState, Boolean enable);
 
-
     /// <summary>
     /// Переопределяем идиотский функционал получения аццкой палитры
     /// </summary>
