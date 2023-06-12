@@ -2,6 +2,10 @@
 #include "multilang.h"
 #include "common.h"
 
+#ifndef _MSC_VER
+#include <cfloat>
+#endif
+
 TTrialInputDouble::TTrialInputDouble(const TRect& bounds, uint aMaxLen, TValidator* aValid) :
     TWrapInputLine(bounds, aMaxLen, aValid)
 {

@@ -15,6 +15,11 @@
 #include <math.h>
 #include "multilang.h"
 
+#ifndef _MSC_VER
+#include <cfloat>
+#endif
+
+
 #ifdef RUS
 #define txt_set_Minimum "Установить минимум: "
 #define txt_set_Maximum "Установить максимум: "
