@@ -11,12 +11,11 @@ TTrialInputLong::TTrialInputLong(const TRect& bounds, uint aMaxLen, TValidator* 
     dragMode |= dmLimitAll;
     Selected = false;
     memset(var_name, 0x0, StringMaxLen);
-    memset(class_name, 0x0, StringMaxLen);
     strncpy(var_name, txt_control, strlen(txt_control));
-    strncpy(class_name, txt_TInputLong, strlen(txt_TInputLong));
     minvalue = LONG_MIN;
     maxvalue = LONG_MAX;
     defvalue = 0;
+    AllowNotDefined = false;
 }
 
 void TTrialInputLong::handleEvent(TEvent& event)
@@ -134,7 +133,7 @@ void TTrialInputLong::genCode(void* val)
     auto r = getBounds();
 
     //-- генерируем код компонента
-    *res << "\n " << var_name << " = new " << class_name << "(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), " << minvalue << ", "<< maxvalue << ", " << defvalue << ");";
+    *res << "\n " << var_name << " = new TInputLong(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), " << minvalue << ", "<< maxvalue << ", " << defvalue << ", " << AllowNotDefined << ");";
     *res << "\n insert(" << var_name << ");";
 
 }
@@ -147,18 +146,6 @@ char* TTrialInputLong::getVarName()
 uint TTrialInputLong::getVarLen()
 {
     return maxLen;
-}
-void TTrialInputLong::setClassName(const char* val)
-{
-    memset(class_name, 0x0, StringMaxLen);
-    auto len = strlen(val);
-    if (len > 0)
-        memcpy(class_name, val, len > StringMaxLen ? StringMaxLen : len);
-}
-
-char* TTrialInputLong::getClassName()
-{
-    return class_name;
 }
 
 void TTrialInputLong::setVarName(const char* val)
@@ -175,7 +162,6 @@ nlohmann::json TTrialInputLong::genJSON()
     job[str_type] = objType::otInputLong;
     job[str_max_len] = getVarLen();
     job[str_var_name] = getVarName();
-    job[str_class_name] = getClassName();
     auto sz = getBounds();
     //-- начальная позиция
     job[str_pos][str_x] = sz.a.x;
@@ -187,6 +173,7 @@ nlohmann::json TTrialInputLong::genJSON()
     job[str_values][str_values_min] = minvalue;
     job[str_values][str_values_max] = maxvalue;
     job[str_values][str_values_def] = defvalue;
+    job[str_values][str_allow_not_defined] = AllowNotDefined;
     return job;
 }
 
@@ -208,6 +195,10 @@ void TTrialInputLong::setDefValue(long val)
 {
     defvalue = val;
 }
+void TTrialInputLong::setAllowNotDefined(bool val)
+{
+    AllowNotDefined = val;
+}
 
 long TTrialInputLong::getMaxValue()
 {
@@ -220,5 +211,9 @@ long TTrialInputLong::getMinValue()
 long TTrialInputLong::getDefValue()
 {
     return defvalue;
+}
+bool TTrialInputLong::getAllowNotDefined()
+{
+    return AllowNotDefined;
 }
 

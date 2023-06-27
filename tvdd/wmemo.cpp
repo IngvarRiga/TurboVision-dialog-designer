@@ -1,4 +1,4 @@
-/*
+#include "common.h"
 #include "wmemo.h"
 
 #define cpMemo      "\x1A\x1B"
@@ -13,9 +13,16 @@ TWrapMemo::TWrapMemo(const TRect& bounds,
 {
 
     eventMask = 0xFF; //-- установлен флаг получения ВСЕХ сообщений от мыши
+    state |= sfCursorVis;
+    options |= ofSelectable | ofFirstClick;
     eventClick = click;
     eventDragged = false;
     Selected = false;
+}
+
+TWrapMemo::~TWrapMemo()
+{
+
 }
 
 ushort TWrapMemo::dataSize()
@@ -58,6 +65,34 @@ TAttrPair TWrapMemo::getColor(ushort color)
     return TEditor::getColor(color);
 }
 
+void TWrapMemo::draw()
+{
+    if (drawLine != delta.y)
+    {
+        drawPtr = lineMove(drawPtr, delta.y - drawLine);
+        drawLine = delta.y;
+    }
+    drawLines(0, size.y, drawPtr);
+}
+
+void TWrapMemo::drawLines(int y, int count, uint linePtr)
+{
+    TAttrPair color = color = getColor(0x0201);
+#ifndef __FLAT__
+    TScreenCell b[maxLineLength];
+#else
+    TScreenCell* b = (TScreenCell*)alloca(sizeof(TScreenCell) * (delta.x + size.x));
+#endif
+
+    while (count-- > 0)
+    {
+        formatLine(b, linePtr, delta.x + size.x, color);
+        writeBuf(0, y, size.x, 1, &b[delta.x]);
+        linePtr = nextLine(linePtr);
+        y++;
+    }
+}
+
 bool TWrapMemo::isSelected()
 {
     return Selected;
@@ -84,7 +119,7 @@ void TWrapMemo::handleEvent(TEvent& event)
                 //-- берем координаты клика мышкой в глобальных координатах
                 auto pt = event.mouse.where;
                 //-- обязательно отсылаем ссылку на редактируемый компонент
-                message(owner, evBroadcast, cm_cmp_CreateMemo, &pt);
+                message(owner, evBroadcast, (ushort)TDDCommand::cm_cmp_CreateMemo, &pt);
                 clearEvent(event);
             }
         }
@@ -111,7 +146,7 @@ void TWrapMemo::handleEvent(TEvent& event)
 
                 TEvent evDrop;
                 evDrop.what = evBroadcast;
-                evDrop.message.command = cm_drp_DropMemo;
+                evDrop.message.command = (ushort)TDDCommand::cm_drp_DropMemo;
                 TPoint* pt = new TPoint();
                 pt->x = event.mouse.where.x;
                 pt->y = event.mouse.where.y;
@@ -145,49 +180,5 @@ void TWrapMemo::handleEvent(TEvent& event)
       //  TEditor::handleEvent(event);
 }
 
-#if !defined(NO_STREAMABLE)
 
-void TWrapMemo::write(opstream& os)
-{
-    TEditor::write(os);
-    os << bufLen;
-    os.writeBytes(buffer, curPtr);
-    os.writeBytes(buffer + gapLen, bufLen - curPtr);
-}
-
-void* TWrapMemo::read(ipstream& is)
-{
-    TEditor::read(is);
-    uint length;
-    is >> length;
-    if (isValid)
-    {
-        is.readBytes(buffer + bufSize - length, length);
-        setBufLen(length);
-    }
-    else
-        is.seekg(is.tellg() + (streamoff)length);
-    return this;
-}
-
-TStreamable* TWrapMemo::build()
-{
-    return new TWrapMemo(streamableInit);
-}
-
-TWrapMemo::TWrapMemo(StreamableInit) noexcept : TEditor(streamableInit)
-{}
-
-TStreamableClass RWrapMemo(TWrapMemo::name,
-                       TWrapMemo::build,
-                       __DELTA(TWrapMemo)
-);
-
-__link(RView)
-__link(REditor)
-__link(RWindow)
-__link(RScrollBar)
-
-#endif
-*/
 

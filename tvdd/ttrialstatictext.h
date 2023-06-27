@@ -31,12 +31,10 @@ public:
 
 	//-- получение значений
 	char* getVarName();
-	char* getClassName();
 	bool getUsedVarName();
 
 	//-- установка значений
 	void setVarName(const char* val);
-	void setClassName(const char* val);
 	void setUsedVarName(bool val);
 
 	/// <summary>
@@ -47,7 +45,6 @@ public:
 
 protected:
 	bool usedVarName; //-- при генерации исходного кода использовать отдельную переменную для объекта
-	char class_name[StringMaxLen]; //-- имя класса для создания текста
 	char var_name[StringMaxLen]; //-- имя переменной для создания текста
 
 	std::vector<std::string> split(const std::string& s, char delim);

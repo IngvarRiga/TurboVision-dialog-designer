@@ -19,6 +19,7 @@
 #include "tinputdoubleproperties.h"
 #include "tbuttonproperties.h"
 #include "tcheckboxesproperties.h"
+#include "tmemoproperties.h"
 
 const char* _class_name = "TNewDialog";
 const char* _base_class_name = "TDialog";
@@ -111,7 +112,6 @@ void TTrialDialog::editDialogProperties()
 	data->ofTopSelect = tr_ofTopSelect;
 	data->ofValidate = tr_ofValidate;
 
-
 	TDialogProperties* win = new TDialogProperties();
 	win->setData(data);
 	if (owner->execView(win) == cmOK)
@@ -177,7 +177,6 @@ void TTrialDialog::setCaption(const char* val)
 	memset((void*)title, 0x0, lenCapt);
 	memcpy((void*)title, val, lenCapt - 1);
 }
-
 
 void TTrialDialog::close()
 {
@@ -258,7 +257,6 @@ void TTrialDialog::handleEvent(TEvent& event)
 			//-- вызов настройки статического текста
 			auto data = new dataTSTP();
 			strncpy(data->caption, ((TTrialStaticText*)event.message.infoPtr)->getCaption(), StringMaxLen);
-			strncpy(data->class_name, ((TTrialStaticText*)event.message.infoPtr)->getClassName(), StringMaxLen);
 			strncpy(data->var_name, ((TTrialStaticText*)event.message.infoPtr)->getVarName(), StringMaxLen);
 			data->use_var_name = ((TTrialStaticText*)event.message.infoPtr)->getUsedVarName();
 
@@ -271,7 +269,6 @@ void TTrialDialog::handleEvent(TEvent& event)
 				sc.erase(std::remove(sc.begin(), sc.end(), '\r'));
 
 				((TTrialStaticText*)event.message.infoPtr)->setCaption(sc.c_str());
-				((TTrialStaticText*)event.message.infoPtr)->setClassName(data->class_name);
 				((TTrialStaticText*)event.message.infoPtr)->setVarName(data->var_name);
 				((TTrialStaticText*)event.message.infoPtr)->setUsedVarName(data->use_var_name);
 				drawView();
@@ -415,6 +412,7 @@ void TTrialDialog::handleEvent(TEvent& event)
 			data->minv = ed_ptr->getMinValue();
 			data->maxv = ed_ptr->getMaxValue();
 			data->defv = ed_ptr->getDefValue();
+			data->allow_undef = ed_ptr->getAllowNotDefined();
 
 			auto win = new TInputLongProperties();
 			win->setData(data);
@@ -425,6 +423,7 @@ void TTrialDialog::handleEvent(TEvent& event)
 				ed_ptr->setMinValue(data->minv);
 				ed_ptr->setMaxValue(data->maxv);
 				ed_ptr->setDefValue(data->defv);
+				ed_ptr->setAllowNotDefined(data->allow_undef);
 				drawView();
 				DialSaved = false;
 			}
@@ -470,7 +469,31 @@ void TTrialDialog::handleEvent(TEvent& event)
 		}
 		case (ushort)TDDCommand::cmOption_Memo:
 		{
-			//-- вызов настройки
+			//-- вызов настройки ввода long-значений
+			auto data = new dataTMEMOP();
+			auto ed_ptr = ((TTrialMemo*)event.message.infoPtr);
+			data->h_scroll = ed_ptr->getHScroll();
+			//strncpy(data->var_name, ed_ptr->getVarName(), StringMaxLen);
+			//data->minv = ed_ptr->getMinValue();
+			//data->maxv = ed_ptr->getMaxValue();
+			//data->defv = ed_ptr->getDefValue();
+			//data->allow_undef = ed_ptr->getAllowNotDefined();
+
+			auto win = new TMemoProperties();
+			win->setData(data);
+			if (owner->execView(win) == cmOK)
+			{
+				win->getData(data);
+				ed_ptr->setVarName(data->var_name);
+				//ed_ptr->setMinValue(data->minv);
+				//ed_ptr->setMaxValue(data->maxv);
+				//ed_ptr->setDefValue(data->defv);
+				//ed_ptr->setAllowNotDefined(data->allow_undef);
+				drawView();
+				DialSaved = false;
+			}
+			delete data;
+			destroy(win);
 			clearEvent(event);
 			break;
 		}
@@ -740,7 +763,6 @@ void TTrialDialog::handleEvent(TEvent& event)
 			}
 			break;
 		}
-
 		case (ushort)TDDCommand::cm_ed_InsertButton:
 		{
 			TPoint tmp;
@@ -882,31 +904,44 @@ void TTrialDialog::handleEvent(TEvent& event)
 			auto v = new TTrialMemo(TRect(lc.x, lc.y, lc.x + 10, lc.y + 3), nullptr, nullptr, nullptr, 255);
 			forEach(&unselected, 0);
 			v->setSelected(true);
+
+			auto rec = new memInfo();
+			memset(rec->buffer, 0x0, StringMaxLen);
+			rec->length = strlen(txt_memoTxt);
+			strncpy(rec->buffer, txt_memoTxt, rec->length);
+			v->setData(rec);
+
 			insert(v);
 			DialSaved = false;
 			break;
 		}
 		case (ushort)TDDCommand::cm_drp_DropMemo:
 		{
-			//TPoint tmp;
-			//tmp.x = ((TPoint*)event.message.infoPtr)->x;
-			//tmp.y = ((TPoint*)event.message.infoPtr)->y;
-			//clearEvent(event);
+			TPoint tmp;
+			tmp.x = ((TPoint*)event.message.infoPtr)->x;
+			tmp.y = ((TPoint*)event.message.infoPtr)->y;
+			clearEvent(event);
 
-			//auto lc = makeLocal(tmp);
-			//auto b = getExtent();
-			////-- если Drop происходит ВНЕ границ окна - просто игнорируем событие и все
-			////-- чтобы не вставлять то, что не увидится
-			//if ((lc.x >= 1) && (lc.y >= 1) && (lc.x < b.b.x - 1) && (lc.y < b.b.y - 1))
-			//{
-			//	//-- добавление нового TStaticText
-			//	auto v = new TTrialMemo(TRect(lc.x, lc.y, lc.x + 12, lc.y + 2), nullptr, nullptr, nullptr, 255);
-			//	forEach(&unselected, 0);
-			//	v->setSelected(true);
-			//	insert(v);
-			//	DialSaved = false;
-			//}
-			//break;
+			auto lc = makeLocal(tmp);
+			auto b = getExtent();
+			//-- если Drop происходит ВНЕ границ окна - просто игнорируем событие и все
+			//-- чтобы не вставлять то, что не увидится
+			if ((lc.x >= 1) && (lc.y >= 1) && (lc.x < b.b.x - 1) && (lc.y < b.b.y - 1))
+			{
+				//-- добавление нового TStaticText
+				auto v = new TTrialMemo(TRect(lc.x, lc.y, lc.x + 12, lc.y + 2), nullptr, nullptr, nullptr, 255);
+				forEach(&unselected, 0);
+				v->setSelected(true);
+				auto rec = new memInfo();
+				memset(rec->buffer, 0x0, StringMaxLen);
+				rec->length = strlen(txt_memoTxt);
+				strncpy(rec->buffer, txt_memoTxt, rec->length);
+				v->setData(rec);
+
+				insert(v);
+				DialSaved = false;
+			}
+			break;
 		}
 		case (ushort)TDDCommand::cmDialogSaveToJson:
 		{

@@ -2,9 +2,10 @@
 #include <string>
 using namespace std;
 
-TInputLong::TInputLong(const TRect& bounds, long MinValue, long MaxValue, long DefValue) :
+TInputLong::TInputLong(const TRect& bounds, long MinValue, long MaxValue, long DefValue, bool allow_not_def) :
 	TInputLine(bounds, 12)
 {
+	AllowNotDefined = allow_not_def;
 	//-- устанавливаем правильные значения
 	if (MinValue < MaxValue)
 	{
@@ -104,6 +105,63 @@ bool TInputLong::CheckValue(long val)
 		return false;
 }
 
+bool TInputLong::isNotDefined()
+{
+	if (AllowNotDefined)
+		return notDefined;
+	else
+		return false;
+}
+
+void TInputLong::setUndefined()
+{
+	if (AllowNotDefined)
+		notDefined = true;
+	else
+		notDefined = false;
+	drawView();
+}
+void TInputLong::setMaxValue(long val)
+{
+	maxv = val;
+	CheckValue(value);
+	drawView();
+}
+void TInputLong::setMinValue(long val)
+{
+	minv = val;
+	CheckValue(value);
+	drawView();
+}
+void TInputLong::setDefValue(long val)
+{
+	def_value = val;
+	CheckValue(value);
+	drawView();
+}
+void TInputLong::setAllowNotDefined(bool val)
+{
+	AllowNotDefined = val;
+	drawView();
+}
+
+long TInputLong::getMaxValue()
+{
+	return maxv;
+}
+long TInputLong::getMinValue()
+{
+	return minv;
+}
+long TInputLong::getDefValue()
+{
+	return def_value;
+}
+bool TInputLong::getAllowNotDefined()
+{
+	return AllowNotDefined;
+}
+
 void TInputLong::setValue(long val)
 {
 	//-- если не равно уже установленному...
@@ -149,18 +207,26 @@ void TInputLong::draw()
 
 	long res = 0;
 	auto cr = convert(data, &res);
+
+	//-- проверяем, что заданное число лежит в допустимых пределах
 	if (cr)
 		cr = CheckValue(res);
 
 	if (cr)
 	{
+		//-- нормальная отрисовка
 		b.moveChar(0, ' ', color, size.x);
 		value = res;
 	}
 	else
 	{
-		b.moveChar(0, ' ', 0x4f/*color*/, size.x);
 		value = LONG_MIN;
+		if (AllowNotDefined && (strlen(data) == 0))
+			b.moveChar(0, ' ', color_Undefined, size.x);
+		else
+		{
+			b.moveChar(0, ' ', color_Error, size.x);
+		}
 	}
 
 	if (size.x > 1)
@@ -169,9 +235,14 @@ void TInputLong::draw()
 			b.moveStr(1, data, color, size.x - 1, firstPos);
 		else
 			if (strlen(data) == 0)
-				b.moveStr(1, buff_diap, 0x47, size.x - 1, firstPos);
+			{
+				if (AllowNotDefined)
+					b.moveStr(1, buff_diap, color_Undefined, size.x - 1, firstPos);
+				else
+					b.moveStr(1, buff_diap, color_Info, size.x - 1, firstPos);
+			}
 			else
-				b.moveStr(1, data, 0x4f, size.x - 1, firstPos);
+				b.moveStr(1, data, color_Info, size.x - 1, firstPos);
 	}
 	if (canScroll(1))
 		b.moveChar(size.x - 1, rightArrow, getColor(4), 1);
@@ -204,4 +275,12 @@ Boolean TInputLong::canScroll(int delta)
 int TInputLong::displayedPos(int pos)
 {
 	return strwidth(TStringView(data, pos));
+}
+
+long TInputLong::getValue()
+{
+	if (isNotDefined())
+		return LONG_MIN;
+	else
+		return value;
 }

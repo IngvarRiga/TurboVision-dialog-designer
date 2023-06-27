@@ -2,11 +2,15 @@
 #include <string>
 using namespace std;
 
-TInputDouble::TInputDouble(const TRect& bounds, long double MinValue, long double MaxValue, long double DefValue, uint precision) :
+TInputDouble::TInputDouble(const TRect& bounds, long double MinValue, long double MaxValue, long double DefValue, uint precision, bool allow_not_def) :
 	TInputLine(bounds, 255)
 {
+	AllowNotDefined = allow_not_def;
 	prec = precision;
-	if (prec <= 0) prec = 1;
+	if (prec <= 0) prec = 1; //-- минимально допустимое значение
+	//-- нельзязадавать неопределённые значения в качестве границ допустимого диапазона
+	if (_isnan(MinValue)) MinValue = -FLT_MAX;
+	if (_isnan(MaxValue)) MaxValue = FLT_MAX;
 	//-- устанавливаем правильные значения
 	if (MinValue < MaxValue)
 	{
@@ -19,6 +23,7 @@ TInputDouble::TInputDouble(const TRect& bounds, long double MinValue, long doubl
 		maxv = MinValue;
 		minv = MaxValue;
 	}
+
 	if (CheckValue(DefValue))
 		value = def_value = DefValue;
 	else
@@ -32,7 +37,6 @@ TInputDouble::TInputDouble(const TRect& bounds, long double MinValue, long doubl
 	}
 	setValue(value);
 }
-
 
 void TInputDouble::handleEvent(TEvent& event)
 {
@@ -98,6 +102,12 @@ void TInputDouble::ShowError()
 
 bool TInputDouble::CheckValue(long double val)
 {
+	if (isnan(val))
+		if (AllowNotDefined)
+			return true;
+		else
+			return false;
+
 	if ((val >= minv) && (val <= maxv))
 		return true;
 	else
@@ -148,7 +158,7 @@ std::string TInputDouble::convert_to_exp(long double val)
 	{
 		if ((val < 0.0001L) || (val > 9000.0L))
 		{
-			std::string _prec = "%1." + to_string(prec) + "e";
+			std::string _prec = "%1." + to_string(prec) +"e";
 			snprintf(buffer, sizeof(buffer), _prec.c_str(), val);
 		}
 		else
@@ -185,18 +195,28 @@ void TInputDouble::draw()
 
 	long double res = 0.0;
 	auto cr = convert(data, &res);
+	//-- проверяем, что заданное число лежит в допустимых пределах
 	if (cr)
 		cr = CheckValue(res);
 
 	if (cr)
 	{
+		//-- нормальная отрисовка
 		b.moveChar(0, ' ', color, size.x);
 		value = res;
 	}
 	else
 	{
-		b.moveChar(0, ' ', 0x4f/*color*/, size.x);
-		value = LONG_MIN;
+		value = NAN;
+		//-- отрисовка с ошибкой
+		if (AllowNotDefined && (strlen(data) == 0))
+			b.moveChar(0, ' ', color_Undefined, size.x);
+		else
+		{
+			b.moveChar(0, ' ', color_Error, size.x);
+		}
+		//b.moveChar(0, ' ', color_Error, size.x);
+		//value = LONG_MIN;
 	}
 
 	if (size.x > 1)
@@ -205,9 +225,14 @@ void TInputDouble::draw()
 			b.moveStr(1, data, color, size.x - 1, firstPos);
 		else
 			if (strlen(data) == 0)
-				b.moveStr(1, buff_diap, 0x47, size.x - 1, firstPos);
+			{
+				if (AllowNotDefined)
+					b.moveStr(1, buff_diap, color_Undefined, size.x - 1, firstPos);
+				else
+					b.moveStr(1, buff_diap, color_Info, size.x - 1, firstPos);
+			}
 			else
-				b.moveStr(1, data, 0x4f, size.x - 1, firstPos);
+				b.moveStr(1, data, color_Error, size.x - 1, firstPos);
 	}
 	if (canScroll(1))
 		b.moveChar(size.x - 1, rightArrow, getColor(4), 1);
@@ -240,4 +265,68 @@ Boolean TInputDouble::canScroll(int delta)
 int TInputDouble::displayedPos(int pos)
 {
 	return strwidth(TStringView(data, pos));
+}
+
+void TInputDouble::setMaxValue(long double val)
+{
+	maxv = val;
+	CheckValue(value);
+	drawView();
+}
+void TInputDouble::setMinValue(long double val)
+{
+	minv = val;
+	CheckValue(value);
+	drawView();
+}
+void TInputDouble::setDefValue(long double val)
+{
+	def_value = val;
+	CheckValue(value);
+	drawView();
+}
+void TInputDouble::setAllowNotDefined(bool val)
+{
+	AllowNotDefined = val;
+	drawView();
+}
+
+long double TInputDouble::getMaxValue()
+{
+	return maxv;
+}
+long double TInputDouble::getMinValue()
+{
+	return minv;
+}
+long double TInputDouble::getDefValue()
+{
+	return def_value;
+}
+bool TInputDouble::getAllowNotDefined()
+{
+	return AllowNotDefined;
+}
+
+
+bool TInputDouble::isNotDefined()
+{
+	if (AllowNotDefined)
+		return notDefined;
+	else
+		return false;
+}
+
+void TInputDouble::setUndefined()
+{
+	if (AllowNotDefined)
+	{
+		notDefined = true;
+		value = NAN;
+	}
+	else
+	{
+		notDefined = false;
+	}
+	drawView();
 }

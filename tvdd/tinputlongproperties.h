@@ -25,6 +25,7 @@ public:
 	long minv;
 	long maxv;
 	long defv;
+	bool allow_undef;
 };
 
 class TInputLongProperties : public TCustomDialog
@@ -41,6 +42,7 @@ private:
 	TInputLong* minv;
 	TInputLong* maxv;
 	TInputLong* defv;
+	TCheckBoxes* allow_undef;
 };
 
 #endif /* TBUTTONPROPERTIES_H */

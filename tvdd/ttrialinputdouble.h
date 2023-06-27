@@ -15,49 +15,47 @@
 
 class TTrialInputDouble : public TWrapInputLine
 {
-  public:
+public:
 
-      TTrialInputDouble(const TRect& bounds, uint aMaxLen, TValidator *aValid = 0);
+	TTrialInputDouble(const TRect& bounds, uint aMaxLen, TValidator* aValid = 0);
 
-    virtual ~TTrialInputDouble()
-    {
-    }
+	virtual ~TTrialInputDouble() {}
 
 
-    virtual void setState(ushort aState, Boolean enable);
-    virtual void sizeLimits(TPoint& min, TPoint& max);
-    virtual void handleEvent(TEvent& event);
+	virtual void setState(ushort aState, Boolean enable);
+	virtual void sizeLimits(TPoint& min, TPoint& max);
+	virtual void handleEvent(TEvent& event);
 
-    void genCode(void *val);
+	void genCode(void* val);
 
-    //-- получение значений
-    char* getVarName();
-    char* getClassName();
-    uint getVarLen();
-    long double getMaxValue();
-    long double getMinValue();
-    long double getDefValue();
-    int getPrecision();
+	//-- получение значений
+	char* getVarName();
+	uint getVarLen();
+	long double getMaxValue();
+	long double getMinValue();
+	long double getDefValue();
+	int getPrecision();
+	bool getAllowNotDefined();
 
-    //-- установка значений
-    void setVarName(const char *val);
-    void setClassName(const char* val);
-    void setVarLen(uint val);
-    void setMaxValue(long double val);
-    void setMinValue(long double val);
-    void setDefValue(long double val);
-    void setPrecision(int val);
+	//-- установка значений
+	void setVarName(const char* val);
+	void setVarLen(uint val);
+	void setMaxValue(long double val);
+	void setMinValue(long double val);
+	void setDefValue(long double val);
+	void setPrecision(int val);
+	void setAllowNotDefined(bool val);
 
-    nlohmann::json genJSON();
+	nlohmann::json genJSON();
 
 
-  private:
-    char var_name[StringMaxLen]; //-- имя переменной для создания строки ввода
-    char class_name[StringMaxLen]; //-- имя переменной для создания текста
-    long double minvalue; //-- минимально допустимое значение
-    long double maxvalue; //-- максимально допустимое значение
-    long double defvalue; //-- значение задаваемое по умолчанию
-    int precision; //-- значение задаваемое по умолчанию
+private:
+	char var_name[StringMaxLen]; //-- имя переменной для создания строки ввода
+	long double minvalue; //-- минимально допустимое значение
+	long double maxvalue; //-- максимально допустимое значение
+	long double defvalue; //-- значение задаваемое по умолчанию
+	int precision; //-- значение задаваемое по умолчанию
+	bool AllowNotDefined; //-- допустимо незаданное значение (пустое)
 };
 
 #endif /* TTRIALINPUTLINE_H */

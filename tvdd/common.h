@@ -223,6 +223,8 @@ extern const char* str_values_min;
 extern const char* str_values_max;
 extern const char* str_values_def;
 extern const char* str_values_prec;
+extern const char* str_allow_not_defined;
+
 extern const char* str_x;
 extern const char* str_y;
 extern const char* str_type;
@@ -263,6 +265,16 @@ extern const char* str_ofValidate;
 /// <param name="test">- если параметр = true, то объект создаётся для тестирования диалога</param>
 /// <returns></returns>
 TView* object_fromJSON(nlohmann::json json_text, bool test = false);
+
+/// <summary>
+/// Структура для заполнения Memo поля
+/// </summary>
+struct memInfo
+{
+	ushort length;
+	char buffer[StringMaxLen];
+};
+
 
 #endif /* COMMON_H */
 

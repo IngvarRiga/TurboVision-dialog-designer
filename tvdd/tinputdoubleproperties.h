@@ -26,6 +26,7 @@ public:
 	long double maxv;
 	long double defv;
 	int prec;
+	bool allow_undef;
 };
 
 class TInputDoubleProperties : public TCustomDialog
@@ -43,6 +44,8 @@ private:
 	TInputDouble* maxv;
 	TInputDouble* defv;
 	TInputLong* prec;
+	TCheckBoxes* allow_undef;
+
 };
 
 #endif 

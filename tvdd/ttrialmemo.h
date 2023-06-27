@@ -12,10 +12,10 @@
 #define Uses_TMenuItem
 #define Uses_TMenuBox
 #include <tvision/tv.h>
-
+#include "wmemo.h"
 #include "common.h"
 
-class TTrialMemo : public TMemo
+class TTrialMemo : public TWrapMemo
 {
 public:
 
@@ -30,13 +30,19 @@ public:
 
     //-- получение значений
     char* getVarName();
-    char* getClassName();
-
+    bool getHScroll() { return h_scroll; };
+    bool getVScroll() { return v_scroll; };
+    long getMaxLength() { return max_length; };
+    std::string getDefaultText() { return def_text; }
     //-- установка значений
     void setVarName(const char* val);
-    void setClassName(const char* val);
+    void setHScroll(bool val) { h_scroll = val; };
+    void setVScroll(bool val) { v_scroll = val; };
+    void setMaxLength(long val) { max_length = val; };
+    void setDefaultText(std::string val) { def_text = val; }
+
     bool isSelected();
-    void setSelected(bool val);
+    //void setSelected(bool val);
     /// <summary>
     /// √енерирует JSON-код компонента
     /// </summary>
@@ -48,8 +54,10 @@ protected:
 
 private:
     char var_name[StringMaxLen]; //-- им€ переменной дл€ создани€ строки ввода
-    char class_name[StringMaxLen]; //-- им€ переменной дл€ создани€ текста
-
+    bool h_scroll; //-- Ќаличие строки горизонтальной прокрутки
+    bool v_scroll; //-- Ќаличие строки вертикальной прокрутки
+    long max_length; //-- ћаксимально допустима€ длина текста
+    std::string def_text; //-- “екст в компоненте по умолчанию
 };
 
 #endif /* TTRIALMEMO_H */

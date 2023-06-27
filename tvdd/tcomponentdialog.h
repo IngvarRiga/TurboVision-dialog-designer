@@ -13,6 +13,7 @@
 #define Uses_TSItem
 #define Uses_TSortedListBox
 #define Uses_TMemo
+#define Uses_TIndicator
 #include <tvision/tv.h>
 
 #include "tcustomdialog.h"

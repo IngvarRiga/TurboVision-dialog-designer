@@ -15,13 +15,12 @@ TTrialInputDouble::TTrialInputDouble(const TRect& bounds, uint aMaxLen, TValidat
     dragMode |= dmLimitAll;
     Selected = false;
     memset(var_name, 0x0, StringMaxLen);
-    memset(class_name, 0x0, StringMaxLen);
     strncpy(var_name, txt_control, strlen(txt_control));
-    strncpy(class_name, txt_TInputDouble, strlen(txt_TInputDouble));
     minvalue = -FLT_MAX;
     maxvalue = FLT_MAX;
     defvalue = 0;
     precision = 8;
+    AllowNotDefined = false;
 }
 
 void TTrialInputDouble::handleEvent(TEvent& event)
@@ -140,9 +139,8 @@ void TTrialInputDouble::genCode(void* val)
 
     //-- генерируем код компонента
 //    std::string minv = convert_to
-    *res << "\n " << var_name << " = new " << class_name << "(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), " << minvalue << ", "<< maxvalue << ", " << defvalue << ", " << precision << ");";
+    *res << "\n " << var_name << " = new TInputDouble(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), " << minvalue << ", "<< maxvalue << ", " << defvalue << ", " << precision << ", " << AllowNotDefined << ");";
     *res << "\n insert(" << var_name << ");";
-
 }
 
 char* TTrialInputDouble::getVarName()
@@ -153,18 +151,6 @@ char* TTrialInputDouble::getVarName()
 uint TTrialInputDouble::getVarLen()
 {
     return maxLen;
-}
-void TTrialInputDouble::setClassName(const char* val)
-{
-    memset(class_name, 0x0, StringMaxLen);
-    auto len = strlen(val);
-    if (len > 0)
-        memcpy(class_name, val, len > StringMaxLen ? StringMaxLen : len);
-}
-
-char* TTrialInputDouble::getClassName()
-{
-    return class_name;
 }
 
 void TTrialInputDouble::setVarName(const char* val)
@@ -181,7 +167,6 @@ nlohmann::json TTrialInputDouble::genJSON()
     job[str_type] = objType::otInputDouble;
     job[str_max_len] = getVarLen();
     job[str_var_name] = getVarName();
-    job[str_class_name] = getClassName();
     auto sz = getBounds();
     //-- начальная позиция
     job[str_pos][str_x] = sz.a.x;
@@ -194,6 +179,7 @@ nlohmann::json TTrialInputDouble::genJSON()
     job[str_values][str_values_max] = maxvalue;
     job[str_values][str_values_def] = defvalue;
     job[str_values][str_values_prec] = precision;
+    job[str_values][str_allow_not_defined] = AllowNotDefined;
     return job;
 }
 

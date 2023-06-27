@@ -2,20 +2,22 @@
 #include "multilang.h"
 #include "common.h"
 
-#define memTxt "Memo"
-struct memInfo
-{
-	ushort length;
-	char buffer[StringMaxLen];
-};
-
 
 TComponentDialog::TComponentDialog() :
-	TCustomDialog(TRect(1, 1, 16, 14), txt_dlg_GadgetsPanel, false, false),
+	TCustomDialog(TRect(1, 1, 17, 21), txt_dlg_GadgetsPanel, false, false),
 	TWindowInit(&TCustomDialog::initFrame)
 {
 	//-- удаляем кнопку закрытия окна
 	flags &= 0xfb;
+
+	TRect r = getExtent();
+	r.grow(-1, -1);
+	r.a.y = 12;
+	auto sec1 = new TView(r);
+	sec1->options |= ofFramed;
+	sec1->eventMask |= evBroadcast;
+	insert(sec1);
+
 	//-- StaticText
 	insert(new TWrapStaticText(TRect(2, 2, 6, 3), txt_dlg_StaticText, true));
 
@@ -48,32 +50,42 @@ TComponentDialog::TComponentDialog() :
 	insert(rb);
 
 
-	//auto sb = new TScrollBar(TRect(5, 6, 6, 9));
-	//insert(sb);
+#pragma region TListBox
+	auto sb = new TScrollBar(TRect(13, 12, 14, 15));
+	insert(sb);
+	TStringCollection* strCollect = new TStringCollection(2, 1);
+	strCollect->insert(newStr(txt_lsbElement1));
+	strCollect->insert(newStr(txt_lsbElement2));
+	auto lst = new TListBox(TRect(2, 12, 13, 15), 1, sb);
+	lst->newList(strCollect);
+	insert(lst);
+#pragma endregion
 
-	//auto lst = new TListBox(TRect(2, 6, 6, 9), 1, sb);
-	//insert(lst);
 
 #pragma region TMemo
 	//-- полосы склоллинга не делаем
-	//auto sbv = new TScrollBar(TRect(18, 19, 19, 21));
-	//insert(sbv);
+	auto sbv = new TScrollBar(TRect(13, 16, 14, 19));
+	insert(sbv);
 
-	//auto sbh = new TScrollBar(TRect(2, 21, 18, 22));
-	//insert(sbh);
+	//-- горизонтальную полосу сдвига в конструкторе не делаем
+	/*auto sbh = new TScrollBar(TRect(2, 19, 13, 20));
+	insert(sbh);*/
+
+	//-- индикатор в конструкторе не делаем
+	//auto ind = new TIndicator(TRect(3, 23, 13, 24));
+	//insert(ind);
 
 	//auto text = new TMemo(TRect(2, 19, 18, 21), (TScrollBar*)sbh, (TScrollBar*)sbv, 0, 255);
-	//auto text = new TWrapMemo(TRect(8, 8, 13, 9), nullptr, nullptr, nullptr, 255, true);
-	//rb->setState(sfDisabled, true);
+	//auto text = new TMemo(TRect(2, 16, 13, 19), nullptr, nullptr, nullptr, 255, true);
+	auto text = new TWrapMemo(TRect(2, 16, 13, 19), nullptr, sbv, nullptr/*ind*/, 255, true);
 
-	//auto rec = new memInfo();
-	//memset(rec->buffer, 0x0, StringMaxLen);
-	//rec->length = strlen(memTxt);
-	//strncpy(rec->buffer, memTxt, rec->length);
-	//text->setData(rec);
+	auto rec = new memInfo();
+	memset(rec->buffer, 0x0, StringMaxLen);
+	rec->length = strlen(txt_memoTxt);
+	strncpy(rec->buffer, txt_memoTxt, rec->length);
+	text->setData(rec);
+	insert(text);
 
-	//insert(text);
-	
 #pragma endregion
 
 
@@ -88,118 +100,138 @@ void TComponentDialog::handleEvent(TEvent& event)
 		auto pt = ((TPoint*)event.message.infoPtr);
 		switch (event.message.command)
 		{
-			case (ushort)TDDCommand::cm_cmp_CreateStaticText:
-				{
-					//-- очистка события должна быть именно здесь иначе сообщение о Drop  не доходит до диалогового окна
-					clearEvent(event);
-					auto v = new TWrapStaticText(TRect(pt->x, pt->y - 1, pt->x + 10, pt->y), txt_btnStaticText);
-					v->setDragged();
-					v->options |= ofPreProcess | ofPostProcess;
+		case (ushort)TDDCommand::cm_cmp_CreateStaticText:
+		{
+			//-- очистка события должна быть именно здесь иначе сообщение о Drop  не доходит до диалогового окна
+			clearEvent(event);
+			auto v = new TWrapStaticText(TRect(pt->x, pt->y - 1, pt->x + 10, pt->y), txt_btnStaticText);
+			v->setDragged();
+			v->options |= ofPreProcess | ofPostProcess;
 
-					//-- прикручиваем тень к объекту, чтобы он "парил"
-					v->setState(sfShadow, true);
-					v->drawView();
-					owner->insert(v);
-					message(v, evMouseDown, -1, 0);
-					break;
-				}
-			case (ushort)TDDCommand::cm_cmp_CreateInputLine:
-				{
-					//-- очистка события должна быть именно здесь иначе сообщение о Drop  не доходит до диалогового окна
-					clearEvent(event);
-					auto v = new TWrapInputLine(TRect(pt->x, pt->y - 1, pt->x + 10, pt->y), 11, nullptr, TLineType::lt_InputLine, false);
-					v->setData((void*)txt_dlg_InputLine);
-					v->setDragged();
-					v->options |= ofPreProcess | ofPostProcess;
-					//-- прикручиваем тень к объекту, чтобы он "парил"
-					v->setState(sfShadow, true);
-					v->drawView();
-					owner->insert(v);
-					message(v, evMouseDown, -1, 0);
-					break;
-				}
-			case (ushort)TDDCommand::cm_cmp_CreateInputLong:
-				{
-					//-- очистка события должна быть именно здесь иначе сообщение о Drop не доходит до диалогового окна
-					clearEvent(event);
-					auto v = new TWrapInputLine(TRect(pt->x, pt->y - 1, pt->x + 10, pt->y), 11, nullptr, TLineType::lt_InputLong, false);
-					v->setData((void*)txt_dlg_InputLong);
-					v->setDragged();
-					v->options |= ofPreProcess | ofPostProcess;
-					//-- прикручиваем тень к объекту, чтобы он "парил"
-					v->setState(sfShadow, true);
-					v->drawView();
-					owner->insert(v);
-					message(v, evMouseDown, -1, 0);
-					break;
-				}
-			case (ushort)TDDCommand::cm_cmp_CreateInputDouble:
-				{
-					//-- очистка события должна быть именно здесь иначе сообщение о Drop не доходит до диалогового окна
-					clearEvent(event);
-					//messageBox(txt_error_Unreleased, mfInformation | mfOKButton);
+			//-- прикручиваем тень к объекту, чтобы он "парил"
+			v->setState(sfShadow, true);
+			v->drawView();
+			owner->insert(v);
+			message(v, evMouseDown, -1, 0);
+			break;
+		}
+		case (ushort)TDDCommand::cm_cmp_CreateInputLine:
+		{
+			//-- очистка события должна быть именно здесь иначе сообщение о Drop  не доходит до диалогового окна
+			clearEvent(event);
+			auto v = new TWrapInputLine(TRect(pt->x, pt->y - 1, pt->x + 10, pt->y), 11, nullptr, TLineType::lt_InputLine, false);
+			v->setData((void*)txt_dlg_InputLine);
+			v->setDragged();
+			v->options |= ofPreProcess | ofPostProcess;
+			//-- прикручиваем тень к объекту, чтобы он "парил"
+			v->setState(sfShadow, true);
+			v->drawView();
+			owner->insert(v);
+			message(v, evMouseDown, -1, 0);
+			break;
+		}
+		case (ushort)TDDCommand::cm_cmp_CreateInputLong:
+		{
+			//-- очистка события должна быть именно здесь иначе сообщение о Drop не доходит до диалогового окна
+			clearEvent(event);
+			auto v = new TWrapInputLine(TRect(pt->x, pt->y - 1, pt->x + 10, pt->y), 11, nullptr, TLineType::lt_InputLong, false);
+			v->setData((void*)txt_dlg_InputLong);
+			v->setDragged();
+			v->options |= ofPreProcess | ofPostProcess;
+			//-- прикручиваем тень к объекту, чтобы он "парил"
+			v->setState(sfShadow, true);
+			v->drawView();
+			owner->insert(v);
+			message(v, evMouseDown, -1, 0);
+			break;
+		}
+		case (ushort)TDDCommand::cm_cmp_CreateInputDouble:
+		{
+			//-- очистка события должна быть именно здесь иначе сообщение о Drop не доходит до диалогового окна
+			clearEvent(event);
+			//messageBox(txt_error_Unreleased, mfInformation | mfOKButton);
 
-					auto v = new TWrapInputLine(TRect(pt->x, pt->y - 1, pt->x + 10, pt->y), 11, nullptr, TLineType::lt_InputDouble, false);
-					v->setData((void*)txt_dlg_InputDouble);
-					v->setDragged();
-					v->options |= ofPreProcess | ofPostProcess;
-					//-- прикручиваем тень к объекту, чтобы он "парил"
-					v->setState(sfShadow, true);
-					v->drawView();
-					owner->insert(v);
-					message(v, evMouseDown, -1, 0);
-					break;
-				}
-			case (ushort)TDDCommand::cm_cmp_CreateButton:
-				{
-					//-- очистка события должна быть именно здесь иначе сообщение о Drop  не доходит до диалогового окна
-					clearEvent(event);
-					auto v = new TWrapButton(TRect(pt->x, pt->y - 2, pt->x + 10, pt->y), txt_btnButton, -1, bfDefault);
-					v->setDragged();
-					v->options |= ofPreProcess | ofPostProcess;
-					//-- прикручиваем тень к объекту, чтобы он "парил"
-					v->setState(sfShadow, true);
-					v->drawView();
-					owner->insert(v);
-					message(v, evMouseDown, -1, 0);
-					break;
-				}
-			case (ushort)TDDCommand::cm_cmp_CreateCheckBoxes:
-				{
-					//-- очистка события должна быть именно здесь иначе сообщение о Drop  не доходит до диалогового окна
-					clearEvent(event);
-					auto v = new TWrapCheckBoxes(TRect(pt->x, pt->y - 2, pt->x + 12, pt->y), new TSItem(txt_btnCheck1, new TSItem(txt_btnCheck2, nullptr)));
-					v->setDragged();
-					v->options |= ofPreProcess | ofPostProcess;
-					//-- прикручиваем тень к объекту, чтобы он "парил"
-					v->setState(sfShadow, true);
-					v->drawView();
-					owner->insert(v);
-					message(v, evMouseDown, -1, 0);
-					break;
-				}
-			case (ushort)TDDCommand::cm_cmp_CreateRadioButtons:
-				{
-					//-- очистка события должна быть именно здесь иначе сообщение о Drop  не доходит до диалогового окна
-					clearEvent(event);
-					auto v = new TWrapRadioButtons(TRect(pt->x, pt->y - 2, pt->x + 12, pt->y), new TSItem(txt_btnCheck1, new TSItem(txt_btnCheck2, nullptr)));
-					v->setDragged();
-					v->options |= ofPreProcess | ofPostProcess;
-					//-- прикручиваем тень к объекту, чтобы он "парил"
-					v->setState(sfShadow, true);
-					v->drawView();
-					owner->insert(v);
-					message(v, evMouseDown, -1, 0);
-					break;
-				}
-			case (ushort)TDDCommand::cm_cmp_CreateListBox:
-				{
-					break;
-				}
-			case (ushort)TDDCommand::cm_cmp_CreateMemo:
-				{
-					break;
-				}
+			auto v = new TWrapInputLine(TRect(pt->x, pt->y - 1, pt->x + 10, pt->y), 11, nullptr, TLineType::lt_InputDouble, false);
+			v->setData((void*)txt_dlg_InputDouble);
+			v->setDragged();
+			v->options |= ofPreProcess | ofPostProcess;
+			//-- прикручиваем тень к объекту, чтобы он "парил"
+			v->setState(sfShadow, true);
+			v->drawView();
+			owner->insert(v);
+			message(v, evMouseDown, -1, 0);
+			break;
+		}
+		case (ushort)TDDCommand::cm_cmp_CreateButton:
+		{
+			//-- очистка события должна быть именно здесь иначе сообщение о Drop  не доходит до диалогового окна
+			clearEvent(event);
+			auto v = new TWrapButton(TRect(pt->x, pt->y - 2, pt->x + 10, pt->y), txt_btnButton, -1, bfDefault);
+			v->setDragged();
+			v->options |= ofPreProcess | ofPostProcess;
+			//-- прикручиваем тень к объекту, чтобы он "парил"
+			v->setState(sfShadow, true);
+			v->drawView();
+			owner->insert(v);
+			message(v, evMouseDown, -1, 0);
+			break;
+		}
+		case (ushort)TDDCommand::cm_cmp_CreateCheckBoxes:
+		{
+			//-- очистка события должна быть именно здесь иначе сообщение о Drop  не доходит до диалогового окна
+			clearEvent(event);
+			auto v = new TWrapCheckBoxes(TRect(pt->x, pt->y - 2, pt->x + 12, pt->y), new TSItem(txt_btnCheck1, new TSItem(txt_btnCheck2, nullptr)));
+			v->setDragged();
+			v->options |= ofPreProcess | ofPostProcess;
+			//-- прикручиваем тень к объекту, чтобы он "парил"
+			v->setState(sfShadow, true);
+			v->drawView();
+			owner->insert(v);
+			message(v, evMouseDown, -1, 0);
+			break;
+		}
+		case (ushort)TDDCommand::cm_cmp_CreateRadioButtons:
+		{
+			//-- очистка события должна быть именно здесь иначе сообщение о Drop  не доходит до диалогового окна
+			clearEvent(event);
+			auto v = new TWrapRadioButtons(TRect(pt->x, pt->y - 2, pt->x + 12, pt->y), new TSItem(txt_btnCheck1, new TSItem(txt_btnCheck2, nullptr)));
+			v->setDragged();
+			v->options |= ofPreProcess | ofPostProcess;
+			//-- прикручиваем тень к объекту, чтобы он "парил"
+			v->setState(sfShadow, true);
+			v->drawView();
+			owner->insert(v);
+			message(v, evMouseDown, -1, 0);
+			break;
+		}
+		case (ushort)TDDCommand::cm_cmp_CreateListBox:
+		{
+			break;
+		}
+		case (ushort)TDDCommand::cm_cmp_CreateMemo:
+		{
+			//-- очистка события должна быть именно здесь иначе сообщение о Drop  не доходит до диалогового окна
+			clearEvent(event);
+			auto v = new TWrapMemo(TRect(pt->x, pt->y - 2, pt->x + 12, pt->y), nullptr, nullptr, nullptr, 255);
+			v->setDragged();
+			v->options |= ofPreProcess | ofPostProcess;
+
+#pragma region -- Add text in moving component
+			auto rec = new memInfo();
+			memset(rec->buffer, 0x0, StringMaxLen);
+			rec->length = strlen(txt_memoTxt);
+			strncpy(rec->buffer, txt_memoTxt, rec->length);
+			v->setData(rec);
+#pragma endregion
+
+
+			//-- прикручиваем тень к объекту, чтобы он "парил"
+			v->setState(sfShadow, true);
+			v->drawView();
+			owner->insert(v);
+			message(v, evMouseDown, -1, 0);
+			break;
+		}
 
 		};
 	}

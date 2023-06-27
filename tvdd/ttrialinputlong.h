@@ -15,47 +15,43 @@
 
 class TTrialInputLong : public TWrapInputLine
 {
-  public:
+public:
 
-      TTrialInputLong(const TRect& bounds, uint aMaxLen, TValidator *aValid = 0);
+	TTrialInputLong(const TRect& bounds, uint aMaxLen, TValidator* aValid = 0);
 
-    virtual ~TTrialInputLong()
-    {
-    }
+	virtual ~TTrialInputLong() {}
 
+	virtual void setState(ushort aState, Boolean enable);
+	virtual void sizeLimits(TPoint& min, TPoint& max);
+	virtual void handleEvent(TEvent& event);
 
-    virtual void setState(ushort aState, Boolean enable);
-    virtual void sizeLimits(TPoint& min, TPoint& max);
-    virtual void handleEvent(TEvent& event);
+	void genCode(void* val);
 
-    void genCode(void *val);
+	//-- получение значений
+	char* getVarName();
+	uint getVarLen();
+	long getMaxValue();
+	long getMinValue();
+	long getDefValue();
+	bool getAllowNotDefined();
 
-    //-- получение значений
-    char* getVarName();
-    char* getClassName();
-    uint getVarLen();
-    long getMaxValue();
-    long getMinValue();
-    long getDefValue();
+	//-- установка значений
+	void setVarName(const char* val);
+	void setVarLen(uint val);
+	void setMaxValue(long val);
+	void setMinValue(long val);
+	void setDefValue(long val);
+	void setAllowNotDefined(bool val);
 
-    //-- установка значений
-    void setVarName(const char *val);
-    void setClassName(const char* val);
-    void setVarLen(uint val);
-    void setMaxValue(long val);
-    void setMinValue(long val);
-    void setDefValue(long val);
+	nlohmann::json genJSON();
 
-    nlohmann::json genJSON();
-
-
-  private:
-    char var_name[StringMaxLen]; //-- имя переменной для создания строки ввода
-    char class_name[StringMaxLen]; //-- имя переменной для создания текста
-    long minvalue; //-- минимально допустимое значение
-    long maxvalue; //-- максимально допустимое значение
-    long defvalue; //-- значение задаваемое по умолчанию
- };
+private:
+	char var_name[StringMaxLen]; //-- имя переменной для создания строки ввода
+	long minvalue; //-- минимально допустимое значение
+	long maxvalue; //-- максимально допустимое значение
+	long defvalue; //-- значение задаваемое по умолчанию
+	bool AllowNotDefined; //-- допустимо незаданное значение (пустое)
+};
 
 #endif /* TTRIALINPUTLINE_H */
 

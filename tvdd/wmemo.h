@@ -1,6 +1,6 @@
 #ifndef WMEMO_H
 #define WMEMO_H
-/*#define Uses_TKeys
+#define Uses_TKeys
 #define Uses_TEditor
 #define Uses_TMemo
 #define Uses_TEvent
@@ -15,12 +15,23 @@ class TWrapMemo : public TEditor
 
 public:
     TWrapMemo(const TRect&, TScrollBar*, TScrollBar*, TIndicator*, ushort , bool click = false) noexcept;
+    ~TWrapMemo()
+        ;
     virtual void getData(void* rec);
     virtual void setData(void* rec);
     virtual ushort dataSize();
+    virtual void draw();
+    virtual void drawLines(int y, int count, uint linePtr);
+
+    void setDragged()
+    {
+        eventDragged = true;
+    };
+
     virtual TPalette& getPalette() const;
     virtual void handleEvent(TEvent&);
-    static TStreamable* build();
+    TAttrPair getColor(ushort color);
+
 
     //-- переопределяем идиотский функционал получение аццкой палитры
     //virtual TAttrPair getColor(ushort color);
@@ -34,7 +45,6 @@ protected:
     bool eventDragged; //-- компонент находится в режиме перемещения (только для дизайнера)
 
 };
-*/
 
 #endif /* WMEMO_H */
 

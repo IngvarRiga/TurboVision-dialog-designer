@@ -11,9 +11,7 @@ TTrialStaticText::TTrialStaticText(const TRect& bounds, TStringView aText) :
     //-- заданное имя переменной используется при генерации кода
     usedVarName = false; //-- по умолчанию -выключено!
     memset(var_name, 0x0, StringMaxLen);
-    memset(class_name, 0x0, StringMaxLen);
     strncpy(var_name, txt_control, strlen(txt_control));
-    strncpy(class_name, txt_TStaticText, strlen(txt_TStaticText));
 }
 
 void TTrialStaticText::setState(ushort aState, Boolean enable)
@@ -192,10 +190,6 @@ char* TTrialStaticText::getVarName()
     return var_name;
 }
 
-char* TTrialStaticText::getClassName()
-{
-    return class_name;
-}
 
 bool TTrialStaticText::getUsedVarName()
 {
@@ -208,14 +202,6 @@ void TTrialStaticText::setVarName(const char* val)
     auto len = strlen(val);
     if (len > 0)
         memcpy(var_name, val, len > StringMaxLen ? StringMaxLen : len);
-}
-
-void TTrialStaticText::setClassName(const char* val)
-{
-    memset(class_name, 0x0, StringMaxLen);
-    auto len = strlen(val);
-    if (len > 0)
-        memcpy(class_name, val, len > StringMaxLen ? StringMaxLen : len);
 }
 
 void TTrialStaticText::setUsedVarName(bool val)
@@ -231,12 +217,12 @@ void TTrialStaticText::genCode(void* val)
     auto r = getBounds();
     if (usedVarName)
     {
-        *res << "\n " << var_name << " = new " << class_name << "(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), \"" << text << "\");";
+        *res << "\n " << var_name << " = new TStaticText(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), \"" << text << "\");";
         *res << "\n insert(" << var_name << ");";
     }
     else
     {
-        *res << "\n insert(new " << class_name << "(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), \"" << text << "\"));";
+        *res << "\n insert(new TStaticText(TRect(" << r.a.x << "," << r.a.y << "," << r.b.x << "," << r.b.y << "), \"" << text << "\"));";
     }
 }
 

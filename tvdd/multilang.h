@@ -65,6 +65,12 @@
 #define txt_btnCheck1 "Выбор1"
 #define txt_btnCheck2 "Выбор2"
 
+#define txt_lsbElement1 "Элемент 1"
+#define txt_lsbElement2 "Элемент 2"
+
+#define txt_memoTxt "Memo"
+
+
 #define txt_ColorTestDlgCaption "Тест цвета"
 #define txt_DefaultNewDialogCaption "Новое диалоговое окно"
 #define txt_DlgInsertSubMenu "Вставить элемент"
@@ -80,6 +86,7 @@
 #define txt_PropertyMaxValue "Максимальное значение"
 #define txt_PropertyDefValue "Значение по умолчанию"
 #define txt_PropertyPrecision "Точность представления"
+#define txt_PropertyAllowUndefVal "Допустимо не заданное значение"
 
 #define txt_PropertyButton "Свойства TButton"   
 #define txt_PropertyRadioButtons "Свойства TRadioButtons"   
@@ -189,6 +196,9 @@
 
 #define txt_btnCheck1 "Check1"
 #define txt_btnCheck2 "Check2"
+#define txt_lsbElement1 "Items1"
+#define txt_lsbElement2 "Items2"
+#define txt_memoTxt "Memo"
 
 #define txt_ColorTestDlgCaption "Color test"
 #define txt_DefaultNewDialogCaption "New dialog window"
@@ -204,6 +214,7 @@
 #define txt_PropertyMaxValue "Maximal"
 #define txt_PropertyDefValue "Default"
 #define txt_PropertyPrecision "Precision"
+#define txt_PropertyAllowUndefVal "Undefined allowed"
 
 #define txt_PropertyInputDouble "TInputDouble properties"   
 #define txt_PropertyButton "TButton properties"      

@@ -15,40 +15,35 @@
 
 class TTrialInputLine : public TWrapInputLine
 {
-  public:
+public:
 
-    TTrialInputLine(const TRect& bounds, uint aMaxLen, TValidator *aValid = 0);
+	TTrialInputLine(const TRect& bounds, uint aMaxLen, TValidator* aValid = 0);
 
-    virtual ~TTrialInputLine()
-    {
-    }
+	virtual ~TTrialInputLine() {}
 
 
-    virtual void setState(ushort aState, Boolean enable);
+	virtual void setState(ushort aState, Boolean enable);
 
-    virtual void sizeLimits(TPoint& min, TPoint& max);
-    virtual void handleEvent(TEvent& event);
+	virtual void sizeLimits(TPoint& min, TPoint& max);
+	virtual void handleEvent(TEvent& event);
 
-    void genCode(void *val);
+	void genCode(void* val);
 
-    //-- получение значений
-    char* getVarName();
-    char* getClassName();
-    uint getVarLen();
+	//-- получение значений
+	char* getVarName();
+	uint getVarLen();
 
-    //-- установка значений
-    void setVarName(const char *val);
-    void setClassName(const char* val);
-    void setVarLen(uint val);
+	//-- установка значений
+	void setVarName(const char* val);
+	void setVarLen(uint val);
 
-    nlohmann::json genJSON();
+	nlohmann::json genJSON();
 
 
-  private:
-    char var_name[StringMaxLen]; //-- имя переменной для создания строки ввода
-    char class_name[StringMaxLen]; //-- имя переменной для создания текста
+private:
+	char var_name[StringMaxLen]; //-- имя переменной для создания строки ввода
 
- };
+};
 
 #endif /* TTRIALINPUTLINE_H */
 

@@ -24,12 +24,9 @@ class dataTSTP
 {
   public:
     dataTSTP();
-    
     char caption[StringMaxLen];
     char var_name[StringMaxLen];
-    char class_name[StringMaxLen];
     bool use_var_name;
-    
 };
 
 class TStaticTextProperties : public TCustomDialog
@@ -46,7 +43,6 @@ class TStaticTextProperties : public TCustomDialog
     TScrollBar * sbv;
     TScrollBar * sbh;
     TInputLine * var_name;
-    TInputLine * class_name;
     TCheckBoxes * var_name_use;
 };
 #endif /* TSTATICTEXTPROPERTIES_H */
