@@ -16,10 +16,10 @@ TTrialInputDouble::TTrialInputDouble(const TRect& bounds, uint aMaxLen, TValidat
     Selected = false;
     memset(var_name, 0x0, StringMaxLen);
     strncpy(var_name, txt_control, strlen(txt_control));
-    minvalue = -FLT_MAX;
-    maxvalue = FLT_MAX;
+    minvalue = -DBL_MAX;
+    maxvalue = DBL_MAX;
     defvalue = 0;
-    precision = 8;
+    precision = 5;
     AllowNotDefined = false;
 }
 
@@ -70,7 +70,7 @@ void TTrialInputDouble::handleEvent(TEvent& event)
                     case 0:
                         //-- нет команды
                         break;
-                    case (ushort)TDDCommand::cm_ed_DestroyInputLine:
+                    case (ushort)TDDCommand::cm_ed_DestroyInputDouble:
                         destroy(this);
                         return;
                         break;
@@ -206,6 +206,10 @@ void TTrialInputDouble::setPrecision(int val)
 {
     precision = val;
 }
+void TTrialInputDouble::setAllowNotDefined(bool val)
+{
+    AllowNotDefined = val;
+}
 
 long double TTrialInputDouble::getMaxValue()
 {
@@ -223,4 +227,8 @@ long double TTrialInputDouble::getDefValue()
 int TTrialInputDouble::getPrecision()
 {
     return precision;
+}
+bool TTrialInputDouble::getAllowNotDefined()
+{
+    return AllowNotDefined;
 }

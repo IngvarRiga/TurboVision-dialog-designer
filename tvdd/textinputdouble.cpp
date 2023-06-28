@@ -9,8 +9,8 @@ TInputDouble::TInputDouble(const TRect& bounds, long double MinValue, long doubl
 	prec = precision;
 	if (prec <= 0) prec = 1; //-- минимально допустимое значение
 	//-- нельзязадавать неопределённые значения в качестве границ допустимого диапазона
-	if (_isnan(MinValue)) MinValue = -FLT_MAX;
-	if (_isnan(MaxValue)) MaxValue = FLT_MAX;
+	if (_isnan(MinValue)) MinValue = -DBL_MAX;
+	if (_isnan(MaxValue)) MaxValue = DBL_MAX;
 	//-- устанавливаем правильные значения
 	if (MinValue < MaxValue)
 	{

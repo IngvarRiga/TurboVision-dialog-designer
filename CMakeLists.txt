@@ -106,6 +106,11 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     target_link_libraries(${PROJECT_NAME} PUBLIC tvision)
     endif()
 else()
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+        target_compile_options(${target} PRIVATE
+            -Wno-overloaded-virtual
+        )
+    endif()
     target_link_libraries(${PROJECT_NAME} PUBLIC tvision)
 endif()
 

@@ -442,6 +442,7 @@ void TTrialDialog::handleEvent(TEvent& event)
 			data->maxv = ed_ptr->getMaxValue();
 			data->defv = ed_ptr->getDefValue();
 			data->prec = ed_ptr->getPrecision();
+			data->allow_undef = ed_ptr->getAllowNotDefined();
 
 			auto win = new TInputDoubleProperties();
 			win->setData(data);
@@ -453,6 +454,8 @@ void TTrialDialog::handleEvent(TEvent& event)
 				ed_ptr->setMaxValue(data->maxv);
 				ed_ptr->setDefValue(data->defv);
 				ed_ptr->setPrecision(data->prec);
+				ed_ptr->setAllowNotDefined(data->allow_undef);
+
 				drawView();
 				DialSaved = false;
 			}

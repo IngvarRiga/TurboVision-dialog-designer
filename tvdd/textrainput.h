@@ -181,7 +181,7 @@ private:
 
 public:
 
-	TInputDouble(const TRect& bounds, long double MinValue = -FLT_MAX, long double MaxValue = FLT_MAX, long double DefValue = 0.0, uint precision = 5, bool allow_not_def = false);
+	TInputDouble(const TRect& bounds, long double MinValue = -DBL_MAX, long double MaxValue = DBL_MAX, long double DefValue = 0.0, uint precision = 5, bool allow_not_def = false);
 	~TInputDouble() {};
 	virtual void handleEvent(TEvent& event);
 

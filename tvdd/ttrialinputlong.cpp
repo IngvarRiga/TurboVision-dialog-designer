@@ -65,7 +65,7 @@ void TTrialInputLong::handleEvent(TEvent& event)
                     case 0:
                         //-- нет команды
                         break;
-                    case (ushort)TDDCommand::cm_ed_DestroyInputLine:
+                    case (ushort)TDDCommand::cm_ed_DestroyInputLong:
                         destroy(this);
                         return;
                         break;

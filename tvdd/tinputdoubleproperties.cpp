@@ -11,13 +11,13 @@ TInputDoubleProperties::TInputDoubleProperties() :
 	insert(new TStaticText(TRect(2, 5, 23, 6), txt_PropertyDefValue));
 	insert(new TStaticText(TRect(2, 7, 16, 8), txt_pd_VariableName));
 	insert(new TStaticText(TRect(2, 4, 24, 5), txt_PropertyPrecision));
-	minv = new TInputDouble(TRect(25, 2, 56, 3), -FLT_MAX, FLT_MAX, 0, 8);
+	minv = new TInputDouble(TRect(25, 2, 56, 3), -DBL_MAX, DBL_MAX, 0, 12);
 	insert(minv);
-	maxv = new TInputDouble(TRect(25, 3, 56, 4), -FLT_MAX, FLT_MAX, 0, 8);
+	maxv = new TInputDouble(TRect(25, 3, 56, 4), -DBL_MAX, DBL_MAX, 0, 12);
 	insert(maxv);
-	prec = new TInputLong(TRect(25, 4, 37, 5), 1, 50, 8);
+	prec = new TInputLong(TRect(25, 4, 37, 5), 1, 50, 12);
 	insert(prec);
-	defv = new TInputDouble(TRect(25, 5, 56, 6), -FLT_MAX, FLT_MAX, 0, 8);
+	defv = new TInputDouble(TRect(25, 5, 56, 6), -DBL_MAX, DBL_MAX, 0, 12);
 	insert(defv);
 	allow_undef = new TCheckBoxes(TRect(20, 6, 56, 7),
 		new TSItem(txt_PropertyAllowUndefVal, 0));
@@ -65,8 +65,8 @@ dataTInputDouble::dataTInputDouble()
 {
 	//-- очистка строковых массивов
 	memset(var_name, 0x0, StringMaxLen);
-	minv = -FLT_MAX;
-	maxv = FLT_MAX;
+	minv = -DBL_MAX;
+	maxv = DBL_MAX;
 	defv = 0.0;
 	prec = 8;
 	allow_undef = false;
